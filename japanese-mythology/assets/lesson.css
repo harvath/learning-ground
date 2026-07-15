@@ -1,0 +1,255 @@
+/* ============================================================
+   lesson.css — 日本神話ワークスペース共通スタイル
+   全レッスン・reference が読み込む単一の見た目の源。
+   Tufte 風：紙の質感、明朝、広い余白、印刷に強い。
+   ============================================================ */
+
+:root {
+  --ink:      #1a1710;
+  --ink-soft: #4a4436;
+  --paper:    #fbf7ee;
+  --paper-2:  #f3ecdd;
+  --rule:     #d8cdb5;
+  --accent:   #8a1c1c;   /* 朱 — 神社の色 */
+  --accent-2: #1c5a6e;   /* 藍 — 海・国津神 */
+  --gold:     #9a7b2e;
+  --maxw:     42rem;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.5rem 6rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
+               "Noto Serif JP", "Songti SC", serif;
+  line-height: 1.9;
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+
+/* ---- 見出し ---- */
+h1, h2, h3 { line-height: 1.5; font-weight: 600; }
+h1 {
+  font-size: 1.9rem;
+  margin: 0 0 0.3rem;
+  letter-spacing: 0.02em;
+}
+h2 {
+  font-size: 1.3rem;
+  margin: 3rem 0 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+h3 { font-size: 1.08rem; margin: 2rem 0 0.6rem; color: var(--ink-soft); }
+
+.kicker {
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: none;
+  margin-bottom: 0.6rem;
+}
+.subtitle { color: var(--ink-soft); font-size: 1.05rem; margin: 0.2rem 0 0; }
+
+p { margin: 0.9rem 0; }
+strong { font-weight: 600; color: #000; }
+em { font-style: normal; border-bottom: 1px dotted var(--gold); padding-bottom: 1px; }
+
+a { color: var(--accent-2); text-decoration: none; border-bottom: 1px solid rgba(28,90,110,0.35); }
+a:hover { border-bottom-color: var(--accent-2); }
+
+/* ---- 引用元・出典 ---- */
+sup.cite { font-size: 0.7em; }
+sup.cite a { border: none; }
+.sources { font-size: 0.85rem; color: var(--ink-soft); }
+.sources li { margin: 0.3rem 0; }
+
+/* ---- 囲み（注意・創作のヒント・primary source）---- */
+.box {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  margin: 1.6rem 0;
+}
+.box .label {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.box.primary { border-left: 4px solid var(--accent); }
+.box.make    { border-left: 4px solid var(--gold); }
+.box.make .label { color: var(--gold); }
+.box.ask     { border-left: 4px solid var(--accent-2); }
+.box.ask .label { color: var(--accent-2); }
+
+/* ---- 神名ラベル ---- */
+.kami { font-weight: 600; white-space: nowrap; }
+.kami .yomi { font-size: 0.72em; color: var(--ink-soft); font-weight: 400; }
+
+/* ---- 背骨ダイアグラム（reference と共有）---- */
+.spine { margin: 2rem 0; }
+.spine-node {
+  position: relative;
+  padding: 0.7rem 0 0.7rem 2.2rem;
+  border-left: 3px solid var(--ink-soft);
+  margin-left: 0.6rem;
+}
+.spine-node::before {
+  content: "";
+  position: absolute;
+  left: -0.55rem; top: 1.1rem;
+  width: 0.8rem; height: 0.8rem;
+  background: var(--paper);
+  border: 3px solid var(--ink-soft);
+  border-radius: 50%;
+}
+.spine-node.main::before { background: var(--accent); border-color: var(--accent); }
+.spine-node .n-title { font-weight: 600; }
+.spine-node .n-note  { font-size: 0.9rem; color: var(--ink-soft); }
+.spine-branch {
+  margin: 0.2rem 0 0.2rem 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px dashed var(--accent-2);
+  font-size: 0.92rem;
+  color: var(--accent-2);
+}
+.spine-off {
+  margin: 1.4rem 0;
+  padding: 0.8rem 1rem;
+  border: 2px dotted var(--gold);
+  border-radius: 6px;
+  background: rgba(154,123,46,0.06);
+}
+
+/* ---- クイズ部品（quiz.js と対）---- */
+.quiz {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: #fff;
+  padding: 1.1rem 1.2rem;
+  margin: 1.8rem 0;
+}
+.quiz-q { font-weight: 600; margin: 0 0 0.8rem; }
+.quiz-opt {
+  display: block; width: 100%; text-align: right;
+  font-family: inherit; font-size: 0.98rem; color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: 0.6rem 0.9rem; margin: 0.45rem 0;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+}
+.quiz-opt:hover { background: var(--paper-2); }
+.quiz-opt.is-correct { background: #e4efe0; border-color: #3f7a34; color: #234b1c; }
+.quiz-opt.is-wrong   { background: #f6e2e0; border-color: var(--accent); color: var(--accent); }
+.quiz-why {
+  margin: 0.9rem 0 0; padding-top: 0.8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.92rem; color: var(--ink-soft);
+}
+
+/* ---- 目次（topic index で使用）---- */
+.toc { list-style: none; padding: 0; margin: 1.5rem 0; }
+.toc li { border-bottom: 1px solid var(--rule); }
+.toc a {
+  display: flex; gap: 0.9rem; align-items: baseline;
+  padding: 0.95rem 0.3rem; border: none; color: var(--ink);
+}
+.toc a:hover { background: var(--paper-2); }
+.toc .num { flex: none; width: 3.6rem; color: var(--accent); font-size: 0.85rem; letter-spacing: 0.05em; }
+.toc .t { font-weight: 600; }
+.toc .d { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.15rem; }
+
+/* ---- 比較テーブル ---- */
+.tablewrap { overflow-x: auto; margin: 1.6rem 0; }
+table.cmp { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+table.cmp th, table.cmp td {
+  border: 1px solid var(--rule); padding: 0.55rem 0.7rem;
+  text-align: left; vertical-align: top; line-height: 1.7;
+}
+table.cmp th { background: var(--paper-2); font-weight: 600; white-space: nowrap; }
+table.cmp td:first-child { font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+
+/* ---- 想起カード（recall.js と対）---- */
+.recall {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 8px;
+  background: #fff;
+  padding: 1.1rem 1.2rem;
+  margin: 1.6rem 0;
+}
+.recall-q { font-weight: 600; margin: 0 0 0.8rem; }
+.recall-show {
+  font-family: inherit; font-size: 0.9rem; color: var(--accent-2);
+  background: var(--paper);
+  border: 1px solid var(--accent-2); border-radius: 6px;
+  padding: 0.4rem 1rem; cursor: pointer;
+}
+.recall-show:hover { background: var(--paper-2); }
+.recall-a {
+  margin: 0.9rem 0 0; padding-top: 0.8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.95rem; color: var(--ink-soft);
+}
+
+/* ---- シラバス（course-map で使用）---- */
+.syllabus { margin: 2rem 0; }
+.syl-item {
+  display: flex; gap: 0.9rem; align-items: baseline;
+  padding: 0.8rem 0; border-bottom: 1px solid var(--rule);
+}
+.syl-num { flex: none; width: 3.4rem; color: var(--ink-soft); font-size: 0.85rem; }
+.syl-tag {
+  flex: none; font-size: 0.66rem; letter-spacing: 0.08em;
+  padding: 0.12rem 0.55rem; border-radius: 999px; border: 1px solid;
+  white-space: nowrap; align-self: center;
+}
+.syl-tag.done { color: #3f7a34; border-color: #3f7a34; }
+.syl-tag.now  { color: var(--paper); background: var(--accent); border-color: var(--accent); }
+.syl-tag.next { color: var(--accent-2); border-color: var(--accent-2); }
+.syl-tag.plan { color: var(--ink-soft); border-color: var(--rule); }
+.syl-tag.extra{ color: var(--gold); border-color: var(--gold); }
+.syl-body .t { font-weight: 600; }
+.syl-body .q { display: block; font-size: 0.85rem; color: var(--accent); margin-top: 0.25rem; }
+
+/* ---- ナビ（他レッスン・reference への行き来）---- */
+.nav {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  margin: 3rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+
+/* ---- フッター：先生に聞く ---- */
+.teacher {
+  margin-top: 2.5rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  text-align: center;
+  font-style: italic;
+}
+
+/* ---- 印刷 ---- */
+@media print {
+  body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+  .quiz-opt:hover { background: none; }
+  .nav, .teacher { display: none; }
+  a { color: #000; border: none; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 2rem 1.1rem 4rem; font-size: 1rem; }
+  h1 { font-size: 1.55rem; }
+}

@@ -1,0 +1,72 @@
+/* ============================================================
+   site.css — ポータル（トップページ）共通スタイル
+   学習トピックの入口。各トピックの lesson.css とは別。
+   ============================================================ */
+:root {
+  --ink:      #1a1710;
+  --ink-soft: #4a4436;
+  --paper:    #fbf7ee;
+  --paper-2:  #f3ecdd;
+  --rule:     #d8cdb5;
+  --accent:   #8a1c1c;
+  --gold:     #9a7b2e;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  padding: 3.5rem 1.3rem 5rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
+               "Noto Serif JP", "Songti SC", serif;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+.site { max-width: 52rem; margin: 0 auto; }
+
+.site-head { margin-bottom: 2.5rem; }
+.site-kicker {
+  font-size: 0.78rem; letter-spacing: 0.28em; color: var(--accent); margin-bottom: 0.5rem;
+}
+.site h1 { font-size: 2.1rem; margin: 0 0 0.3rem; letter-spacing: 0.03em; }
+.site-sub { color: var(--ink-soft); margin: 0; }
+
+.topics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+.topic-card {
+  display: block; text-decoration: none; color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--rule); border-radius: 14px;
+  padding: 1.5rem 1.4rem;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.topic-card:hover, .topic-card:focus {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26,23,16,0.08);
+}
+.topic-card .emoji { font-size: 2.1rem; line-height: 1; display: block; margin-bottom: 0.7rem; }
+.topic-card h2 { font-size: 1.25rem; margin: 0 0 0.3rem; }
+.topic-card .card-sub { color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 0.9rem; }
+.topic-card .meta { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--accent); }
+
+.topic-card.soon {
+  pointer-events: none; opacity: 0.55;
+  border-style: dashed; background: transparent;
+}
+.topic-card.soon .meta { color: var(--ink-soft); }
+
+.site-foot {
+  margin-top: 3rem; padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem; color: var(--ink-soft);
+}
+
+@media (max-width: 480px) {
+  body { padding: 2.2rem 1.1rem 4rem; }
+  .site h1 { font-size: 1.7rem; }
+}
