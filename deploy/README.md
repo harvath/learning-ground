@@ -1,4 +1,8 @@
-# Serving the Learning Ground (Ubuntu + nginx)
+# Self-hosting the Learning Ground (Ubuntu + nginx)
+
+> **Note:** the primary way this site is served is now [GitHub Pages](../README.md#live-site).
+> Use this guide only if you specifically want to self-host instead (e.g. no
+> internet access, or you don't want the repo public).
 
 The site is **static HTML/CSS/JS** — no build step. Editing any file (e.g. via a
 remote Claude session) is live on the next refresh.
