@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Reference | Pipeline Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<div class="wrap">
+
+  <div class="kicker">REFERENCE · MAP</div>
+  <h1>Pipeline map</h1>
+  <p class="subtitle">The whole system on one page — every lesson is a zoom-in on one node of this chain. Print-friendly.</p>
+
+  <div class="box">
+    <span class="label">the core idea</span>
+    Three systems that don't trust each other by default (your Mac, developer.apple.com, App Store Connect), bridged by two proof-files (certificate, provisioning profile). Every term in this course is "which system, which proof, which step."
+  </div>
+
+  <h2>Full chain</h2>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">Xcode project</div>
+      <div class="n-note">Code + <code>.xcodeproj</code>/<code>project.pbxproj</code> (L0003). Bundle ID set here.</div>
+    </div>
+    <div class="chain-branch">optionally generated from <code>project.yml</code> via XcodeGen, instead of hand-maintained</div>
+
+    <div class="chain-node main">
+      <div class="n-title">Apple Developer Program membership → Team ID</div>
+      <div class="n-note">Paid enrollment. Everything below is scoped to this Team ID (L0002).</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">App ID</div>
+      <div class="n-note">Bundle ID registered on developer.apple.com + allowed capabilities. Nothing downstream can exist without this.</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">Certificate (Development / Distribution)</div>
+      <div class="n-note">Proves who signed a build. Private key stays in your Mac's Keychain.</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">Provisioning profile</div>
+      <div class="n-note">Bundles App ID + certificate(s) + entitlements + (dev/ad hoc only) device list.</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">Product → Archive</div>
+      <div class="n-note">Release build, signed with the above, packaged as <code>.xcarchive</code> + <code>.dSYM</code>s (L0004).</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">Export / Distribute</div>
+      <div class="n-note">Re-signed for a destination: App Store Connect, Ad Hoc, Enterprise, or Development.</div>
+    </div>
+
+    <div class="chain-node main">
+      <div class="n-title">App Store Connect</div>
+      <div class="n-note">Receives the App Store Connect export. Processes it, surfaces it under TestFlight (L0005).</div>
+    </div>
+
+    <div class="chain-branch">→ Internal testers: instant, no review</div>
+    <div class="chain-branch">→ External testers: first build per version needs Beta App Review</div>
+
+    <div class="chain-node main">
+      <div class="n-title">Tester's device</div>
+      <div class="n-note">Trusts the build because it trusts Apple's own re-signing — not a direct trust of you.</div>
+    </div>
+  </div>
+
+  <h2>Lessons</h2>
+
+  <div class="syllabus">
+    <div class="syl-item">
+      <div class="syl-num">L0001</div>
+      <div class="syl-tag done">core</div>
+      <div class="syl-body"><span class="t">The big picture</span> — the three systems, the two proof-files, the pipeline in one pass.</div>
+    </div>
+    <div class="syl-item">
+      <div class="syl-num">L0002</div>
+      <div class="syl-tag done">core</div>
+      <div class="syl-body"><span class="t">Identity &amp; trust</span> — App ID → certificate → provisioning profile, and why registration is non-negotiable.</div>
+    </div>
+    <div class="syl-item">
+      <div class="syl-num">L0003</div>
+      <div class="syl-tag done">core</div>
+      <div class="syl-body"><span class="t">The Xcode project</span> — what <code>.xcodeproj</code>/<code>.pbxproj</code> is, why it conflicts, what XcodeGen fixes.</div>
+    </div>
+    <div class="syl-item">
+      <div class="syl-num">L0004</div>
+      <div class="syl-tag done">core</div>
+      <div class="syl-body"><span class="t">Archive &amp; export</span> — what <code>Product → Archive</code> does mechanically, and the export-method table.</div>
+    </div>
+    <div class="syl-item">
+      <div class="syl-num">L0005</div>
+      <div class="syl-tag now">now</div>
+      <div class="syl-body"><span class="t">Ship it</span> — the concrete, ordered checklist to a live TestFlight build.</div>
+    </div>
+    <div class="syl-item">
+      <div class="syl-num">next</div>
+      <div class="syl-tag next">future</div>
+      <div class="syl-body"><span class="t">Public App Store release</span> — App Store review, listing metadata, release management. Out of scope until TestFlight is routine (see MISSION.md).</div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a href="./signing-chain-cheatsheet.html">Reference: signing chain cheat sheet</a>
+    <a href="../lessons/0001-the-big-picture.html">▶ Start: L0001</a>
+  </div>
+
+</div>

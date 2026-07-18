@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Reference | Signing Chain Cheat Sheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<div class="wrap">
+
+  <div class="kicker">REFERENCE · CHEAT SHEET</div>
+  <h1>Signing chain cheat sheet</h1>
+  <p class="subtitle">Every link, where it lives, and which error message points at it. Print this one — it's for the moment an archive fails.</p>
+
+  <h2>The chain</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Object</th><th>Lives where</th><th>Scoped to</th><th>Managed at</th></tr>
+      <tr><td>Apple Developer Program membership</td><td>Apple Account</td><td>You / your org</td><td>developer.apple.com → Account</td></tr>
+      <tr><td>Team ID</td><td>Apple's records</td><td>Your membership</td><td>developer.apple.com → Membership</td></tr>
+      <tr><td>App ID</td><td>Apple's records</td><td>One Bundle ID (or wildcard)</td><td>Certificates, Identifiers &amp; Profiles → Identifiers</td></tr>
+      <tr><td>Certificate</td><td>Public half on Apple's servers; private key in your Mac's Keychain</td><td>Your Team</td><td>Certificates, Identifiers &amp; Profiles → Certificates, or Xcode → Settings → Accounts</td></tr>
+      <tr><td>Provisioning profile</td><td>Apple's records + embedded in your build</td><td>One App ID + certificate(s) + entitlements + (dev/ad hoc) devices</td><td>Certificates, Identifiers &amp; Profiles → Profiles, or auto-managed by Xcode</td></tr>
+      <tr><td>Registered device</td><td>Apple's records</td><td>One physical device (UDID)</td><td>Certificates, Identifiers &amp; Profiles → Devices</td></tr>
+    </table>
+  </div>
+
+  <h2>Error → broken link</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>You see</th><th>Likely broken link</th></tr>
+      <tr><td>"No signing certificate found," "No account for team"</td><td>Certificate — missing, expired, revoked, or not present in this Mac's Keychain</td></tr>
+      <tr><td>"No profiles for '&lt;bundle id&gt;' were found," "Doesn't include signing certificate"</td><td>Provisioning profile — doesn't exist yet, or doesn't list the certificate you're building with</td></tr>
+      <tr><td>"Device is not registered," "not included in the profile"</td><td>Registered device — the device isn't on the Development/Ad Hoc profile's device list</td></tr>
+      <tr><td>"App ID doesn't support &lt;capability&gt;," entitlement mismatch</td><td>App ID — the capability isn't checked on developer.apple.com, or you have a wildcard App ID where an explicit one is required</td></tr>
+      <tr><td>"Communication with Apple failed," provisioning profile expired mid-review</td><td>Not a chain break — usually transient; retry, or check developer.apple.com's system status</td></tr>
+      <tr><td><code>Product → Archive</code> greyed out</td><td>Not signing at all — run destination is set to a Simulator (L0004); switch to a real device or "Any iOS Device"</td></tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <span class="label">fastest fix, most of the time</span>
+    With "Automatically manage signing" on, toggling it off and back on (or re-selecting your Team in Signing &amp; Capabilities) forces Xcode to re-walk the whole chain and repair whichever link is stale. If that doesn't resolve it, the break is real — go to Certificates, Identifiers &amp; Profiles directly and check the object the error names.
+  </div>
+
+  <div class="nav">
+    <a href="./pipeline-map.html">Reference: pipeline map</a>
+    <a href="../lessons/0002-identity-and-trust.html">L0002 Identity &amp; trust</a>
+    <a href="../lessons/0004-archive-and-export.html">L0004 Archive &amp; export</a>
+  </div>
+
+</div>

@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0003 | The Xcode Project</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0003 · SYSTEM 1</div>
+  <h1>What <code>.xcodeproj</code> is for, and what XcodeGen fixes</h1>
+  <p class="subtitle">Back to system 1 — not the trust chain this time, but the file that describes how to build your code at all.</p>
+
+  <h2>What <code>.xcodeproj</code> actually is</h2>
+
+  <p><code>.xcodeproj</code> looks like a single file in Finder but is a <strong>bundle</strong> — a folder Finder displays as one icon. Inside it, one file does almost all the work: <code>project.pbxproj</code>, a large, mostly machine-generated text file listing every target, every file reference, every build setting, and every scheme, each tagged with an internal object ID Xcode invented.</p>
+
+  <p>Every time you add a file in Xcode's UI, flip a build setting, or add a target, Xcode rewrites chunks of <code>project.pbxproj</code> for you. You almost never edit it by hand — Xcode's UI <em>is</em> the editor for this file.</p>
+
+  <h2>The nesting, once</h2>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="n-title">Workspace <span style="font-weight:400;color:var(--ink-soft)">(<code>.xcworkspace</code>, optional)</span></div>
+      <div class="n-note">Groups one or more projects (and/or Swift packages) together. A single-target app usually doesn't need one; CocoaPods and multi-project setups do.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Project <span style="font-weight:400;color:var(--ink-soft)">(<code>.xcodeproj</code> / <code>project.pbxproj</code>)</span></div>
+      <div class="n-note">The container: build settings, file references, and one or more targets.</div>
+    </div>
+    <div class="chain-branch">→ Target — one buildable product (the app, a widget extension, a test bundle), each with its own Bundle ID and signing settings</div>
+    <div class="chain-branch">→ Scheme — a saved choice of which target(s) + which build configuration (Debug/Release) + which action (Run, Test, Archive)</div>
+  </div>
+
+  <p>When you pick a scheme in Xcode's toolbar, you're choosing which of these to act on. When you archive, you're always building the <strong>Release</strong> configuration of whichever target the active scheme points at (L0004).</p>
+
+  <h2>Why <code>.pbxproj</code> causes merge conflicts</h2>
+
+  <p><code>project.pbxproj</code> is a serialized property list with internally-generated object IDs rather than human-authored structure. Two branches that each add a file, reorder a group, or change a build setting touch overlapping regions of the same file in ways a text-based three-way merge usually can't reconcile — you end up hand-resolving a wall of object IDs you didn't write and can't easily reason about.<sup class="cite"><a href="https://careersatdoordash.com/blog/how-doordash-uses-xcodegen-to-eliminate-project-merge-conflicts/">[1]</a></sup> On a team, this is a recurring, expensive papercut — not a hypothetical one.</p>
+
+  <h2>What XcodeGen actually solves</h2>
+
+  <p><a href="https://github.com/yonaskolb/XcodeGen">XcodeGen</a> generates a <code>.xcodeproj</code> from a declarative <code>project.yml</code> — targets, sources (often just a folder glob), build settings, schemes, dependencies — written in plain YAML. The workflow becomes: edit <code>project.yml</code>, run <code>xcodegen generate</code>, and the resulting <code>.xcodeproj</code> is <strong>never committed to git</strong> — only the YAML is.<sup class="cite"><a href="https://github.com/yonaskolb/XcodeGen">[2]</a></sup></p>
+
+  <p>The direct payoff: merge conflicts move from an unreadable generated file to a short, human-authored YAML diff — and if a conflict does happen, you can just discard the generated <code>.xcodeproj</code> entirely and regenerate it, since it was never meant to be hand-edited anyway. Tuist solves the same category of problem with a different spec format; both are "project-as-code" tools, not competitors to Xcode itself.<sup class="cite"><a href="https://tuist.dev/blog/2025/03/21/git-conflicts">[3]</a></sup></p>
+
+  <div class="box">
+    <span class="label">a second, quieter fix: Swift Package Manager</span>
+    Adding a dependency the old way (a checked-in library, or CocoaPods) rewrites parts of <code>project.pbxproj</code>. Adding a Swift Package Manager dependency instead is recorded in <code>Package.resolved</code> — a small, genuinely mergeable text file. SPM doesn't replace XcodeGen's job (it doesn't generate your whole project), but for the specific case of "I added a dependency," it sidesteps the churn entirely.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Mechanically, why does <code>project.pbxproj</code> produce unresolvable merge conflicts?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>It's a machine-generated property list keyed by internal object IDs rather than human-readable structure. Two branches editing it independently touch overlapping serialized regions in ways a text-based three-way merge can't cleanly reconcile, leaving a wall of unreadable IDs to resolve by hand.</div>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">② In a project using XcodeGen, what actually gets committed to git?</p>
+    <button class="quiz-opt" data-key="a"><code>project.yml</code> only — the generated <code>.xcodeproj</code> is left out</button>
+    <button class="quiz-opt" data-key="b">Both <code>project.yml</code> and the generated <code>.xcodeproj</code>, kept in sync manually</button>
+    <button class="quiz-opt" data-key="c">The generated <code>.xcodeproj</code> only — <code>project.yml</code> is a local scratch file</button>
+    <p class="quiz-why" hidden>The whole point is that the generated .xcodeproj is disposable — regenerate it any time with `xcodegen generate`. Only the YAML spec, which is small and human-authored, needs to live in version control.</p>
+  </div>
+
+  <div class="box ask">
+    <span class="label">the Expo/React Native delta</span>
+    In an Expo project, the equivalent generated artifact is the <code>ios/</code> folder (and the <code>.xcodeproj</code> inside it) — produced by <code>expo prebuild</code> or by an EAS Build run. Same underlying idea as XcodeGen — "don't hand-maintain the generated project file" — but framework-owned rather than a separate tool you configure. In the fully managed workflow you may never open <code>ios/*.xcodeproj</code> directly at all; in a "bare"/prebuild workflow it behaves much closer to a native project, XcodeGen included, if you've added it.
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    <a href="https://github.com/yonaskolb/XcodeGen">XcodeGen's own README</a> states its motivation directly, in the maintainers' words — read the top section before adopting it on a real project. For the production-scale version of the merge-conflict story: <a href="https://careersatdoordash.com/blog/how-doordash-uses-xcodegen-to-eliminate-project-merge-conflicts/">how DoorDash uses XcodeGen</a>.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "Should I actually adopt XcodeGen for my Swift project?" is a real, answerable question once the trade-off is clear (YAML fluency + a generate step, vs. `.pbxproj` merge risk) — worth asking if you're not solo on this project. Next: L0004 leaves the project file behind and opens what <code>Product → Archive</code> is mechanically doing to it.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://careersatdoordash.com/blog/how-doordash-uses-xcodegen-to-eliminate-project-merge-conflicts/">How DoorDash uses XcodeGen to eliminate project merge conflicts</a><br>
+    [2] <a href="https://github.com/yonaskolb/XcodeGen">XcodeGen — GitHub (yonaskolb/XcodeGen)</a><br>
+    [3] <a href="https://tuist.dev/blog/2025/03/21/git-conflicts">Strategies to avoid merge conflicts in Xcode Projects — Tuist</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0002-identity-and-trust.html">← L0002 Identity &amp; trust</a>
+    <a href="./0004-archive-and-export.html">L0004 Archive &amp; export →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

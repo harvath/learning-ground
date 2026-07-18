@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0005 | Ship It — TestFlight</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0005 · DISTRIBUTE</div>
+  <h1>Ship it — the real procedure, to TestFlight</h1>
+  <p class="subtitle">Every lesson so far, assembled into the exact ordered checklist for your current goal: a build in a tester's hands.</p>
+
+  <p>This is where L0001–L0004 stop being separate ideas and become one sequence you actually run. Nothing here is new — it's L0002's chain and L0004's archive/export steps, in the order you'll actually click through them.</p>
+
+  <h2>The checklist</h2>
+
+  <ol class="steps">
+    <li><strong>Confirm the Bundle ID matches a registered App ID.</strong> One-time setup per app (L0002) — rarely revisited unless you add a capability like Push, which needs an explicit App ID.</li>
+    <li><strong>Confirm signing is resolved.</strong> With "Automatically manage signing" on and the right team selected in Xcode, a Distribution certificate and an App Store provisioning profile should already exist or get created on demand. If not, that's L0002's chain — check Certificates, Identifiers &amp; Profiles.</li>
+    <li><strong>Bump the build number</strong> (<code>CFBundleVersion</code>). Every single upload to App Store Connect needs a build number strictly higher than the last one, even between TestFlight-only builds. The user-facing version string (<code>CFBundleShortVersionString</code>, e.g. "1.2.0") only needs to change for a real release.</li>
+    <li><strong>Select "Any iOS Device (arm64)"</strong> as the run destination (never a Simulator — L0004), then <strong>Product → Archive</strong>.</li>
+    <li><strong>Wait for the Organizer</strong> to open automatically and confirm the new archive shows the version/build you expect.</li>
+    <li><strong>Distribute App → App Store Connect → Upload.</strong> Xcode re-validates signing for this destination and uploads directly — no separate export-then-upload step needed for this path.</li>
+    <li><strong>Wait for Apple's processing</strong> — typically 5–30 minutes, longer at busy times. The build appears under the app's <strong>TestFlight</strong> tab in App Store Connect once done. You may be prompted for export compliance information (encryption usage) the first time.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup></li>
+    <li><strong>Add the build to a testing group.</strong> Internal testers (your own App Store Connect team, up to 100 people) get it within minutes, no review. External testers (up to 10,000, via a link or email) require Apple's Beta App Review on the <em>first build of each version</em> only — typically fast, subsequent builds of the same version are usually near-instant.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup></li>
+    <li><strong>Tester installs via the TestFlight app</strong> and gets notified of new builds automatically. Builds expire <strong>90 days</strong> after upload — after that, testers see "Expired Build" and can't launch it.</li>
+  </ol>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th></th><th>Internal testers</th><th>External testers</th></tr>
+      <tr><td>Who</td><td>Team members with App Store Connect access</td><td>Anyone, via public link or email invite</td></tr>
+      <tr><td>Limit</td><td>Up to 100</td><td>Up to 10,000</td></tr>
+      <tr><td>Review</td><td>None — available in minutes</td><td>First build per version needs Beta App Review</td></tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <span class="label">the Expo/EAS delta</span>
+    <code>eas build --platform ios</code> followed by <code>eas submit</code> automates steps 2–7 above. EAS Build either generates and stores your Distribution certificate + provisioning profile for you ("managed credentials"), or uses ones you supply locally — but it's still creating and using the exact same App ID / certificate / provisioning profile objects on Apple's servers, just through an App Store Connect API key acting on your behalf instead of your own Xcode login.<sup class="cite"><a href="https://docs.expo.dev/app-signing/app-credentials/">[2]</a></sup> Nothing about L0002's chain changes — only who's operating the client.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Walk the checklist from memory, start to finish — you don't need exact wording, just the right steps in the right order.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Confirm App ID matches Bundle ID → confirm signing resolved (cert + profile) → bump build number → select a real-device destination and Archive → Organizer opens, verify the archive → Distribute App → App Store Connect → Upload → wait for Apple's processing → add build to a testing group (internal = instant, external first build = review) → tester installs via TestFlight, build expires in 90 days.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Which of these requires Apple's Beta App Review?</p>
+    <button class="quiz-opt" data-key="a">An internal tester's first build</button>
+    <button class="quiz-opt" data-key="b">An external tester group's first build of a new version</button>
+    <button class="quiz-opt" data-key="c">An external tester group's second build of the same version</button>
+    <p class="quiz-why" hidden>Internal testers never need review. External testers need review only for the first build of each version — later builds of that same version are typically approved automatically unless something review-relevant (entitlements, privacy strings) changed.</p>
+  </div>
+
+  <div class="box make">
+    <span class="label">run it for real</span>
+    Run this checklist on your actual Swift project right now. If any step produces an error the lessons above didn't predict, that's exactly the kind of thing worth bringing back — it'll usually trace to a specific broken link in L0002's chain, and naming it precisely is what turns "distribution is confusing" into "the App Store provisioning profile expired."
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">TestFlight overview — App Store Connect Help</a>, Apple's own current description of this exact flow. Check it periodically — App Store Connect's UI and limits (tester counts, expiration windows) are the kind of detail that shifts between Xcode/App Store Connect versions.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Once a build is actually live on TestFlight, "what's the smallest next thing I should understand" is a good question — likely candidates: build number automation, or the difference between what changed at App Store review time versus TestFlight beta review time, since a real App Store release is the natural next mission once TestFlight is routine.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">TestFlight overview — App Store Connect Help</a><br>
+    [2] <a href="https://docs.expo.dev/app-signing/app-credentials/">Expo — App credentials</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/pipeline-map.html">Reference: pipeline map</a>
+    <a href="../reference/signing-chain-cheatsheet.html">Reference: signing chain cheat sheet</a>
+    <a href="./0004-archive-and-export.html">← L0004 Archive &amp; export</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

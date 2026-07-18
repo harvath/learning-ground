@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0001 | The Big Picture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0001 · THE BIG PICTURE</div>
+  <h1>Three systems, two proof-files, one pipeline</h1>
+  <p class="subtitle">Before any term-by-term detail: the shape of the whole thing, so every later lesson has somewhere to attach.</p>
+
+  <p>Building and shipping an iOS app <em>feels</em> like a pile of unrelated trivia — App IDs, certificates, archives, xcodeproj — because each one shows up in a different tool at a different moment. They're not unrelated. They're <strong>three systems that don't trust each other by default, plus two files whose entire job is to carry proof between them</strong>. Once that shape is in your head, every individual term is just "which system, which proof."</p>
+
+  <h2>The three systems</h2>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">1. Your Mac — the Xcode project</div>
+      <div class="n-note">Your code, plus the <code>.xcodeproj</code> that describes how to build it. This is the only system you fully own. Xcode can compile and run this on the Simulator forever without talking to Apple at all.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2. developer.apple.com — identity &amp; trust registry</div>
+      <div class="n-note">Where your Apple Developer Program membership lives. This is where you register <span class="term">App ID</span>s, hold <span class="term">certificates</span>, and issue <span class="term">provisioning profiles</span>. Its whole job is answering one question: "is this app, signed by this key, allowed to run on that device?"</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">3. App Store Connect — distribution</div>
+      <div class="n-note">A separate website from developer.apple.com (historically called iTunes Connect — old tutorials still use that name), but backed by the same membership and Team ID. This is where an exported build becomes a TestFlight beta or an App Store release.</div>
+    </div>
+  </div>
+
+  <p>Your Mac can build and run an app on the Simulator with none of this. The moment you want it on a <strong>real device</strong> — yours, a tester's, or the public's — system 2 has to vouch for the binary before system 1 or 3 can hand it off. That's the whole reason registration exists, and it's the subject of L0002.</p>
+
+  <h2>The two proof-files</h2>
+
+  <p>Systems 1 and 2 don't share a login or a filesystem. They exchange trust through two artifacts:</p>
+
+  <p><span class="term">Certificate</span> — proves <strong>who signed this</strong>. Issued by Apple to your Developer Program membership; the matching private key lives only in your Mac's Keychain.</p>
+  <p><span class="term">Provisioning profile</span> — proves <strong>this specific app, signed by this specific certificate, is allowed to run here</strong>. It bundles the App ID, the authorized certificate(s), granted entitlements, and (for development/testing profiles) the exact devices allowed.</p>
+
+  <p>Every build you ever archive or run on a device gets both of these baked in. When something fails with a signing error, it is always one of these two files — missing, expired, or not matching what the build is trying to do.</p>
+
+  <h2>The pipeline, end to end</h2>
+
+  <ol class="steps">
+    <li><strong>Write code</strong> in an Xcode project that has a chosen Bundle ID.</li>
+    <li><strong>Register identity</strong> on developer.apple.com: an App ID matching that Bundle ID, a certificate, and a provisioning profile that ties them together (often automated by Xcode — L0002).</li>
+    <li><strong>Product → Archive</strong>: Xcode compiles a Release build, signs it using the certificate + profile from step 2, and packages it as a <code>.xcarchive</code> (L0004).</li>
+    <li><strong>Export / Distribute</strong>: the archive is re-packaged for a specific destination — App Store Connect, Ad Hoc, Enterprise, or Development (L0004).</li>
+    <li><strong>App Store Connect</strong> receives the export, processes it, and makes it available via TestFlight or the App Store (L0005).</li>
+    <li>Apple's own signing takes over from here — a tester's device trusts the build because it trusts Apple, not because it trusts you directly.</li>
+  </ol>
+
+  <div class="box warn">
+    <span class="label">why can't I skip step 2</span>
+    iOS refuses to launch any binary that isn't signed by a certificate Apple issued and authorized — via a provisioning profile — for that exact app and (for dev/testing builds) that exact device. This isn't paperwork for its own sake: it's the actual mechanism the OS uses to answer "did anyone with a real Apple Developer Program membership vouch for this code?" Skipping registration doesn't mean skipping a form, it means the OS has no way to answer that question, so it says no.
+  </div>
+
+  <div class="box make">
+    <span class="label">reframe for debugging</span>
+    Almost every confusing error you'll hit during <code>Product → Archive</code> or export is <strong>not</strong> a bug in your code or in Xcode — it's system 1 (Xcode) discovering that system 2 (developer.apple.com's records) doesn't have what it expects: a missing App ID, an expired certificate, a profile that doesn't list your device. Once you know the error is really "which system, which proof," you stop guessing and start checking Certificates, Identifiers & Profiles directly.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Name the three systems involved in shipping an iOS app, and what each one owns.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Your Mac / Xcode project (code + project file, fully yours). developer.apple.com (identity &amp; trust: App IDs, certificates, provisioning profiles). App Store Connect (distribution: TestFlight, App Store, review) — a separate site, same membership underneath.</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② What are the two files that carry proof between your Mac and Apple's systems, and what does each one prove?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Certificate — proves who signed the build. Provisioning profile — proves that this app, signed by this certificate, is allowed to run on this device/destination (and bundles the App ID + entitlements + certificate + device list together).</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">③ Which of these can happen with zero contact with Apple's servers?</p>
+    <button class="quiz-opt" data-key="a">Installing a build on your own iPhone</button>
+    <button class="quiz-opt" data-key="b">Running the app in the iOS Simulator</button>
+    <button class="quiz-opt" data-key="c">Uploading a build to TestFlight</button>
+    <p class="quiz-why" hidden>The Simulator doesn't check code signing the way a real device does — it's not "a real iOS," so none of the trust chain applies. The moment a real device is involved, even just your own, Apple's identity system (App ID, certificate, provisioning profile) has to be in place.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Apple's own overview of what happens after you have a build: <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Distributing your app for beta testing and releases</a>. Ten minutes, and it's the map that L0004–L0005 will fill in with mechanics.<sup class="cite"><a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">[1]</a></sup>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "Which of these three systems is the one nagging me right now?" is always a good question to bring — naming the system usually collapses the confusion by itself. Next up, L0002 opens system 2 all the way: App IDs, certificates, provisioning profiles, and exactly why <code>developer.apple.com</code> registration is non-negotiable.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Distributing your app for beta testing and releases — Apple Developer Documentation</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/pipeline-map.html">Reference: pipeline map</a>
+    <a href="./0002-identity-and-trust.html">L0002 Identity &amp; trust →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0004 | Archive &amp; Export</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0004 · BUILD</div>
+  <h1>What <code>Product → Archive</code> actually does</h1>
+  <p class="subtitle">The moment where systems 1 and 2 (L0001) meet — code becomes a signed, distributable artifact.</p>
+
+  <p>Everything from L0002 (the trust chain) and L0003 (the project file) converges here. Archiving isn't a special magic build — it's an ordinary build with two differences: it always uses <strong>Release</strong>, and it always gets <strong>signed for distribution</strong>, not just for your own device.</p>
+
+  <h2>What happens when you choose Product → Archive</h2>
+
+  <ol class="steps">
+    <li><strong>Xcode compiles the active scheme's Release configuration</strong> — not Debug. This is why an archive can behave differently from what you saw while debugging: optimizations are on, debug-only code paths are off.</li>
+    <li><strong>The destination must be a real device or "Any iOS Device (arm64)"</strong> — never the Simulator. Simulator builds aren't signed the way a real device or App Store Connect requires, so Xcode won't offer to archive one. <span class="sub">This is the single most common "Archive is greyed out" confusion — check your selected destination first.</span></li>
+    <li><strong>Code signing resolves</strong>: Xcode finds a Distribution certificate and a matching provisioning profile for your Bundle ID (automatically, if signing is managed automatically) and signs the compiled binary with them — this is L0002's chain being walked for real.</li>
+    <li><strong>Everything is assembled into a <code>.app</code> bundle</strong> — binary, resources, embedded frameworks, <code>Info.plist</code>.</li>
+    <li><strong><code>.dSYM</code> files are generated</strong> — debug symbol files mapping the compiled binary back to source file/line, needed later to turn a crash report's raw memory addresses into a readable stack trace.<sup class="cite"><a href="https://developer.apple.com/documentation/security/customizing-the-xcode-archive-process">[1]</a></sup></li>
+    <li><strong>All of it is packaged as a <code>.xcarchive</code></strong>, stored under <code>~/Library/Developer/Xcode/Archives</code>, along with metadata: bundle ID, version, build number, signing identity used.</li>
+  </ol>
+
+  <p>An <code>.xcarchive</code> is <strong>not yet distributable on its own</strong>. It's an intermediate artifact — the next step, <em>export</em>, is what turns it into something a device or App Store Connect will actually accept.</p>
+
+  <h2>Export: a separate, deliberate step</h2>
+
+  <p>Once archiving finishes, Xcode opens the <strong>Organizer</strong> window (<code>Window → Organizer</code>) listing your archives. Choosing <strong>Distribute App</strong> here starts export — re-packaging the same archive for a specific destination, each with its own signing requirements:</p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Method</th><th>Re-signed with</th><th>Result</th></tr>
+      <tr><td>App Store Connect</td><td>App Store distribution profile</td><td>Uploaded directly (or exported as a package) for TestFlight / App Store review</td></tr>
+      <tr><td>Ad Hoc</td><td>Ad Hoc distribution profile</td><td>An <code>.ipa</code> installable only on the profile's registered devices</td></tr>
+      <tr><td>Enterprise</td><td>Enterprise distribution profile</td><td>An <code>.ipa</code> for in-house distribution, no App Store involved</td></tr>
+      <tr><td>Development</td><td>Development profile</td><td>An <code>.ipa</code> for your own registered devices, outside Xcode's Run button</td></tr>
+    </table>
+  </div>
+
+  <p>The archive itself is signed once at archive time — export can re-sign it differently depending on where it's headed, which is why the certificate/profile Xcode used to build isn't necessarily the exact one that ends up in what a tester installs.</p>
+
+  <div class="box warn">
+    <span class="label">reading a failure</span>
+    "No signing certificate found," "profile doesn't match this device," "no matching provisioning profile" — these are always step 3 (code signing resolution) or the export re-sign step failing to find a valid link in L0002's chain. The fix is never in your Swift code; it's in Certificates, Identifiers &amp; Profiles or in Xcode's Signing &amp; Capabilities tab.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Which build configuration does an archive always use, and why does that matter if you're chasing a performance bug?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Release, always — never Debug. It matters because Release has optimizations on and debug-only code paths off, so a performance problem (or a bug) that only shows up in Release won't reproduce while just running/debugging normally — you have to archive (or switch your run scheme to Release) to see it.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Your run destination in Xcode's toolbar is set to "iPhone 16 Pro Simulator." Why is <code>Product → Archive</code> greyed out?</p>
+    <button class="quiz-opt" data-key="a">Simulators can't run Release builds at all</button>
+    <button class="quiz-opt" data-key="b">Archives require a real-device destination — Simulator builds aren't signed for distribution</button>
+    <button class="quiz-opt" data-key="c">The active scheme needs to be renamed before archiving</button>
+    <p class="quiz-why" hidden>Archiving exists to produce a signed, distributable artifact. Simulator builds target a different architecture and were never signed with a distribution-relevant certificate/profile, so Xcode won't offer to archive one — switch the destination to a real device or "Any iOS Device (arm64)" first.</p>
+  </div>
+
+  <div class="box">
+    <span class="label">why the dSYM matters later</span>
+    A crash report from a tester's device only contains raw memory addresses — useless without the exact <code>.dSYM</code> that was generated for that exact build. App Store Connect keeps these paired with the build you uploaded automatically; if you ever export/upload manually or via a third-party tool, losing track of dSYMs is a real, common way to end up with unsymbolicated, unreadable crash logs.
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    <a href="https://developer.apple.com/documentation/technotes/tn3109-resolving-common-archiving-issues">TN3109 — Resolving Common Archiving Issues</a> is Apple's own troubleshooting note and the right first stop when an archive won't build or won't validate. For the customization angle: <a href="https://developer.apple.com/documentation/security/customizing-the-xcode-archive-process">Customizing the Xcode archive process</a>.<sup class="cite"><a href="https://developer.apple.com/documentation/technotes/tn3109-resolving-common-archiving-issues">[2]</a></sup>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Got an actual archive or export error message in front of you? Paste the exact text — with L0002's chain and this lesson's steps in hand, most of these are diagnosable in one pass rather than trial-and-error. Next: L0005 turns this into the concrete, ordered checklist for getting a build onto TestFlight.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://developer.apple.com/documentation/security/customizing-the-xcode-archive-process">Customizing the Xcode archive process — Apple Developer Documentation</a><br>
+    [2] <a href="https://developer.apple.com/documentation/technotes/tn3109-resolving-common-archiving-issues">TN3109: Resolving Common Archiving Issues</a><br>
+    Further: <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Distributing your app for beta testing and releases</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/signing-chain-cheatsheet.html">Reference: signing chain cheat sheet</a>
+    <a href="./0003-the-xcode-project.html">← L0003 The Xcode project</a>
+    <a href="./0005-ship-it.html">L0005 Ship it →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
