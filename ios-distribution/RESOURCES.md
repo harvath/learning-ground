@@ -8,6 +8,10 @@
   Apple's own deep technical note on what a provisioning profile contains and how it's used. **Use for**: the authoritative answer when a signing error needs root-causing.
 - [TN3161: Inside Code Signing — Certificates](https://developer.apple.com/documentation/technotes/tn3161-inside-code-signing-certificates)
   Companion technote on certificates specifically (identity, key pairs, trust). **Use for**: understanding *why* a certificate can go invalid (revoked, expired, wrong machine).
+- [Create a certificate signing request (Apple Developer Help)](https://developer.apple.com/help/account/certificates/create-a-certificate-signing-request)
+  Official steps for the CSR flow: generate a key pair locally in Keychain Access, upload only the public half. **Use for**: confirming exactly who generates what in the certificate-issuance step.
+- [Register a single device (Apple Developer Help)](https://developer.apple.com/help/account/devices/register-a-single-device/)
+  Official steps for adding a device UDID to a Team. **Use for**: confirming the manual device-registration flow that "automatically manage signing" otherwise hides.
 - [TN3127: Inside Code Signing — Requirements](https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements)
   Covers code signing requirements/entitlements matching. **Use for**: entitlement mismatch errors specifically.
 - [TN3109: Resolving Common Archiving Issues](https://developer.apple.com/documentation/technotes/tn3109-resolving-common-archiving-issues)
@@ -33,6 +37,8 @@
   Written by a CI/CD vendor whose product has to automate exactly this chain correctly. **Use for**: a clear plain-language walk of the certificate/profile/device relationship, cross-checked against Apple's technotes above.
 - [Capawesome — iOS Certificates and Provisioning Profiles Explained](https://capawesome.io/blog/ios-certificates-and-provisioning-profiles-explained/)
   Another independent explainer of the same chain. **Use for**: a second phrasing when the Appcircle explanation doesn't click.
+- [pewpewthespells.com — Codesigning Introspection Commands](https://pewpewthespells.com/blog/codesign_introspection.html)
+  Respected iOS security/reverse-engineering write-up with the actual `security`/`openssl` commands to inspect a provisioning profile's CMS signature and a binary's code signature directly. **Use for**: verifying the tamper-protection mechanics hands-on rather than taking it on faith.
 
 ## Knowledge — Expo/React Native delta (for the user's other project)
 

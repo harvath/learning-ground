@@ -21,7 +21,7 @@
     </div>
     <div class="chain-node main">
       <div class="n-title">2. developer.apple.com — identity &amp; trust registry</div>
-      <div class="n-note">Where your Apple Developer Program membership lives. This is where you register <span class="term">App ID</span>s, hold <span class="term">certificates</span>, and issue <span class="term">provisioning profiles</span>. Its whole job is answering one question: "is this app, signed by this key, allowed to run on that device?"</div>
+      <div class="n-note">Where your Apple Developer Program membership lives. This is where you register <span class="term">App ID</span>s — your app's own identifier on Apple's servers, roughly its Bundle ID plus a checklist of capabilities it's allowed to use — hold <span class="term">certificates</span>, and issue <span class="term">provisioning profiles</span>. Its whole job is answering one question: "is this app, signed by this key, allowed to run on that device?" (Exactly what each of these is, and where on the site you register them, is all of L0002.)</div>
     </div>
     <div class="chain-node main">
       <div class="n-title">3. App Store Connect — distribution</div>
@@ -36,7 +36,7 @@
   <p>Systems 1 and 2 don't share a login or a filesystem. They exchange trust through two artifacts:</p>
 
   <p><span class="term">Certificate</span> — proves <strong>who signed this</strong>. Issued by Apple to your Developer Program membership; the matching private key lives only in your Mac's Keychain.</p>
-  <p><span class="term">Provisioning profile</span> — proves <strong>this specific app, signed by this specific certificate, is allowed to run here</strong>. It bundles the App ID, the authorized certificate(s), granted entitlements, and (for development/testing profiles) the exact devices allowed.</p>
+  <p><span class="term">Provisioning profile</span> — proves <strong>this specific app, signed by this specific certificate, is allowed to run here</strong>. Concretely, it's a real file Apple generates that bundles four things: the App ID it applies to, the certificate(s) authorized to sign with it, the entitlements it grants, and — for development/testing profiles only — the exact device UDIDs allowed. Xcode embeds this file inside the signed build at archive time; the OS (or App Store Connect, for App Store builds) reads it back out and checks those four things before letting the app run at all. Full field-by-field breakdown, and where you register/inspect one, is L0002.</p>
 
   <p>Every build you ever archive or run on a device gets both of these baked in. When something fails with a signing error, it is always one of these two files — missing, expired, or not matching what the build is trying to do.</p>
 

@@ -15,3 +15,9 @@
 ## Format preferences
 - Course should be **short** — the user was explicit about not wanting a long course. Aiming for 5 tightly-scoped lessons rather than exhaustively covering every Apple Developer feature (enterprise distribution, notarization, CI automation are all explicitly out of scope per MISSION.md).
 - Reused the mythology workspace's component pattern (`lesson.css`, `quiz.js`, `recall.js`) with a new visual theme suited to a technical/systems topic rather than copying the paper/mincho aesthetic verbatim.
+
+## Forward-references need inline glosses (learned after L0001 feedback)
+- Unlike the mythology workspace — where naming a kami in L0001 before explaining it in a later lesson works as a hook ("who is this, I'll find out later") — this user found the same pattern in L0001 (App ID, provisioning profile mentioned before being defined) genuinely disorienting, not intriguing. Said outright: terms "come out of the blue," and a definition-by-function only ("proves X is allowed to run here") wasn't enough to grasp a mechanism — wanted to know the actual data it holds and when/how it's read.
+- Likely why the two topics differ: mythology is narrative/recreational, so unresolved mystery is part of the appeal. iOS distribution is a live, blocking task — the user needs an operable mental model *now*, not narrative anticipation.
+- **Rule going forward**: any term used before its dedicated lesson needs, at minimum, a one-clause inline gloss (what it concretely is) plus an explicit pointer to where full detail lives — not just a `<span class="term">` tag and a forward link at the end of the lesson. For mechanism-type concepts (not just named entities), the gloss should include *what data it holds* and *when/by what it's read*, not only *what it proves/does* in the abstract.
+- Applied retroactively to L0001's App ID and provisioning profile mentions. Worth auditing L0003–L0005 for the same pattern if similar feedback recurs.

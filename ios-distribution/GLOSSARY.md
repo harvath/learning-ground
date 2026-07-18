@@ -30,12 +30,16 @@ _Avoid_: generic App ID
 
 ## Code Signing (L0002)
 
+**Certificate Signing Request (CSR)**:
+A file, generated locally (Keychain Access's Certificate Assistant, or automatically by Xcode), that wraps a freshly-created public key plus identifying info. Uploading it to Apple is how a certificate gets issued — the matching private key never leaves the Mac that generated it.
+_Avoid_: cert request (fine as shorthand once defined)
+
 **Signing certificate**:
-A file (public key + Apple's signature over it) proving a private key belongs to your Apple Developer Program membership. The matching private key lives only in your Mac's Keychain — Apple never has it. Comes in two flavors that matter here: **Development** (runs on your registered devices) and **Distribution** (required for TestFlight/App Store).
+A file (a CSR's public key, signed by Apple's own Certificate Authority) proving a key pair belongs to your Apple Developer Program membership. The matching private key lives only in your Mac's Keychain — Apple never generates it and never sees it; it's what actually performs signing at archive time. Comes in two flavors that matter here: **Development** (runs on your registered devices) and **Distribution** (required for TestFlight/App Store).
 _Avoid_: signing identity (used interchangeably, but "certificate" is the concrete artifact)
 
 **Provisioning profile**:
-A file Apple generates that bundles together one App ID, one or more certificates authorized to sign it, the entitlements it may use, and — for Development/Ad Hoc profiles — the specific device UDIDs allowed to run it. This is the piece that actually authorizes *this app, signed by this certificate, to run on this device*.
+A file Apple generates and signs (a CMS/PKCS#7-signed plist) that bundles together one App ID, one or more certificates authorized to sign it, the entitlements it may use, and — for Development/Ad Hoc profiles — the specific device UDIDs allowed to run it. Xcode embeds it inside the signed build; the OS or App Store Connect reads it back out and checks it before allowing the app to run. Apple's own signature over the file is what stops it from being edited undetected — this is the piece that actually authorizes *this app, signed by this certificate, to run on this device*.
 _Avoid_: profile (ambiguous with user/Xcode profiles)
 
 **Entitlements**:
@@ -43,7 +47,11 @@ The specific capabilities (Push Notifications, App Groups, HealthKit, etc.) a pr
 _Avoid_: capabilities (that's the Xcode UI tab name; entitlements is what actually ends up embedded)
 
 **Registered device**:
-A specific iPhone/iPad, identified by its UDID, added to your Apple Developer account so Development and Ad Hoc provisioning profiles can list it as allowed. Not required for TestFlight or the App Store, since Apple itself re-signs/distributes those builds.
+A specific iPhone/iPad, identified by its UDID, added to your Apple Developer account (manually at Certificates, Identifiers & Profiles → Devices, or automatically by Xcode on first run with automatic signing) so Development and Ad Hoc provisioning profiles can list it as allowed. Not required for TestFlight or the App Store, since Apple itself re-signs/distributes those builds.
+
+**Code signature**:
+The cryptographic proof embedded in a built `.app` at archive time: a hash of every file in the bundle, signed with the certificate's private key. The OS re-hashes the bundle at install/launch and checks it against this signature — any change to the binary after signing breaks the match and the app won't run. Distinct from the provisioning profile's own signature, which protects the profile file itself, not the binary.
+_Avoid_: signature (ambiguous — specify code signature vs. the profile's own CMS signature)
 _Avoid_: UDID (that's just the identifier, not the registration)
 
 ## The Xcode Project (L0003)
