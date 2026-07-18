@@ -21,7 +21,7 @@
   <div class="chain">
     <div class="chain-node">
       <div class="n-title">Workspace <span style="font-weight:400;color:var(--ink-soft)">(<code>.xcworkspace</code>, optional)</span></div>
-      <div class="n-note">Groups one or more projects (and/or Swift packages) together. A single-target app usually doesn't need one; CocoaPods and multi-project setups do.</div>
+      <div class="n-note">Groups one or more projects (and/or Swift packages) together. A single-target app usually doesn't need one; <span class="term">CocoaPods</span> — an older third-party dependency manager that, given a <code>Podfile</code> listing your dependencies, generates its own separate "Pods" `.xcodeproj` and needs a workspace to tie it together with yours — and multi-project setups do.</div>
     </div>
     <div class="chain-node main">
       <div class="n-title">Project <span style="font-weight:400;color:var(--ink-soft)">(<code>.xcodeproj</code> / <code>project.pbxproj</code>)</span></div>
@@ -41,7 +41,7 @@
 
   <p><a href="https://github.com/yonaskolb/XcodeGen">XcodeGen</a> generates a <code>.xcodeproj</code> from a declarative <code>project.yml</code> — targets, sources (often just a folder glob), build settings, schemes, dependencies — written in plain YAML. The workflow becomes: edit <code>project.yml</code>, run <code>xcodegen generate</code>, and the resulting <code>.xcodeproj</code> is <strong>never committed to git</strong> — only the YAML is.<sup class="cite"><a href="https://github.com/yonaskolb/XcodeGen">[2]</a></sup></p>
 
-  <p>The direct payoff: merge conflicts move from an unreadable generated file to a short, human-authored YAML diff — and if a conflict does happen, you can just discard the generated <code>.xcodeproj</code> entirely and regenerate it, since it was never meant to be hand-edited anyway. Tuist solves the same category of problem with a different spec format; both are "project-as-code" tools, not competitors to Xcode itself.<sup class="cite"><a href="https://tuist.dev/blog/2025/03/21/git-conflicts">[3]</a></sup></p>
+  <p>The direct payoff: merge conflicts move from an unreadable generated file to a short, human-authored YAML diff — and if a conflict does happen, you can just discard the generated <code>.xcodeproj</code> entirely and regenerate it, since it was never meant to be hand-edited anyway. <span class="term">Tuist</span> is the same idea with a different spec: instead of YAML, its config is a real Swift file, <code>Project.swift</code>, compiled and run to produce the same kind of disposable, regeneratable <code>.xcodeproj</code>.<sup class="cite"><a href="https://tuist.dev/blog/2025/03/21/git-conflicts">[3]</a></sup> Both are "project-as-code" tools — a category, not a single tool's quirk — not competitors to Xcode itself.</p>
 
   <div class="box">
     <span class="label">a second, quieter fix: Swift Package Manager</span>

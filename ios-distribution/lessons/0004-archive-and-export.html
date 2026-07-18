@@ -16,7 +16,7 @@
 
   <ol class="steps">
     <li><strong>Xcode compiles the active scheme's Release configuration</strong> — not Debug. This is why an archive can behave differently from what you saw while debugging: optimizations are on, debug-only code paths are off.</li>
-    <li><strong>The destination must be a real device or "Any iOS Device (arm64)"</strong> — never the Simulator. Simulator builds aren't signed the way a real device or App Store Connect requires, so Xcode won't offer to archive one. <span class="sub">This is the single most common "Archive is greyed out" confusion — check your selected destination first.</span></li>
+    <li><strong>The destination must be a real device or "Any iOS Device (arm64)"</strong> — <code>arm64</code> is just the CPU architecture real iPhones/iPads use, distinct from the Simulator's — never the Simulator. Simulator builds aren't signed the way a real device or App Store Connect requires, so Xcode won't offer to archive one. <span class="sub">This is the single most common "Archive is greyed out" confusion — check your selected destination first.</span></li>
     <li><strong>Code signing resolves</strong>: Xcode finds a Distribution certificate and a matching provisioning profile for your Bundle ID (automatically, if signing is managed automatically) and signs the compiled binary with them — this is L0002's chain being walked for real.</li>
     <li><strong>Everything is assembled into a <code>.app</code> bundle</strong> — binary, resources, embedded frameworks, <code>Info.plist</code>.</li>
     <li><strong><code>.dSYM</code> files are generated</strong> — debug symbol files mapping the compiled binary back to source file/line, needed later to turn a crash report's raw memory addresses into a readable stack trace.<sup class="cite"><a href="https://developer.apple.com/documentation/security/customizing-the-xcode-archive-process">[1]</a></sup></li>
@@ -27,7 +27,7 @@
 
   <h2>Export: a separate, deliberate step</h2>
 
-  <p>Once archiving finishes, Xcode opens the <strong>Organizer</strong> window (<code>Window → Organizer</code>) listing your archives. Choosing <strong>Distribute App</strong> here starts export — re-packaging the same archive for a specific destination, each with its own signing requirements:</p>
+  <p>Once archiving finishes, Xcode opens the <strong>Organizer</strong> window (<code>Window → Organizer</code>) listing your archives. Choosing <strong>Distribute App</strong> here starts export — re-packaging the same archive for a specific destination, each with its own signing requirements. Every method except the direct App Store Connect upload produces an <span class="term">.ipa</span> — literally a zip archive of the signed <code>.app</code> plus metadata, the actual installable file:</p>
 
   <div class="tablewrap">
     <table class="cmp">

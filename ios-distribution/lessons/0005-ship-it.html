@@ -37,7 +37,7 @@
 
   <div class="box">
     <span class="label">the Expo/EAS delta</span>
-    <code>eas build --platform ios</code> followed by <code>eas submit</code> automates steps 2–7 above. EAS Build either generates and stores your Distribution certificate + provisioning profile for you ("managed credentials"), or uses ones you supply locally — but it's still creating and using the exact same App ID / certificate / provisioning profile objects on Apple's servers, just through an App Store Connect API key acting on your behalf instead of your own Xcode login.<sup class="cite"><a href="https://docs.expo.dev/app-signing/app-credentials/">[2]</a></sup> Nothing about L0002's chain changes — only who's operating the client.
+    <code>eas build --platform ios</code> followed by <code>eas submit</code> automates steps 2–7 above. <span class="term">EAS</span> (Expo Application Services, Expo's cloud build/submit service) either generates and stores your Distribution certificate + provisioning profile for you ("managed credentials"), or uses ones you supply locally — but it's still creating and using the exact same App ID / certificate / provisioning profile objects on Apple's servers, just through an App Store Connect API key acting on your behalf instead of your own Xcode login.<sup class="cite"><a href="https://docs.expo.dev/app-signing/app-credentials/">[2]</a></sup> Nothing about L0002's chain changes — only who's operating the client.
   </div>
 
   <h2>Check it sticks</h2>
