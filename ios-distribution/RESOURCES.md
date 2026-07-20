@@ -12,6 +12,8 @@
   Official steps for the CSR flow: generate a key pair locally in Keychain Access, upload only the public half. **Use for**: confirming exactly who generates what in the certificate-issuance step.
 - [Register a single device (Apple Developer Help)](https://developer.apple.com/help/account/devices/register-a-single-device/)
   Official steps for adding a device UDID to a Team. **Use for**: confirming the manual device-registration flow that "automatically manage signing" otherwise hides.
+- [RFC 2986 — PKCS #10: Certification Request Syntax Specification](https://datatracker.ietf.org/doc/html/rfc2986)
+  The actual normative spec for what a CSR is and why it must be self-signed (proof of possession of the private key). **Use for**: grounding "why the CSR dance" in the real standard rather than an Apple-specific explanation — this is generic PKI, not an Apple quirk.
 - [TN3127: Inside Code Signing — Requirements](https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements)
   Covers code signing requirements/entitlements matching. **Use for**: entitlement mismatch errors specifically.
 - [TN3109: Resolving Common Archiving Issues](https://developer.apple.com/documentation/technotes/tn3109-resolving-common-archiving-issues)
@@ -35,6 +37,8 @@
   Written by the maintainers of Tuist, a XcodeGen alternative — covers the same problem plus how Tuist's approach differs. **Use for**: understanding this is a *category* of tool (generated-project pattern), not a single tool's quirk.
 - [Appcircle — iOS Code Signing: Certificates, Provisioning Profiles & Secure CI/CD](https://appcircle.io/guides/ios/ios-code-signing)
   Written by a CI/CD vendor whose product has to automate exactly this chain correctly. **Use for**: a clear plain-language walk of the certificate/profile/device relationship, cross-checked against Apple's technotes above.
+- [Appcircle — iOS Certificates, Identifiers, Devices, Profiles](https://appcircle.io/use-cases/ios-certificates-provisioning)
+  Confirms the current unified "Apple Distribution" certificate type (covers App Store, Ad Hoc, and TestFlight in one certificate, replacing the old split iOS/Mac types). **Use for**: checking current certificate-type naming before it drifts further from older tutorials.
 - [Capawesome — iOS Certificates and Provisioning Profiles Explained](https://capawesome.io/blog/ios-certificates-and-provisioning-profiles-explained/)
   Another independent explainer of the same chain. **Use for**: a second phrasing when the Appcircle explanation doesn't click.
 - [pewpewthespells.com — Codesigning Introspection Commands](https://pewpewthespells.com/blog/codesign_introspection.html)

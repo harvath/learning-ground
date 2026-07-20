@@ -1,0 +1,149 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0006 | The Manual Trail</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0006 · SYNTHESIS</div>
+  <h1>The manual trail — every step, once, by hand</h1>
+  <p class="subtitle">L0001–L0005, walked as one real sequence instead of five separate concepts.</p>
+
+  <p>L0002's "automatically manage signing" box described what Xcode does invisibly: check for an App ID, request a certificate, generate a provisioning profile. This lesson is that same sequence, done <strong>by hand, once, narrated</strong> — so every click has a name and a reason attached to it, using one real app as the example throughout: <strong>EbiHouse</strong>, Bundle ID <code>tokyo.harvath.ebihouse</code>, a push-notification app. Swap in your own name and Bundle ID — every step and every reason stays identical.</p>
+
+  <h2>Step 1 — Register the App ID</h2>
+
+  <ol class="steps">
+    <li>developer.apple.com → Account → <strong>Certificates, Identifiers &amp; Profiles</strong></li>
+    <li><strong>Identifiers → +</strong></li>
+    <li>Choose <strong>App IDs → App → Continue</strong></li>
+    <li>Description: <code>EbiHouse</code>. Bundle ID: <strong>Explicit</strong> → <code>tokyo.harvath.ebihouse</code></li>
+    <li>Under Capabilities, enable <strong>Push Notifications</strong></li>
+    <li><strong>Register</strong></li>
+  </ol>
+
+  <div class="box">
+    <span class="label">why</span>
+    This is L0002's chain, link one: nothing downstream — no certificate-to-app binding, no provisioning profile — can exist until an App ID exists to reference.<sup class="cite"><a href="https://developer.apple.com/help/account/identifiers/register-an-app-id">[1]</a></sup> <strong>Explicit</strong>, not wildcard, because Push Notifications is exactly the kind of capability that needs individual identification — a wildcard App ID can't carry it (L0002). This step also plants the one value every later system keys off of: <code>tokyo.harvath.ebihouse</code> has to match, byte for byte, in Xcode's target settings and in App Store Connect (Step 4) — it's the thread tying all three systems from L0001 together.
+  </div>
+
+  <h2>Step 2 — Create a Distribution certificate</h2>
+
+  <ol class="steps">
+    <li><strong>Certificates → +</strong></li>
+    <li>Choose <strong>Apple Distribution</strong> (the modern, unified certificate type — covers App Store, TestFlight, and Ad Hoc in one certificate, replacing the old split "iOS Distribution" type)<sup class="cite"><a href="https://appcircle.io/use-cases/ios-certificates-provisioning">[2]</a></sup></li>
+    <li>Apple asks for a <strong>CSR</strong>, generated on your Mac: Keychain Access → menu <strong>Keychain Access → Certificate Assistant → Request a Certificate from a Certificate Authority</strong>. Enter your Apple Account email, save to disk.</li>
+    <li>Upload the CSR, download the returned <code>.cer</code>, double-click to install it into Keychain</li>
+  </ol>
+
+  <div class="box">
+    <span class="label">why</span>
+    This is L0002's CSR box, for real: Certificate Assistant just generated an RSA key pair locally, wrapped the public half in a CSR, and self-signed it as proof you hold the private half — which never left your Mac. Uploading it is Apple's CA verifying that proof and signing your public key in return. Picking <strong>Apple Distribution</strong> rather than Development matters here because a Development certificate can only sign builds for your own registered devices (L0002's table) — it can't produce anything TestFlight or the App Store will accept.
+  </div>
+
+  <h2>Step 3 — Create a provisioning profile</h2>
+
+  <ol class="steps">
+    <li><strong>Profiles → +</strong></li>
+    <li>Choose <strong>App Store Connect</strong> (the profile type TestFlight rides on — L0002)</li>
+    <li>Select the App ID: <code>tokyo.harvath.ebihouse</code></li>
+    <li>Select the Distribution certificate from Step 2</li>
+    <li>Name it (e.g. <code>EbiHouse Distribution</code>) → <strong>Generate → Download</strong></li>
+    <li>Double-click the <code>.mobileprovision</code> file to install it</li>
+  </ol>
+
+  <div class="box">
+    <span class="label">why</span>
+    Steps 3.3 and 3.4 are you, by hand, assembling the exact bundle L0002 described a provisioning profile as being: one App ID + one authorized certificate (+ entitlements, inherited from the App ID's capabilities). No device list this time — the <strong>App Store Connect</strong> profile type skips it, because Apple's own infrastructure re-signs and delivers the build once it's uploaded (L0002's table, L0004's export-method table). Double-clicking installs the file where Xcode looks for it at archive time — this is the exact object L0004 described Xcode "finding and embedding" during code signing resolution.
+  </div>
+
+  <h2>Step 4 — Create the app in App Store Connect</h2>
+
+  <ol class="steps">
+    <li>appstoreconnect.apple.com → <strong>My Apps → + → New App</strong></li>
+    <li>Platform: iOS. Bundle ID: <code>tokyo.harvath.ebihouse</code> (picked from a list — it has to already exist as an App ID, from Step 1)</li>
+    <li>Fill in the app name and a <strong>SKU</strong> — an arbitrary unique string for App Store Connect's own internal bookkeeping (e.g. <code>ebihouse</code>); it's never shown to users</li>
+  </ol>
+
+  <div class="box">
+    <span class="label">why</span>
+    This is the first appearance of <strong>system 3</strong> (L0001) in this trail — a genuinely separate system from developer.apple.com, with its own record for your app: name, metadata, and eventually the TestFlight tab. The <strong>Bundle ID is the join key</strong> between the two systems — App Store Connect can only offer you Bundle IDs that already exist as App IDs on developer.apple.com, which is exactly why Step 1 had to happen first. A build you upload later (Step 5) attaches to this app record purely by matching Bundle ID.
+  </div>
+
+  <h2>Step 5 — Archive and upload from Xcode</h2>
+
+  <ol class="steps">
+    <li>Generate the Xcode project: <code>cd ios &amp;&amp; xcodegen generate</code> (L0003 — this is the disposable <code>.xcodeproj</code> being regenerated from <code>project.yml</code>)</li>
+    <li>Open <code>EbiHouse.xcodeproj</code></li>
+    <li>Set the scheme to <strong>EbiHouse</strong>, destination to <strong>Any iOS Device (arm64)</strong> — never the Simulator (L0004)</li>
+    <li><strong>Product → Archive</strong></li>
+    <li>When it finishes, in the Organizer: <strong>Distribute App → App Store Connect → Upload</strong></li>
+    <li>Xcode asks about signing — automatic management resolves to the exact certificate + profile built in Steps 2–3; picking manually and selecting that same profile does the identical thing explicitly</li>
+  </ol>
+
+  <div class="box">
+    <span class="label">why</span>
+    Every earlier step exists so this one has something to resolve against. L0004's "code signing resolves" step is no longer abstract: Xcode is finding the specific certificate from Step 2 and the specific profile from Step 3, matching them against the Bundle ID from Step 1, and signing with them. The upload lands against the app record from Step 4, purely because the Bundle IDs match. After Apple's processing — typically 5–30 minutes, occasionally up to an hour — the build appears under that app's TestFlight tab (L0005).
+  </div>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Step</th><th>System (L0001)</th><th>How often</th></tr>
+      <tr><td>1. App ID</td><td>developer.apple.com</td><td>Once per app — revisit only to add a capability</td></tr>
+      <tr><td>2. Certificate</td><td>developer.apple.com</td><td>Rare — yearly expiry, or a new Mac</td></tr>
+      <tr><td>3. Provisioning profile</td><td>developer.apple.com</td><td>Occasional — device/capability/certificate changes invalidate it</td></tr>
+      <tr><td>4. App Store Connect record</td><td>App Store Connect</td><td>Once per app, ever</td></tr>
+      <tr><td>5. Archive &amp; upload</td><td>Your Mac → App Store Connect</td><td>Every single build</td></tr>
+    </table>
+  </div>
+
+  <p>This is exactly why "automatically manage signing" feels like magic the first time and invisible ever after: Steps 1–3 are mostly one-time setup with a long, slow-changing lifecycle (L0002's "why two proof-files" box), Step 4 is one-time per app, and Step 5 is the only one you'll actually repeat routinely.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Split the five steps across L0001's three systems. Which steps belong to which system?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Steps 1–3 (App ID, certificate, provisioning profile) are all developer.apple.com — system 2. Step 4 (creating the app record) is App Store Connect — system 3. Step 5 (Xcode project generation, archive, upload) starts on your Mac — system 1 — and ends by handing off to system 3.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Why did Step 1 require an <strong>explicit</strong> App ID rather than a wildcard one?</p>
+    <button class="quiz-opt" data-key="a">Wildcard App IDs are being deprecated by Apple</button>
+    <button class="quiz-opt" data-key="b">Push Notifications needs individual capability identification, which wildcard App IDs can't carry</button>
+    <button class="quiz-opt" data-key="c">Explicit App IDs are required for every app regardless of capabilities</button>
+    <p class="quiz-why" hidden>Wildcard App IDs work fine for apps that need no individually-identified capabilities — plenty of simple apps use them. The moment a capability like Push Notifications, In-App Purchase, or similar is involved, an explicit App ID is required (L0002).</p>
+  </div>
+
+  <div class="box make">
+    <span class="label">run it for real</span>
+    If EbiHouse's App ID, certificate, and profile don't exist yet, this is the literal sequence to run — in order, once. If they already exist (likely, since you've been shipping to TestFlight), open Certificates, Identifiers &amp; Profiles now and match what you see against Steps 1–3: does the App ID show Push Notifications enabled? Does the profile list the certificate you expect? A mismatch here is worth more than a page of theory.
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Apple's own end-to-end walkthrough: <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Distributing your app for beta testing and releases</a>. Worth re-reading now that every term in it maps to something you've actually clicked.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Ran this trail on a real app and hit a step that didn't match what's described here — different portal layout, an extra prompt, a certificate quota error? Bring the exact screen and wording; Apple's UI shifts between Xcode/App Store Connect versions faster than any lesson can track, and that's exactly the kind of drift worth catching and correcting here.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://developer.apple.com/help/account/identifiers/register-an-app-id">Register an App ID — Apple Developer Help</a><br>
+    [2] <a href="https://appcircle.io/use-cases/ios-certificates-provisioning">Appcircle — iOS Certificates, Identifiers, Devices, Profiles</a><br>
+    Further: <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Distributing your app for beta testing and releases</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/pipeline-map.html">Reference: pipeline map</a>
+    <a href="../reference/signing-chain-cheatsheet.html">Reference: signing chain cheat sheet</a>
+    <a href="./0005-ship-it.html">← L0005 Ship it</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
