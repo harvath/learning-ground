@@ -111,8 +111,28 @@ Apple's web platform for managing an app's metadata, TestFlight builds, and App 
 _Avoid_: iTunes Connect (its old, retired name — still shows up in outdated tutorials)
 
 **TestFlight**:
-Apple's beta distribution system. A build uploaded to App Store Connect can be handed to **internal testers** (your team, no review, available in minutes) or **external testers** (up to 10,000 people, first build per version needs a short App Review). Builds expire 90 days after upload.
+Apple's beta distribution system, running entirely on Apple's infrastructure and riding on the **App Store** provisioning profile — so testers never register a device or trust your certificate; Apple re-signs and delivers the build. A build uploaded to App Store Connect is first *processed* (validated and thinned into per-device variants) and *export-compliance gated*, then handed to **internal testers** (your team, no review, available in minutes) or **external testers** (up to 10,000 people, first build per version needs Beta App Review). Builds expire 90 days after upload.
 _Avoid_: beta app (TestFlight is the system; there's no separate "beta app" concept for your build)
+
+**Internal tester**:
+An existing member of your App Store Connect team — someone holding the Account Holder, Admin, App Manager, Developer, or Marketing role — flagged to receive TestFlight builds. Up to 100 per app, each on up to 30 devices; needs no Beta App Review, since Apple already trusts everyone on the team. Not a separate account type you create.
+_Avoid_: team tester
+
+**External tester**:
+Anyone (no App Store Connect account or role needed) invited to a TestFlight build by email or public link. Up to 10,000 per app, each on up to 30 devices. The first build of each version must clear Beta App Review before external testers can install it.
+_Avoid_: public tester (a public link is one *way* to invite external testers, not a separate category)
+
+**Beta App Review**:
+Apple's lighter review that gates the **first build of each version** to external testers, checking it roughly follows the App Review Guidelines. Per *version*, not per build — later builds of the same version usually skip it. Distinct from, and a much lower bar than, the full App Store review a public release faces; passing one implies nothing about the other.
+_Avoid_: App Review (that's the full submission review — keep them separate)
+
+**Export compliance**:
+A US export-regulation declaration Apple must collect about whether a build uses non-exempt encryption, gating distribution until answered. Driven by the `ITSAppUsesNonExemptEncryption` boolean in `Info.plist`; if the key is absent, App Store Connect shows a "Missing Compliance" prompt on every upload. Standard HTTPS/TLS and Apple's own crypto are exempt, so most apps set it to `NO`. Not signing and not review.
+_Avoid_: encryption review
+
+**Build variant (thinning)**:
+One of the per-device slices Apple produces from your universal upload during processing, so each tester downloads only the resources and architecture their hardware needs. Why an uploaded build shows *Processing* before it can be assigned to anyone.
+_Avoid_: build (a variant is a per-device product of one build, not the build itself)
 
 **Build number**:
 The `CFBundleVersion` — a value that must increase on every single upload to App Store Connect, distinct from the user-facing version string (`CFBundleShortVersionString`, e.g. "1.2.0") which only changes on real releases.
