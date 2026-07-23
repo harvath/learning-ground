@@ -1,0 +1,147 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0007 | Inside TestFlight</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0007 · THE BETA SYSTEM</div>
+  <h1>Inside TestFlight — how the beta system actually works</h1>
+  <p class="subtitle">L0005 and L0006 stopped at "the build is uploaded." This lesson opens what happens on the other side of that upload — so a stuck build, a review rejection, or a tester who can't launch becomes diagnosable instead of mysterious.</p>
+
+  <p>Every earlier lesson pointed at TestFlight as the destination without looking inside it. Now we look inside. The key reframing: <strong>TestFlight is its own distribution channel that runs entirely on Apple's infrastructure</strong>, riding on the <strong>App Store</strong> provisioning profile from L0002. That's why your testers never register a device with you and never touch your certificate — once the build reaches App Store Connect, Apple re-signs it and delivers it. The trust chain L0002 described terminates at the upload; from there, the tester trusts the build because they trust Apple, not because they trust you.</p>
+
+  <h2>Between "upload" and "testable"</h2>
+
+  <p>A freshly uploaded build is <em>not</em> immediately installable. It passes through a fixed pipeline first, and each stage is a place a build can get stuck:</p>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">Processing</div>
+      <div class="n-note">Apple validates the build (its provisioning profile, entitlements, required device capabilities) and <strong>thins</strong> it — splits your universal upload into per-device <span class="term">variants</span> so each tester downloads only the slices their hardware needs.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup> Typically 5–30 minutes. Until it finishes, the build shows as <em>Processing</em> in the TestFlight tab and can't be assigned to anyone.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Export-compliance gate</div>
+      <div class="n-note">Before a build can be distributed, Apple needs to know whether it uses non-exempt encryption. If your <code>Info.plist</code> doesn't already answer this, App Store Connect blocks the build behind a <em>"Missing Compliance"</em> prompt until you do (details below).<sup class="cite"><a href="https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations">[4]</a></sup></div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Ready to test</div>
+      <div class="n-note">Now the build can be added to a testing group. Internal groups get it immediately; external groups may first pass through Beta App Review (below).</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <span class="label">the encryption question, concretely</span>
+    The gate is one <code>Info.plist</code> key: <span class="term">ITSAppUsesNonExemptEncryption</span>, a boolean.<sup class="cite"><a href="https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations">[4]</a></sup> Set it to <code>NO</code> and the "Missing Compliance" prompt never appears — this is the honest answer for most apps, since standard HTTPS/TLS and Apple's own crypto count as <em>exempt</em>. Leave the key out and App Store Connect asks you the same question by hand, on every build, before it'll let you distribute. It's not signing or review — it's a US export-regulation declaration Apple is legally required to collect. The reason it feels like it "randomly blocks" a build is simply that the key was never added to the plist, so the answer defaults to being asked interactively.
+  </div>
+
+  <h2>Two audiences, one build</h2>
+
+  <p>L0005 gave you the internal-vs-external table as a shipping rule. Here's the mechanism underneath it. Both groups receive the <em>same</em> processed build; what differs is <strong>who qualifies</strong>, <strong>how many</strong>, and <strong>what stands between the build and them</strong>.</p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th></th><th>Internal testers</th><th>External testers</th></tr>
+      <tr><td>Who qualifies</td><td>People with an App Store Connect <strong>role</strong> on your team — Account Holder, Admin, App Manager, Developer, or Marketing<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers/">[2]</a></sup></td><td>Anyone at all — no account, no role, just an email address or a tap on a link<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/invite-external-testers/">[3]</a></sup></td></tr>
+      <tr><td>Limit</td><td>Up to <strong>100</strong> people</td><td>Up to <strong>10,000</strong> people</td></tr>
+      <tr><td>Devices each</td><td>Up to 30 devices</td><td>Up to 30 devices</td></tr>
+      <tr><td>Review</td><td>None — testable within minutes of processing</td><td><strong>Beta App Review</strong> on the first build of a version</td></tr>
+      <tr><td>New builds</td><td>Can auto-distribute to everyone</td><td>Assigned per group, per build</td></tr>
+    </table>
+  </div>
+
+  <p>The dividing line is <strong>role membership</strong>. An "internal tester" is not a separate kind of account you create — it's an existing team member (someone already in your App Store Connect organization with one of those roles) whom you've flagged as a tester.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers/">[2]</a></sup> That's why internal testing needs no review: Apple already knows and trusts everyone in that list. External testers are, by definition, people Apple <em>doesn't</em> know in relation to your app — which is exactly why a review stands in front of them.</p>
+
+  <h2>Beta App Review is not App Store review</h2>
+
+  <p>When you add the <strong>first build of a version</strong> to an external group, Apple sends it to <span class="term">Beta App Review</span> — a check that the build follows the App Review Guidelines before strangers can install it.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup> Two things make it much lighter than the full review a public release faces:</p>
+
+  <ul>
+    <li><strong>It's per <em>version</em>, not per build.</strong> The first build of <code>1.3</code> gets reviewed; build 2, 3, 4… of <code>1.3</code> usually go straight to testers with no wait, unless something review-relevant changed (new entitlements, new privacy strings). Bump to <code>1.4</code> and the next first build is reviewed again. This is why the build-number vs version-string distinction from L0005 matters here too: the <em>version string</em> is what resets the review requirement.</li>
+    <li><strong>It's a lighter bar.</strong> Beta review confirms the build isn't broken or abusive and roughly follows the guidelines. Full App Store review — the future-mission bar — additionally scrutinizes metadata, screenshots, privacy disclosures, and business-model compliance. A build that sails through Beta App Review can still be rejected at real submission.</li>
+  </ul>
+
+  <div class="box warn">
+    <span class="label">the trap this sets</span>
+    "It's been on TestFlight for weeks, so App Store approval is a formality" is the single most common wrong assumption here. Passing Beta App Review tells you almost nothing about whether the full review will pass — they check different things. Treat TestFlight approval as "testers can install," never as "the App Store will accept this."
+  </div>
+
+  <h2>How a tester actually gets the build</h2>
+
+  <p>External testers get in one of two ways, and the difference is worth knowing because it changes who ends up on your 10,000-person list:<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/invite-external-testers/">[3]</a></sup></p>
+
+  <ul>
+    <li><strong>Email invite</strong> — you enter specific addresses; each person gets a private invitation tied to that email.</li>
+    <li><strong>Public link</strong> — a single URL anyone can tap to enrol themselves, up to a cap you set. This is how open betas work; the trade-off is you don't choose who joins, only how many.</li>
+  </ul>
+
+  <p>Either way, the tester installs the free <strong>TestFlight app</strong> from the App Store, accepts the invite, and installs the thinned variant for their device.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup> New builds you push appear there automatically. And crucially, TestFlight is a genuine feedback channel, not just a delivery pipe: on recent TestFlight versions (iOS/macOS/visionOS), a tester can <strong>take a screenshot inside your beta app and annotate it as feedback</strong>, or send written feedback from the TestFlight app itself — and it arrives in App Store Connect attached to the exact build and device, alongside any crash reports.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/reference/testflight/beta-tester-feedback">[5]</a></sup> Older tvOS/iOS clients fall back to emailing the feedback address you set in the build's test information.</p>
+
+  <h2>Builds don't live forever</h2>
+
+  <p>Every build expires <strong>90 days</strong> after upload.<sup class="cite"><a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">[1]</a></sup> After that, testers see <em>"Expired"</em> and can't launch it — it isn't deleted, just made un-runnable, so a beta you shipped and forgot silently stops working for everyone on it around the three-month mark. You can also expire a build <em>early</em> by hand to pull it from testers before its 90 days are up (a bad build you want to retract immediately). A newer build assigned to the same group supersedes the old one for that group, but doesn't reset the older build's own expiry clock.</p>
+
+  <div class="box">
+    <span class="label">the Expo/EAS delta</span>
+    <code>eas submit --platform ios</code> uploads the build to App Store Connect using an <span class="term">App Store Connect API key</span> (a token you register with Apple that lets a machine act on your behalf) instead of your interactive Xcode login.<sup class="cite"><a href="https://docs.expo.dev/submit/ios/">[6]</a></sup> That's the <em>only</em> thing that changes. Everything in this lesson — processing, the export-compliance gate, internal vs external, Beta App Review, groups, public links, feedback, 90-day expiry — is entirely on Apple's side of the upload and behaves identically no matter what put the build there. TestFlight has no idea whether a human or a CI job did the uploading.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① A build finished uploading an hour ago but you still can't add it to your external tester group. Name the two most likely gates it's stuck behind.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Either it's still <em>Processing</em> (Apple validating and thinning it into per-device variants), or it's blocked on the <em>export-compliance / "Missing Compliance"</em> prompt because <code>ITSAppUsesNonExemptEncryption</code> isn't set in the plist. If both are clear, an external group additionally has to clear Beta App Review on the first build of the version.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② You uploaded build 5 of version <code>1.3</code>. Builds 1–4 of <code>1.3</code> already passed Beta App Review and reached external testers. What happens to build 5?</p>
+    <button class="quiz-opt" data-key="a">It needs a fresh full Beta App Review, like every build does</button>
+    <button class="quiz-opt" data-key="b">It usually goes straight to external testers with no review, since review is per-version and 1.3 was already reviewed</button>
+    <button class="quiz-opt" data-key="c">It can only go to internal testers until version 1.4</button>
+    <p class="quiz-why" hidden>Beta App Review is required on the <em>first</em> build of each version. Later builds of that same version (1.3) typically skip it and reach testers immediately — unless something review-relevant (entitlements, privacy usage) changed. Bumping the version string to 1.4 is what would trigger review again.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ Why does an external tester never have to register their device's UDID with you, the way a Development build requires?</p>
+    <button class="quiz-opt" data-key="a">Because TestFlight builds are unsigned</button>
+    <button class="quiz-opt" data-key="b">Because the tester's Apple Account is added to your provisioning profile</button>
+    <button class="quiz-opt" data-key="c">Because TestFlight rides on the App Store profile type, where Apple re-signs and delivers the build — the device trusts Apple, not you</button>
+    <p class="quiz-why" hidden>This is L0002's App Store profile row made concrete. App Store / TestFlight distribution has no device list because Apple's own infrastructure re-signs the build for delivery; the device-level trust check happens on Apple's side. Device UDID lists only exist for Development and Ad Hoc profiles.</p>
+  </div>
+
+  <div class="box make">
+    <span class="label">run it for real</span>
+    Open your app's <strong>TestFlight</strong> tab in App Store Connect and read the current build's state out loud in this lesson's vocabulary: is it Processing, is it flagged Missing Compliance, is it in an internal or external group, and how many days until it expires? Then check whether <code>ITSAppUsesNonExemptEncryption</code> is set in your project — if it isn't, you've been answering that prompt by hand on every single upload, and setting it once ends that.
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">TestFlight overview — App Store Connect Help</a> is Apple's own map of everything above; the linked sub-pages (<a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers/">add internal testers</a>, <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/invite-external-testers/">invite external testers</a>) are where exact limits and current UI live. Re-check these periodically — tester caps and expiry windows are exactly the kind of number Apple adjusts between releases.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    A build stuck in a state this lesson didn't name, a Beta App Review rejection you didn't expect, or a tester reporting "can't install" — bring the exact wording. TestFlight problems almost always resolve to one of the gates above (processing, compliance, review, expiry) or back to a broken link in L0002's chain, and naming which one is the whole skill. The natural next mission from here is the full App Store release — the review bar this lesson kept contrasting against.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/">TestFlight overview — App Store Connect Help</a><br>
+    [2] <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers/">Add internal testers — App Store Connect Help</a><br>
+    [3] <a href="https://developer.apple.com/help/app-store-connect/test-a-beta-version/invite-external-testers/">Invite external testers — App Store Connect Help</a><br>
+    [4] <a href="https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations">Complying with Encryption Export Regulations — Apple Developer Documentation</a><br>
+    [5] <a href="https://developer.apple.com/help/app-store-connect/reference/testflight/beta-tester-feedback">Beta tester feedback — App Store Connect Help</a><br>
+    [6] <a href="https://docs.expo.dev/submit/ios/">Expo — Submit to the Apple App Store (EAS Submit)</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/pipeline-map.html">Reference: pipeline map</a>
+    <a href="../reference/signing-chain-cheatsheet.html">Reference: signing chain cheat sheet</a>
+    <a href="./0006-the-manual-trail.html">← L0006 The manual trail</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
