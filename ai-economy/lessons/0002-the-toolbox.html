@@ -1,0 +1,115 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0002 | The Toolbox</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0002 · THE TOOLBOX</div>
+  <h1>MCP, agents, and the plumbing underneath</h1>
+  <p class="subtitle">L0001 was who's building and who's paying. This lesson is what they're actually building with — the protocols and frameworks that turn a model into something that can act.</p>
+
+  <p>A raw model can only do one thing: turn text in, into text out. Everything that makes it feel like an "assistant" or "agent" — reading your files, calling an API, remembering yesterday's conversation — is a layer of tooling built on top. This lesson covers the load-bearing pieces of that layer: <span class="term">MCP</span> (how models connect to tools and data), <span class="term">agent frameworks</span> like Mastra (how you orchestrate multi-step agent behavior), <span class="term">ontology</span> (a term currently being pulled in a new direction), and <span class="term">RAG</span> (how models get access to facts they weren't trained on) — plus Hugging Face's actual current role in all of it.</p>
+
+  <h2>MCP — the connector every agent now speaks</h2>
+
+  <p><span class="term">Model Context Protocol (MCP)</span> is an open standard for connecting a model to external tools and data sources through one common interface, instead of every app writing its own bespoke integration for every tool. The common analogy is "USB-C for AI" — one physical connector, many devices.<sup class="cite"><a href="https://www.anthropic.com/news/model-context-protocol">[1]</a></sup></p>
+
+  <p>Anthropic created and announced MCP in November 2024. What matters for "is this current" purposes: in December 2025, Anthropic donated MCP to the <span class="term">Agentic AI Foundation</span>, a new directed fund under the Linux Foundation, co-founded alongside Block and <strong>OpenAI</strong> — meaning MCP is no longer an Anthropic-only protocol, it's cross-vendor, neutrally governed infrastructure.<sup class="cite"><a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">[2]</a></sup> Adoption is real and large by late-2025 measures: 97M+ monthly SDK downloads and 10,000+ active MCP servers in production.<sup class="cite"><a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/">[3]</a></sup> Of everything in this lesson, MCP is the term you can treat as <strong>settled</strong>, not in flux.</p>
+
+  <h2>Agent frameworks — Mastra and the rest of the field</h2>
+
+  <p>An <span class="term">agent framework</span> is the code layer that orchestrates multi-step agent behavior on top of a model: deciding what tools to call and when, holding memory across steps, retrying failures, and logging/tracing what happened. Without one, "build an agent" means hand-rolling all of that yourself.</p>
+
+  <p><span class="term">Mastra</span> is the TypeScript-native entry in this field — agent orchestration, RAG pipelines, durable workflows, memory, and tracing, aimed at web developers already working in a Next.js/Vercel-style stack rather than the Python ML-research crowd.<sup class="cite"><a href="https://mastra.ai/about">[4]</a></sup> It's built by the same three founders (Sam Bhagwat, Abhi Aiyer, Shane Thomas) who built <strong>Gatsby</strong>, went through Y Combinator, and reached its 1.0 release in January 2026.<sup class="cite"><a href="https://thenewstack.io/mastra-empowers-web-devs-to-build-ai-agents-in-typescript/">[5]</a></sup></p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Framework</th><th>Language</th><th>Positioning</th></tr>
+      <tr><td>LangGraph</td><td>Python / JS</td><td>Most mature for durable, stateful workflows with branching and human-in-the-loop approval — the default choice when a workflow needs cycles, not just a straight line.</td></tr>
+      <tr><td>Mastra</td><td>TypeScript</td><td>Full-stack "batteries-included" agent platform for web-dev teams; the leading TS-native option alongside Vercel AI SDK.</td></tr>
+      <tr><td>OpenAI Agents SDK</td><td>Python / JS</td><td>Minimal abstractions (Agents, Handoffs, Guardrails); provider-agnostic despite the OpenAI name; the production successor to OpenAI's earlier, now-archived <em>Swarm</em>.</td></tr>
+      <tr><td>CrewAI</td><td>Python</td><td>Role-based multi-agent prototyping — fast to stand up a "crew" of specialist agents.</td></tr>
+      <tr><td>Microsoft Agent Framework</td><td>Python / .NET</td><td>Absorbed both AutoGen and Semantic Kernel into one framework, GA April 2026 — a concrete example of the field consolidating rather than staying fragmented.</td></tr>
+    </table>
+  </div>
+
+  <p>The overall shape as of 2026: after a fragmented 2025 (many competing frameworks), the field is <strong>consolidating</strong> around a handful of practical buckets — LangGraph for complex stateful workflows, vendor-native SDKs, and TypeScript-native options like Mastra for web teams.<sup class="cite"><a href="https://www.langchain.com/resources/ai-agent-frameworks">[6]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">also worth knowing: AI-DLC</span>
+    <span class="term">AI-DLC</span> ("AI-Driven Development Lifecycle") is AWS's own proposed methodology for software teams working alongside AI agents — small "AI Pods" instead of larger Scrum teams, short "bolts" instead of week-long sprints, with humans keeping approval gates over AI-drafted plans, code, and tests.<sup class="cite"><a href="https://aws.amazon.com/blogs/industries/ai-driven-development-lifecycle-for-financial-services/">[7]</a></sup> Unlike MCP, this is <strong>vendor-coined terminology, not an industry standard</strong> — useful to recognize when AWS or its partners use it, but don't assume it's a universally adopted framework name.
+  </div>
+
+  <h2>Ontology — a term currently being redefined</h2>
+
+  <p>"Ontology" has two live meanings right now, and mixing them up is an easy tell that someone hasn't caught up with 2025–2026 usage. The <strong>classical</strong> sense, from knowledge representation and the semantic web, is a formal specification of the concepts, properties, and relationships in a domain (think RDF/OWL). The <strong>newer enterprise-AI</strong> sense, popularized specifically by <strong>Palantir</strong>, is a governed <em>semantic layer</em> sitting on top of an organization's raw data — every noun, relationship, rule, and permission modeled as a queryable, actionable object that AI agents act on directly instead of touching raw unstructured data.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/architecture-center/ontology-system">[8]</a></sup></p>
+
+  <p>These aren't opposing definitions so much as the same root idea (a formal model of a domain) picking up a specific, branded, agent-oriented flavor in current enterprise discourse — Palantir's own agents are described as "natively ontology-aware," and the company has since exposed this layer to <em>other</em> frameworks via an "Ontology MCP" server, so the concept is starting to travel beyond Palantir's own product.<sup class="cite"><a href="https://superml.dev/ontology-ai-palantir-enterprise-knowledge-graph-2026">[9]</a></sup> If you hear "ontology" in an AI-agent conversation in 2026, assume the Palantir-flavored sense unless context says otherwise.</p>
+
+  <h2>RAG vs. long-context vs. fine-tuning</h2>
+
+  <p>For about two years, the prediction was "context windows will keep growing until RAG (<span class="term">retrieval-augmented generation</span> — fetching relevant documents and feeding them to the model at query time) becomes unnecessary." 2026 evidence says the opposite: a controlled comparison found brute-force long-context lost to RAG at scale — up to ~24x more expensive, and prone to losing facts before even hitting its advertised limit.<sup class="cite"><a href="https://pub.towardsai.net/i-tested-rag-vs-fine-tuning-vs-long-context-on-the-same-docs-the-1m-token-window-collapsed-at-24x-0cf96ad88eee">[10]</a></sup></p>
+
+  <p>The current working division of labor: <strong>fine-tuning</strong> changes how a model behaves (tone, format, task shape) — it's a poor tool for facts that change often. <strong>RAG</strong> supplies current, citable facts, and wins whenever the underlying data changes faster than the model gets retrained. <strong>Long-context</strong> is genuinely useful for one-off, whole-document reasoning — not as a RAG replacement at scale. Treat the three as complementary layers of one system, not competing techniques.</p>
+
+  <h2>Hugging Face — no longer just a model zoo</h2>
+
+  <p>Hugging Face is still the Hub where open models and datasets live, and the home of the <code>transformers</code> library — but by 2026 that undersells it. It now runs <strong>Inference Providers</strong>, a pay-as-you-go marketplace giving unified billing across 200+ models and multiple serving backends (integrated directly into GitHub Copilot Chat/VS Code), and it's pushed into open robotics after acquiring Pollen Robotics.<sup class="cite"><a href="https://sacra.com/c/hugging-face/">[11]</a></sup> The right mental model in 2026: Hugging Face is <strong>open-model infrastructure and distribution</strong> — it brokers inference now, not just hosting.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What problem does MCP solve, and why is it now safe to treat as "settled" rather than "in flux"?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>It gives models one common interface for connecting to external tools/data instead of a bespoke integration per tool. It's settled because Anthropic donated it to the Linux Foundation's Agentic AI Foundation (co-founded with Block and OpenAI) in Dec 2025 — it's now cross-vendor governed infrastructure with large real adoption, not a single company's proprietary protocol.</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② Which layer, from L0001, does Hugging Face belong to — labs, infrastructure, capital, or none of those?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>None of L0001's three cleanly — it's the toolbox layer (this lesson): open-model hosting, distribution, and now inference brokering, sitting on top of the labs/infra/capital structure rather than being a foundation-model lab or a chip/compute supplier itself.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">③ You need a support bot to answer questions from a knowledge base that gets updated daily. Which approach fits best?</p>
+    <button class="quiz-opt" data-key="a">Fine-tune the model weekly on the latest knowledge base</button>
+    <button class="quiz-opt" data-key="b">RAG — retrieve current documents at query time</button>
+    <button class="quiz-opt" data-key="c">Load the entire knowledge base into a long-context prompt every time</button>
+    <p class="quiz-why" hidden>Fine-tuning is the worst fit for facts that change often — you'd be constantly retraining. Long-context works but loses on cost (up to ~24x more expensive at scale) and can drop facts before hitting its limit. RAG is built exactly for data that changes faster than a model gets retrained.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Anthropic's own <a href="https://www.anthropic.com/news/model-context-protocol">Model Context Protocol announcement</a> is short and is the clearest statement of the actual problem MCP solves, straight from its creator.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    If a term you've heard elsewhere (AGENTS.md, goose, Semantic Kernel, LlamaIndex) didn't get its own section here, ask — this lesson covered the load-bearing core, not the full field. Next up: L0003 follows the money — funding rounds, circular financing, and the live bubble debate hinted at in L0001.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.anthropic.com/news/model-context-protocol">Introducing the Model Context Protocol — Anthropic</a><br>
+    [2] <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">Linux Foundation announces the Agentic AI Foundation</a><br>
+    [3] <a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/">MCP joins the Agentic AI Foundation</a><br>
+    [4] <a href="https://mastra.ai/about">Mastra — About</a><br>
+    [5] <a href="https://thenewstack.io/mastra-empowers-web-devs-to-build-ai-agents-in-typescript/">Mastra empowers web devs to build AI agents in TypeScript — The New Stack</a><br>
+    [6] <a href="https://www.langchain.com/resources/ai-agent-frameworks">AI agent frameworks guide — LangChain</a><br>
+    [7] <a href="https://aws.amazon.com/blogs/industries/ai-driven-development-lifecycle-for-financial-services/">AI-Driven Development Lifecycle for Financial Services — AWS</a><br>
+    [8] <a href="https://www.palantir.com/docs/foundry/architecture-center/ontology-system">Ontology system — Palantir Foundry docs</a><br>
+    [9] <a href="https://superml.dev/ontology-ai-palantir-enterprise-knowledge-graph-2026">Ontology, AI &amp; Palantir's enterprise knowledge graph — SuperML.dev</a><br>
+    [10] <a href="https://pub.towardsai.net/i-tested-rag-vs-fine-tuning-vs-long-context-on-the-same-docs-the-1m-token-window-collapsed-at-24x-0cf96ad88eee">RAG vs. fine-tuning vs. long-context, tested — Towards AI</a><br>
+    [11] <a href="https://sacra.com/c/hugging-face/">Hugging Face — Sacra</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0001-the-layers-of-the-industry.html">← L0001 The Layers of the Industry</a>
+    <a href="../reference/state-of-play.html">Reference: state of play</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0001 | The Layers of the Industry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0001 · THE LAYERS OF THE INDUSTRY</div>
+  <h1>Labs, infra, and capital: the shape of the industry</h1>
+  <p class="subtitle">Every AI headline names a company. Before any of those names mean anything, you need to know which of three layers it belongs to — because each layer plays a completely different game.</p>
+
+  <p>"AI company" hides three very different businesses under one label. A <strong>lab</strong> trains and sells access to models. An <strong>infrastructure</strong> company sells or rents the chips and data centers those models are trained and run on. A <strong>capital</strong> source — venture funds, hyperscaler balance sheets, sovereign wealth — supplies the money that makes the other two possible. Almost every confusing headline ("company X raises $30B," "company Y's stock drops 17% in a day") makes sense once you know which layer it's about and how money actually flows between the three.</p>
+
+  <h2>The three layers</h2>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">1. Labs — build and sell model access</div>
+      <div class="n-note">OpenAI, Anthropic, Google DeepMind, Meta AI, xAI, Mistral, DeepSeek, and others. Their product is a model, sold via API/subscription (ChatGPT, Claude, Gemini) or given away as open weights. This is the layer that makes headlines about model releases and "AGI" claims — but it's also the layer burning the most cash relative to revenue.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2. Infrastructure &amp; compute — sell or rent the hardware</div>
+      <div class="n-note">Chipmakers (Nvidia, Broadcom, AMD), cloud giants (Microsoft, Google, Amazon), and a newer category called <span class="term">neoclouds</span> — GPU-specialized rental providers like CoreWeave, Nebius, and Lambda that exist purely to rent compute to labs that don't want to own hardware. This layer sells the shovels in the gold rush, and right now it's the layer actually printing profit, not just projecting it.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">3. Capital — funds the other two</div>
+      <div class="n-note">Venture funds (a16z, Sequoia), hyperscaler balance sheets (Microsoft, Amazon, Google, Meta funding both their own labs and their cloud buildouts), and sovereign wealth (SoftBank, Gulf state funds). This layer's money mostly flows into labs and infrastructure, often as multi-year compute-purchase commitments rather than simple cash grants — which matters a lot for reading funding headlines correctly (more on this in L0003).</div>
+    </div>
+  </div>
+
+  <p>The simplified flow: capital funds labs and infrastructure → labs rent compute from infrastructure providers, often via huge multi-year commitments → labs sell subscriptions/API access to consumers and businesses → that revenue is, for most labs today, nowhere near covering what they're spending on compute. Infrastructure providers get paid either way, which is why <strong>Nvidia and Broadcom are the industry's least contested profit centers</strong> right now, even while the labs layer runs enormous losses.<sup class="cite"><a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">[1]</a></sup></p>
+
+  <h2>Who's in each layer, right now</h2>
+
+  <p><strong>Labs.</strong> OpenAI — usage leader via ChatGPT, valued at $852B as of a round that closed in March 2026, but running roughly $14B in annual losses against ~$25B revenue.<sup class="cite"><a href="https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round">[2]</a></sup><sup class="cite"><a href="https://futuresearch.ai/openai-revenue-forecast/">[3]</a></sup> Anthropic — now the higher-valued of the two ($965B, round closed ~May 2026), with meaningfully better unit economics: its burn is forecast to fall toward roughly 9% of revenue by 2027, versus OpenAI staying elevated.<sup class="cite"><a href="https://www.anthropic.com/news/series-h">[4]</a></sup> Google DeepMind trails both on standalone valuation (folded into Alphabet) but leads on distribution — Gemini's usage share has grown fast simply because it's the default on Google's own products.<sup class="cite"><a href="https://techcrunch.com/2026/01/12/googles-gemini-to-power-apples-ai-features-like-siri/">[5]</a></sup> Meta AI, xAI, Mistral, and DeepSeek round out the field, each with a distinct strategy — Meta pivoting away from pure open-source, xAI now merged into SpaceX rather than standing alone, Mistral betting on European sovereignty, DeepSeek betting on cheap open-weight models.<sup class="cite"><a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">[6]</a></sup></p>
+
+  <p><strong>Infrastructure.</strong> Nvidia remains the dominant GPU supplier and the world's most valuable company by market cap.<sup class="cite"><a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">[1]</a></sup> But it's not unchallenged: Broadcom designs the custom chips (like Google's TPUs) that hyperscalers are increasingly building instead of buying more Nvidia GPUs — a quieter but very real erosion at the margin.<sup class="cite"><a href="https://www.tomshardware.com/tech-industry/semiconductors/custom-ai-asics-examined-from-broadcom-to-mtia">[7]</a></sup> The neoclouds (CoreWeave, Nebius, Lambda) are worth knowing as a category even if you never need the individual names — they're the AI industry's landlords, existing purely to rent GPUs to labs.<sup class="cite"><a href="https://www.forbes.com/sites/janakirammsv/2026/04/13/coreweave-becomes-ais-landlord-with-meta-and-anthropic-deals/">[8]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">the number that doesn't add up yet</span>
+    OpenAI is projected to lose roughly $115B cumulatively before any hoped-for profitability around 2029–2030.<sup class="cite"><a href="https://futuresearch.ai/openai-revenue-forecast/">[3]</a></sup> That's not a footnote — it's the central tension of the entire labs layer right now: enormous valuations sitting on top of enormous, ongoing losses, funded by capital that is itself often structured as compute-purchase commitments rather than plain cash (a pattern called <span class="term">circular financing</span>, and the subject of L0003). Hold this tension loosely for now rather than resolving it — credible people are on both sides of whether this is a bubble.
+  </div>
+
+  <h2>Big figures, placed in their layer</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Name</th><th>Layer</th><th>Why they matter right now</th></tr>
+      <tr><td>Sam Altman</td><td>Labs</td><td>CEO, OpenAI — the industry's most public face.</td></tr>
+      <tr><td>Dario Amodei</td><td>Labs</td><td>CEO, Anthropic — ex-OpenAI VP of Research; now runs the higher-valued of the two labs.</td></tr>
+      <tr><td>Demis Hassabis</td><td>Labs</td><td>CEO, Google DeepMind — Nobel laureate for AlphaFold.</td></tr>
+      <tr><td>Jensen Huang</td><td>Infrastructure</td><td>CEO, Nvidia — runs the layer's most unambiguous profit center.</td></tr>
+      <tr><td>Elon Musk</td><td>Labs</td><td>Founder, xAI — merged xAI into SpaceX in 2026, a structural shift worth knowing about.</td></tr>
+    </table>
+  </div>
+  <p style="font-size:0.9rem; color:var(--ink-soft);">Full table, including capital-layer names, in <a href="../reference/state-of-play.html">reference: state of play</a>.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Name the three layers of the industry and, in one phrase each, what each one actually sells or supplies.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Labs (build and sell model access — API/subscription or open weights). Infrastructure &amp; compute (sell or rent the chips and data centers). Capital (venture funds, hyperscaler balance sheets, sovereign wealth — funds the other two, often via compute-purchase commitments rather than plain cash).</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② Why are Nvidia and Broadcom currently seen as less contested/risky than the labs layer, even though they're all "AI companies"?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>They're in the infrastructure layer — they get paid for hardware/compute either way, and are posting real, current profits. The labs layer (OpenAI, Anthropic, etc.) is running large losses relative to revenue, betting on future profitability that hasn't arrived yet.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ A neocloud like CoreWeave belongs to which layer?</p>
+    <button class="quiz-opt" data-key="a">Labs — it trains its own foundation models</button>
+    <button class="quiz-opt" data-key="b">Capital — it's primarily a venture fund</button>
+    <button class="quiz-opt" data-key="c">Infrastructure — it rents GPU compute to labs</button>
+    <p class="quiz-why" hidden>Neoclouds exist specifically to rent GPU-heavy compute capacity to labs that don't want to buy and operate hardware themselves — squarely the infrastructure layer, distinct from the general-purpose hyperscaler clouds (AWS/Azure/GCP) and distinct from the labs that consume their capacity.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Stanford HAI's <a href="https://hai.stanford.edu/ai-index">AI Index Report</a> is the broadest, most credible annual synthesis of this entire landscape — economy, technical performance, and policy in one place. Read the economy chapter to see this three-layer model with real numbers behind it.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "Which layer is this headline actually about?" is a good habit to bring to any AI news story. Next up, L0002 opens the toolbox layer — the frameworks, protocols, and terms (MCP, Mastra, ontology, Hugging Face) that sit on top of this industry structure.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">Nvidia posts record profit and revenue amid AI chip boom — Al Jazeera</a><br>
+    [2] <a href="https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round">OpenAI valued at $852 billion after completing $122 billion round — Bloomberg</a><br>
+    [3] <a href="https://futuresearch.ai/openai-revenue-forecast/">OpenAI revenue &amp; burn-rate forecast — FutureSearch</a><br>
+    [4] <a href="https://www.anthropic.com/news/series-h">Anthropic Series H announcement</a><br>
+    [5] <a href="https://techcrunch.com/2026/01/12/googles-gemini-to-power-apples-ai-features-like-siri/">Google's Gemini to power Apple's AI features like Siri — TechCrunch</a><br>
+    [6] <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">Why DeepSeek's V4 matters — MIT Technology Review</a><br>
+    [7] <a href="https://www.tomshardware.com/tech-industry/semiconductors/custom-ai-asics-examined-from-broadcom-to-mtia">Custom AI ASICs examined: from Broadcom to MTIA — Tom's Hardware</a><br>
+    [8] <a href="https://www.forbes.com/sites/janakirammsv/2026/04/13/coreweave-becomes-ais-landlord-with-meta-and-anthropic-deals/">CoreWeave becomes AI's landlord — Forbes</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/state-of-play.html">Reference: state of play</a>
+    <a href="./0002-the-toolbox.html">L0002 The Toolbox →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
