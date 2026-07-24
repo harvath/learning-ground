@@ -17,7 +17,7 @@
   <div class="chain">
     <div class="chain-node main">
       <div class="n-title">1. Labs — build and sell model access</div>
-      <div class="n-note">OpenAI, Anthropic, Google DeepMind, Meta AI, xAI, Mistral, DeepSeek, and others. Their product is a model, sold via API/subscription (ChatGPT, Claude, Gemini) or given away as open weights. This is the layer that makes headlines about model releases and "AGI" claims — but it's also the layer burning the most cash relative to revenue.</div>
+      <div class="n-note">OpenAI, Anthropic, Google DeepMind, Meta AI, xAI, Mistral, DeepSeek, and others. Their product is a model, sold via API/subscription (ChatGPT, Claude, Gemini) or given away as open weights. This is the layer that makes headlines about model releases and <span class="term">AGI</span> claims (explained in the box just below) — but it's also the layer burning the most cash relative to revenue.</div>
     </div>
     <div class="chain-node main">
       <div class="n-title">2. Infrastructure &amp; compute — sell or rent the hardware</div>
@@ -27,6 +27,12 @@
       <div class="n-title">3. Capital — funds the other two</div>
       <div class="n-note">Venture funds (a16z, Sequoia), hyperscaler balance sheets (Microsoft, Amazon, Google, Meta funding both their own labs and their cloud buildouts), and sovereign wealth (SoftBank, Gulf state funds). This layer's money mostly flows into labs and infrastructure, often as multi-year compute-purchase commitments rather than simple cash grants — which matters a lot for reading funding headlines correctly (more on this in L0003).</div>
     </div>
+  </div>
+
+  <div class="box make">
+    <span class="label">AGI — artificial general intelligence</span>
+    <p style="margin-top:0;">The term for an AI system that matches or exceeds human performance across essentially the full range of cognitive tasks — not just narrow ones. Today's models are enormously capable at specific things (writing, coding, some kinds of reasoning), but "AGI" is a claim about generality, not raw capability. <strong>There is no agreed technical definition or benchmark for it</strong> — labs, researchers, and critics genuinely disagree about what would even count as reaching it, which is a big part of why it functions as much as a strategic and rhetorical term as a technical one.</p>
+    <p>In this economy specifically, AGI isn't just marketing language — it's written directly into contracts with real money attached. Amazon's stake from OpenAI's March 2026 round includes $35B contingent on an IPO/AGI-milestone condition, and Microsoft's technology-access rights to OpenAI's models are bounded through 2032 <em>except</em> for a specific carve-out covering any future model verified to be AGI.<sup class="cite"><a href="https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/">[9]</a></sup><sup class="cite"><a href="https://www.cnbc.com/2025/10/28/open-ai-for-profit-microsoft.html">[10]</a></sup> Labs also use the term differently on purpose: OpenAI's stated mission centers on AGI explicitly, while Anthropic more often says "powerful AI" instead — partly to sidestep exactly this definitional fight.</p>
   </div>
 
   <p>The simplified flow: capital funds labs and infrastructure → labs rent compute from infrastructure providers, often via huge multi-year commitments → labs sell subscriptions/API access to consumers and businesses → that revenue is, for most labs today, nowhere near covering what they're spending on compute. Infrastructure providers get paid either way, which is why <strong>Nvidia and Broadcom are the industry's least contested profit centers</strong> right now, even while the labs layer runs enormous losses.<sup class="cite"><a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">[1]</a></sup></p>
@@ -70,8 +76,14 @@
     <div class="recall-a" hidden>They're in the infrastructure layer — they get paid for hardware/compute either way, and are posting real, current profits. The labs layer (OpenAI, Anthropic, etc.) is running large losses relative to revenue, betting on future profitability that hasn't arrived yet.</div>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">③ Why does it matter, specifically for reading AI-economy headlines, that "AGI" has no agreed definition?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Because the term gets treated as a fixed technical milestone even though it isn't one — including inside real contracts (Amazon's $35B AGI-contingent tranche, Microsoft's post-2032 AGI carve-out from OpenAI). Without a fixed definition, "reaching AGI" is partly a negotiated, interpreted event rather than a clean fact you could just look up.</div>
+  </div>
+
   <div class="quiz" data-answer="c">
-    <p class="quiz-q">③ A neocloud like CoreWeave belongs to which layer?</p>
+    <p class="quiz-q">④ A neocloud like CoreWeave belongs to which layer?</p>
     <button class="quiz-opt" data-key="a">Labs — it trains its own foundation models</button>
     <button class="quiz-opt" data-key="b">Capital — it's primarily a venture fund</button>
     <button class="quiz-opt" data-key="c">Infrastructure — it rents GPU compute to labs</button>
@@ -97,7 +109,9 @@
     [5] <a href="https://techcrunch.com/2026/01/12/googles-gemini-to-power-apples-ai-features-like-siri/">Google's Gemini to power Apple's AI features like Siri — TechCrunch</a><br>
     [6] <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">Why DeepSeek's V4 matters — MIT Technology Review</a><br>
     [7] <a href="https://www.tomshardware.com/tech-industry/semiconductors/custom-ai-asics-examined-from-broadcom-to-mtia">Custom AI ASICs examined: from Broadcom to MTIA — Tom's Hardware</a><br>
-    [8] <a href="https://www.forbes.com/sites/janakirammsv/2026/04/13/coreweave-becomes-ais-landlord-with-meta-and-anthropic-deals/">CoreWeave becomes AI's landlord — Forbes</a>
+    [8] <a href="https://www.forbes.com/sites/janakirammsv/2026/04/13/coreweave-becomes-ais-landlord-with-meta-and-anthropic-deals/">CoreWeave becomes AI's landlord — Forbes</a><br>
+    [9] <a href="https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/">OpenAI raises $110B in one of the largest private funding rounds in history — TechCrunch</a><br>
+    [10] <a href="https://www.cnbc.com/2025/10/28/open-ai-for-profit-microsoft.html">OpenAI completes for-profit restructuring, Microsoft holds ~27% — CNBC</a>
   </p>
 
   <div class="nav">
