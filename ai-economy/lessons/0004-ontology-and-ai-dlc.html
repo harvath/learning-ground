@@ -1,0 +1,128 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0004 | Ontology &amp; AI-DLC Deep Dive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0004 · ONTOLOGY &amp; AI-DLC, DEEP DIVE</div>
+  <h1>Two contested terms, taken apart</h1>
+  <p class="subtitle">L0002 introduced both lightly. This time: the actual mechanics of each — and the real, credible critiques.</p>
+
+  <h2>Palantir's Ontology, piece by piece</h2>
+
+  <p>Palantir's own docs split the Ontology into two families: <strong>semantic elements</strong>, which describe structure, and <strong>kinetic elements</strong>, which enable change.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">[1]</a></sup></p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Element</th><th>Family</th><th>What it is</th></tr>
+      <tr><td>Object Type</td><td>Semantic</td><td>An entity or event in the organization — e.g. "Vehicle," "Employee," "Shipment."</td></tr>
+      <tr><td>Property</td><td>Semantic</td><td>An Object Type's characteristics/attributes.</td></tr>
+      <tr><td>Link Type</td><td>Semantic</td><td>A relationship between two Object Types.</td></tr>
+      <tr><td>Action Type</td><td>Kinetic</td><td>The schema for a bounded, permissioned set of edits (plus side effects) that a human <em>or an agent</em> can submit.</td></tr>
+      <tr><td>Function</td><td>Kinetic</td><td>Server-side code, run inside Foundry's governed execution environment, that reads properties, traverses links, and makes edits.</td></tr>
+    </table>
+  </div>
+
+  <div class="box make">
+    <span class="label">how an agent actually *acts*, not just queries</span>
+    The governance boundary sits at the Action Type level. An agent given access to an Ontology isn't handed open-ended write access to the underlying data — it's scoped to a specific, pre-defined, auditable set of Action Types. "This agent may submit Action X on Object Type Y" is the actual permission being granted, not "this agent may edit anything." That's the mechanism behind Palantir's claim of governed agent autonomy, not a vague promise.
+  </div>
+
+  <p><span class="term">Ontology MCP</span> is the bridge to the rest of the ecosystem from L0003: a Developer Console feature that exposes an application's Ontology resources as MCP tools, so external agents (Claude, Copilot Studio, Gemini Enterprise) can act as MCP clients against it. It exposes exactly three tool classes — read objects, execute pre-approved actions, query data — and the scope is configured per-application by an admin, so an external agent only ever sees the slice an admin explicitly opened up.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/ontology-mcp/overview">[2]</a></sup></p>
+
+  <h2>The skeptic's case</h2>
+
+  <p>There's a real, pointed critique here, not just marketing pushback. A February 2026 piece, <em>"Palantir's 'Ontology' Hustle,"</em> makes the sharpest version of it plainly: <strong>Object Type = table, Property = column, Link Type = foreign key, Action = stored procedure</strong> — i.e., this is entity-relationship modeling, a technique Peter Chen formalized in 1976, wearing a philosophy-department word. The argument is that the term's main function is to make people unfamiliar with databases believe they're looking at something new.<sup class="cite"><a href="https://pigsty.io/blog/db/ontology-bullshit/">[3]</a></sup> This isn't a fringe take — a follow-up public debate on the claim reportedly landed 75% of the audience on the critic's side, real traction among data-infrastructure practitioners.<sup class="cite"><a href="https://vonng.com/en/db/ontology-again/">[4]</a></sup></p>
+
+  <p>The fair counterpoint: the genuinely hard, valuable part may not be the vocabulary at all, but the governance/permissioning layer around Actions, plus the hands-on work of actually curating an ontology for one organization's messy real-world data (Palantir's "forward-deployed engineer" practice). Whether "ontology" the word is doing real technical work, or just branding on top of familiar database primitives, is a separate question from whether the product is useful.</p>
+
+  <div class="box warn">
+    <span class="label">teaching takeaway</span>
+    Treat "Ontology" as Palantir's product name for a governed semantic layer + write-permission layer, built on conventional data-modeling primitives (entity-relationship modeling + scoped write permissions + an MCP-exposed API surface). Useful to know as a concrete pattern. But recognize both the mechanics <em>and</em> the critique when the term comes up — using it uncritically as if it were self-evidently novel is a small tell.
+  </div>
+
+  <h2>What a "Bolt" actually is</h2>
+
+  <p><span class="term">AI-DLC</span> (AWS's "AI-Driven Development Lifecycle," from L0002) runs on a unit called a <span class="term">Bolt</span> — the smallest iteration across all three phases (Inception, Construction, Operations), sized in hours or days rather than a fixed two-week sprint. AI proposes an execution path scaled to the task's actual complexity, and work is sequenced as Bolt 1, Bolt 2, ... Bolt n within Construction.<sup class="cite"><a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">[5]</a></sup></p>
+
+  <h2>Mob Elaboration and Mob Construction — borrowed from mob programming</h2>
+
+  <p>Both ceremonies explicitly borrow from Woody Zuill's <span class="term">mob programming</span> practice: the whole team working on the same task, at the same time, in the same space.<sup class="cite"><a href="https://mobprogramming.org/">[6]</a></sup></p>
+
+  <p><strong>Mob Elaboration</strong> (Inception phase): AI drafts requirements and stories by asking clarifying questions and proposing decompositions; the whole team validates live — compressing what traditionally takes weeks into roughly 2–3 hours. <strong>Mob Construction</strong> (Construction phase): using the validated Inception output, AI proposes architecture, domain models, code, and tests; the same cross-functional group clarifies technical decisions as they arise and reviews the generated artifacts before acceptance.<sup class="cite"><a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">[5]</a></sup></p>
+
+  <h2>Where the human stays in the loop</h2>
+
+  <p>The stated core philosophy is <strong>"AI proposes, human approves."</strong> Gates sit at every stage: a human gives initial task clarification, a human approves the AI-refined plan before execution, a human verifies outcomes after execution, and all interactions are logged for audit. AWS frames these as non-optional, not best-practice suggestions.<sup class="cite"><a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">[5]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">read the adoption numbers skeptically</span>
+    The specific case studies you'll see cited — Wipro compressing ~3 months of planned work into ~20 hours across five 4-hour mob sessions, a fintech (Dhan/Dun) building an app in 48 hours and shipping the following week, "10–15x productivity" — all trace back to AWS's own re:Invent 2025 session and blog posts, based on "100+ customer experiments" AWS itself ran or co-ran through its "Unicorn Gym" co-engineering program. No independently audited case study or published failure-case data exists yet. Treat these exactly like any vendor benchmark: real, but not neutral.
+  </div>
+
+  <h2>Is this AWS-specific, or an industry-wide shift with an AWS name?</h2>
+
+  <p>Worth comparing rather than taking AI-DLC's framing at face value. Microsoft's answer to the same underlying problem is <strong>"Agentic DevOps"</strong> (introduced at Build 2025) — AI agents embedded across the SDLC via existing tools (Copilot, Azure DevOps AI) — with no fixed ceremony structure like Bolts or Mob Elaboration. Google's public push in this period is reported as ecosystem/investment-focused (a widely cited ~$750M ecosystem investment figure) rather than a competing named methodology.</p>
+
+  <p>What's genuinely AWS-specific is the <strong>packaging</strong>: a named lifecycle with specific borrowed ceremony vocabulary (Bolt, Mob Elaboration, Mob Construction), formalized into phases and human-approval gates, backed by AWS's own reference tooling (Kiro, Amazon Q Developer, Strands Agents SDK, AgentCore). Whether that packaging is a genuine methodological contribution beyond naming rights, versus AWS's brand on a shift every major vendor is describing some version of, doesn't have a settled answer in independent commentary — worth holding as an open question rather than resolving it either way.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① In Palantir's Ontology, what's the difference between the semantic elements and the kinetic elements?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Semantic elements describe structure: Object Types (entities/events), Properties (attributes), Link Types (relationships). Kinetic elements enable change: Action Types (schema for a bounded, permissioned set of edits an agent or human can submit) and Functions (server-side code that reads/traverses/edits via the governed execution environment).</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② What's the skeptic's one-line mapping of Ontology terms onto plain old database terms — and what's the argument behind it?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Object Type = table, Property = column, Link Type = foreign key, Action = stored procedure. The argument: this is 1976-era entity-relationship modeling wearing new, philosophy-flavored branding — the word's main effect is making it look novel to people unfamiliar with databases.</div>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ A "Bolt" in AI-DLC is best compared to which part of a traditional Scrum team's rhythm?</p>
+    <button class="quiz-opt" data-key="a">A sprint, but scaled down to hours/days instead of two weeks</button>
+    <button class="quiz-opt" data-key="b">A daily standup meeting</button>
+    <button class="quiz-opt" data-key="c">A sprint retrospective</button>
+    <p class="quiz-why" hidden>A Bolt is the smallest iteration unit across all three AI-DLC phases, playing the same structural role a sprint plays in Scrum, but sized to hours or days and scaled to the task's actual complexity rather than fixed at two weeks.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">④ Which of AI-DLC's headline adoption claims (Wipro, Dhan/Dun, "10-15x productivity") has been independently audited outside of AWS's own reporting?</p>
+    <button class="quiz-opt" data-key="a">Wipro's ~20-hour compression figure</button>
+    <button class="quiz-opt" data-key="b">Dhan/Dun's 48-hour build</button>
+    <button class="quiz-opt" data-key="c">None of the above — all trace back to AWS's own sourcing</button>
+    <p class="quiz-why" hidden>Every specific number and case study found traces back to AWS's own re:Invent 2025 session and blog posts, based on AWS-run or AWS-co-run customer experiments. This is the exact "read a funding/claim headline critically" skill from the mission — applied here to a productivity claim instead of a valuation.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary sources</span>
+    Palantir's own <a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">Ontology core concepts docs</a> for the mechanics, and <a href="https://pigsty.io/blog/db/ontology-bullshit/">"Palantir's 'Ontology' Hustle"</a> for the sharpest version of the skeptic's case — read both, since this lesson deliberately doesn't resolve the tension between them.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    If you want the same deep-dive treatment for another term that got a light gloss earlier (RAG's mechanics, MCP's actual message format, the specific Action-type permission model) — just ask. Otherwise, next up is L0005: following the money — funding rounds, circular financing, and the bubble debate hinted at in L0001.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">Ontology core concepts — Palantir Foundry docs</a><br>
+    [2] <a href="https://www.palantir.com/docs/foundry/ontology-mcp/overview">Ontology MCP overview — Palantir Foundry docs</a><br>
+    [3] <a href="https://pigsty.io/blog/db/ontology-bullshit/">Palantir's "Ontology" Hustle — pigsty.io</a><br>
+    [4] <a href="https://vonng.com/en/db/ontology-again/">After the debate, let's talk seriously about "Ontology" — vonng.com</a><br>
+    [5] <a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">Deep dive: AWS AI-Driven Development Lifecycle — michaelrishiforrester.com</a><br>
+    [6] <a href="https://mobprogramming.org/">Mob Programming — mobprogramming.org</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0003-the-agent-tooling-family-tree.html">← L0003 The Agent Tooling Family Tree</a>
+    <a href="../reference/course-map.html">Course map</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

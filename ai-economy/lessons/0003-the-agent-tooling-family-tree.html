@@ -1,0 +1,169 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0003 | The Agent Tooling Family Tree</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">LESSON 0003 · THE AGENT TOOLING FAMILY TREE</div>
+  <h1>Protocols, agents, frameworks: who begat whom</h1>
+  <p class="subtitle">L0002 introduced several tools in isolation. This lesson is the family tree — which category each one belongs to, and which ones are direct descendants of earlier ones.</p>
+
+  <p>The names in this space (goose, AGENTS.md, Semantic Kernel, LlamaIndex...) get thrown around as if they're all the same kind of thing. They aren't. Some are <strong>rules everyone agrees to follow</strong>. Some are <strong>software you install and run</strong>. Some are <strong>libraries you import to build your own agent</strong>. Sorting a name into the right bucket resolves most of the confusion before you even get to what it does.</p>
+
+  <h2>Four kinds of thing</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Kind</th><th>What it actually is</th><th>Examples</th></tr>
+      <tr><td>Protocol / convention</td><td>A rule everyone agrees to follow. Not software — a shared format or contract.</td><td>MCP (L0002), AGENTS.md</td></tr>
+      <tr><td>Runnable agent</td><td>Software you install and run directly. It <em>is</em> the agent.</td><td>goose, Claude Code, Cursor, Aider</td></tr>
+      <tr><td>Framework / SDK</td><td>A library you import to build <em>your own</em> custom agent.</td><td>Mastra, LangGraph, CrewAI, OpenAI Agents SDK, Microsoft Agent Framework</td></tr>
+      <tr><td>Retrieval specialist</td><td>Agent-adjacent, but its core job is getting the right data in front of a model.</td><td>LlamaIndex</td></tr>
+    </table>
+  </div>
+
+  <h2>AGENTS.md — the README for agents</h2>
+
+  <p><span class="term">AGENTS.md</span> is a plain markdown file at a repo's root — setup commands, code-style rules, test instructions, PR conventions — kept separate from the human-facing README so that stays concise. It exists because, before it, every agent vendor invented its own instructions file: <code>.cursorrules</code> for Cursor, <code>CLAUDE.md</code> for Claude Code, <code>.github/copilot-instructions.md</code> for Copilot — forcing teams to duplicate the same guidance for every tool or pick one to optimize for.<sup class="cite"><a href="https://agents.md/">[1]</a></sup></p>
+
+  <p>It shipped in August 2025 as a genuine multi-vendor effort — OpenAI (Codex) as lead contributor, alongside Sourcegraph (Amp), Google (Jules), Cursor, and Factory — and is now used in 60,000+ open-source projects, read natively by Codex, Jules, Devin, VS Code, Cursor, Zed, Aider, Copilot, and more.<sup class="cite"><a href="https://agents.md/">[1]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">a gotcha that affects how you work</span>
+    Claude Code (the tool you're reading this in) does <strong>not</strong> natively read AGENTS.md — it only reads <code>CLAUDE.md</code>. The common workaround is a one-line import directive inside <code>CLAUDE.md</code> pointing at <code>AGENTS.md</code>, so there's still one source of truth. Cursor, by contrast, reads AGENTS.md natively (including nested subdirectory files) as of 2026.<sup class="cite"><a href="https://codersera.com/blog/agents-md-vs-claude-md-vs-cursor-rules-comparison-2026/">[2]</a></sup>
+  </div>
+
+  <h2>goose — an agent you run, not a library you import</h2>
+
+  <p><span class="term">goose</span> is Block's (formerly Square) open-source, terminal-first AI agent — you install and run it directly, and it reads/writes files, executes shell commands, and reaches external services via MCP, all driven by natural-language instructions. Built in Rust; 70+ MCP extensions; supports 15+ model providers including local Ollama.<sup class="cite"><a href="https://theaiagentindex.com/agents/goose">[3]</a></sup> The category it competes in is <strong>Claude Code and Aider</strong> — runnable agents — not Mastra or LangGraph, which you'd never "run" the same way; you build with them instead.</p>
+
+  <div class="box primary">
+    <span class="label">where these three meet</span>
+    On December 9, 2025, the Linux Foundation announced the <span class="term">Agentic AI Foundation (AAIF)</span>, founded with exactly three contributed projects: Anthropic's <strong>MCP</strong>, Block's <strong>goose</strong>, and OpenAI's <strong>AGENTS.md</strong> — one protocol, one runnable agent, one convention, now under neutral, cross-vendor governance. Platinum members include AWS, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, and OpenAI.<sup class="cite"><a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">[4]</a></sup> This is the concrete answer to "how do these relate": they don't just resemble each other, they were formally bundled together as the foundation's founding trio.
+  </div>
+
+  <h2>Two framework lineages that just merged</h2>
+
+  <p>Two separate "old thing → new thing" mergers happened in this space within the last 18 months — worth knowing as mergers, not as two unrelated new names to memorize.</p>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">Swarm (Oct 2024) → OpenAI Agents SDK (Mar 2025)</div>
+      <div class="n-note">Swarm was OpenAI's experimental, unmaintained agent-orchestration pattern. The Agents SDK is its production successor — minimal abstractions (Agents, Handoffs, Guardrails), provider-agnostic despite the OpenAI name.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Semantic Kernel (2023) + AutoGen → Microsoft Agent Framework (GA Apr 2026)</div>
+      <div class="n-note"><span class="term">Semantic Kernel</span> shipped in 2023 as enterprise "plumbing" for adding AI orchestration to existing .NET apps (state management, telemetry, connectors) — closer to "add AI to an app you already have" than "build a standalone autonomous agent." <span class="term">AutoGen</span> was Microsoft's separate, research-driven multi-agent framework. On April 3, 2026 the two were unified into Microsoft Agent Framework, combining Semantic Kernel's enterprise plumbing with AutoGen's multi-agent orchestration patterns.<sup class="cite"><a href="https://learn.microsoft.com/en-us/agent-framework/migration-guide/from-semantic-kernel/">[5]</a></sup> Both originals are now in maintenance mode (bug fixes only); Microsoft's own migration guide recommends moving off Semantic Kernel within 6–12 months.<sup class="cite"><a href="https://learn.microsoft.com/en-us/agent-framework/migration-guide/from-semantic-kernel/">[5]</a></sup></div>
+    </div>
+  </div>
+
+  <h2>LlamaIndex — the retrieval specialist that didn't converge</h2>
+
+  <p><span class="term">LlamaIndex</span> started life as <strong>GPT Index</strong>, open-sourced by Jerry Liu in November 2022 to connect GPT-3 to private data; it was renamed LlamaIndex in early 2023 to signal it wasn't OpenAI-specific (the timing lined up with Meta's Llama release).<sup class="cite"><a href="https://en.wikipedia.org/wiki/LlamaIndex">[6]</a></sup> Unlike Semantic Kernel and AutoGen, it did <strong>not</strong> converge into a general orchestration framework — its 2026 positioning is explicitly "more than a RAG framework, it is agentic <em>document processing</em>," doubling down on parsing, chunking, and retrieval rather than competing with LangGraph on orchestration.<sup class="cite"><a href="https://www.llamaindex.ai/blog/llamaindex-is-more-than-a-rag-framework">[7]</a></sup> The common production pattern: LlamaIndex handles retrieval, feeding into a separate agent framework (often LangGraph) that handles orchestration — used together, not as alternatives.</p>
+
+  <h2>"Inference" — one word, three senses</h2>
+
+  <p>You'll see "inference" used loosely across three genuinely different things. Worth disambiguating explicitly, since conflating them causes real confusion:</p>
+
+  <p><strong>(a) The base ML sense</strong> — running a trained model to produce output, as opposed to training it. Every other sense below builds on this one.</p>
+  <p><strong>(b) Hugging Face's Inference Providers</strong> — a marketplace/router giving pay-per-use access to 15+ hosted-inference partners (Groq, Together AI, Fireworks, Cerebras, and others) through one unified API. Hugging Face takes no markup on this — it's a funnel to keep developer attention in its ecosystem, not a direct profit center.<sup class="cite"><a href="https://huggingface.co/docs/inference-providers/pricing">[8]</a></sup></p>
+  <p><strong>(c) Inference-time / test-time compute</strong> — reasoning models spending extra computation <em>at answer time</em> (extended "thinking") to improve accuracy on hard problems, popularized by OpenAI's o1 (Sept 2024) and DeepSeek-R1 (Jan 2025). A reasoning-model query typically costs 30–100x the tokens of a normal chat query — and the technique's cost-efficiency depends heavily on the specific model, not just "spend more, get more": DeepSeek-R1 delivered comparable reasoning quality to o1 at roughly 27x cheaper API pricing at the time.<sup class="cite"><a href="https://www.vellum.ai/blog/the-training-of-deepseek-r1-and-ways-to-use-it">[9]</a></sup></p>
+
+  <h2>The genealogy, in order</h2>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="n-title">Nov 2022 — GPT Index released</div>
+      <div class="n-note">Jerry Liu, connecting GPT-3 to private data.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Early 2023 — renamed LlamaIndex</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">2023 — Semantic Kernel released (Microsoft)</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Oct 2024 — OpenAI's Swarm (experimental)</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Nov 2024 — MCP announced (Anthropic)</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Mar 2025 — OpenAI Agents SDK supersedes Swarm</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Aug 2025 — AGENTS.md released (multi-vendor)</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Dec 2025 — Agentic AI Foundation founded</div>
+      <div class="n-note">MCP + goose + AGENTS.md, under the Linux Foundation.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">Apr 2026 — Microsoft Agent Framework GA</div>
+      <div class="n-note">AutoGen + Semantic Kernel merged.</div>
+    </div>
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① goose and Mastra are both casually called "AI agent" tools. What's the concrete difference in how you'd actually use each one?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>goose is a runnable agent — you install it and run it directly, like Claude Code or Aider. Mastra is a framework/SDK — you import it as a library to build your own custom agent application. One is software you run; the other is software you build with.</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② Semantic Kernel and AutoGen used to be separate Microsoft projects. What are they now, and what should you do if you're maintaining code on either one?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>They were merged into Microsoft Agent Framework (GA April 2026). Both originals are now in maintenance mode (bug fixes only, no new features) — Microsoft's own guidance recommends migrating off Semantic Kernel within 6–12 months.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ A reasoning model spending extra tokens "thinking" before answering a hard question is an example of which sense of "inference"?</p>
+    <button class="quiz-opt" data-key="a">The base ML sense — running a trained model</button>
+    <button class="quiz-opt" data-key="b">Hugging Face's Inference Providers marketplace</button>
+    <button class="quiz-opt" data-key="c">Inference-time / test-time compute</button>
+    <p class="quiz-why" hidden>All reasoning-model "thinking" happens during inference in the base sense too, but the specific named phenomenon — spending extra compute at answer-time to trade latency/cost for accuracy — is inference-time (test-time) compute, popularized by o1 and DeepSeek-R1.</p>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">④ Does Claude Code (this tool) natively read AGENTS.md files as of 2026?</p>
+    <button class="quiz-opt" data-key="a">Yes, natively, same as Cursor</button>
+    <button class="quiz-opt" data-key="b">No — it only reads CLAUDE.md natively, though a one-line import workaround exists</button>
+    <button class="quiz-opt" data-key="c">Only when run inside VS Code</button>
+    <p class="quiz-why" hidden>Claude Code reads CLAUDE.md only; there's an open, uncommitted GitHub issue requesting native AGENTS.md support. The workaround is a one-line import directive in CLAUDE.md pointing at AGENTS.md, so there's still a single source of truth. Cursor reads AGENTS.md natively.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    <a href="https://agents.md/">agents.md</a> itself is short, and is the clearest primary-source statement of the problem the convention solves and what a well-formed file looks like.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, L0004 takes the two terms from L0002 you asked to go deeper on — ontology and AI-DLC — and opens up their actual mechanics, plus the real critiques of each.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://agents.md/">agents.md — official site</a><br>
+    [2] <a href="https://codersera.com/blog/agents-md-vs-claude-md-vs-cursor-rules-comparison-2026/">AGENTS.md vs. CLAUDE.md vs. Cursor rules — comparison, 2026 — CoderSera</a><br>
+    [3] <a href="https://theaiagentindex.com/agents/goose">goose — The AI Agent Index</a><br>
+    [4] <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">Linux Foundation announces the Agentic AI Foundation</a><br>
+    [5] <a href="https://learn.microsoft.com/en-us/agent-framework/migration-guide/from-semantic-kernel/">Migrate from Semantic Kernel to Microsoft Agent Framework — Microsoft Learn</a><br>
+    [6] <a href="https://en.wikipedia.org/wiki/LlamaIndex">LlamaIndex — Wikipedia</a><br>
+    [7] <a href="https://www.llamaindex.ai/blog/llamaindex-is-more-than-a-rag-framework">LlamaIndex is more than a RAG framework — LlamaIndex blog</a><br>
+    [8] <a href="https://huggingface.co/docs/inference-providers/pricing">Inference Providers pricing — Hugging Face docs</a><br>
+    [9] <a href="https://www.vellum.ai/blog/the-training-of-deepseek-r1-and-ways-to-use-it">The training of DeepSeek-R1 and ways to use it — Vellum</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0002-the-toolbox.html">← L0002 The Toolbox</a>
+    <a href="./0004-ontology-and-ai-dlc.html">L0004 Ontology &amp; AI-DLC deep dive →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
