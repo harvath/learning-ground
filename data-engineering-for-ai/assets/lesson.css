@@ -1,0 +1,296 @@
+/* ============================================================
+   lesson.css — Data Engineering for AI workspace shared style
+   Every lesson and reference page loads this single stylesheet.
+   Look: engineering blueprint / data-catalog. Light, structured,
+   schematic. Teal = the pipeline (data in motion); amber = policy
+   & governance (the rules on top). Distinct on purpose from this
+   repo's other courses (ai-economy is a dark market terminal).
+   ============================================================ */
+
+:root {
+  --ink:      #20272e;
+  --ink-soft: #5d6b78;
+  --paper:    #f6f5f1;
+  --card:     #ffffff;
+  --rule:     #ddd9cf;
+  --rule-2:   #e8e5dc;
+  --accent:   #1d7a72;   /* pipeline / data in motion — deep teal */
+  --accent-lo:#e2f0ee;
+  --gov:      #b0692a;   /* policy & governance — amber/rust */
+  --gov-lo:   #f6ead9;
+  --danger:   #b1402f;
+  --info:     #2f6699;
+  --maxw:     43rem;
+  --mono: "SF Mono", ui-monospace, "JetBrains Mono", "Menlo", "Consolas", monospace;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.5rem 6rem;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  line-height: 1.72;
+  font-size: 1.05rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; }
+
+/* ---- headings ---- */
+h1, h2, h3 { line-height: 1.32; font-weight: 700; color: #12181d; font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+h1 { font-size: 1.85rem; margin: 0 0 0.35rem; letter-spacing: -0.015em; }
+h2 {
+  font-size: 1.22rem;
+  margin: 2.7rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--rule);
+}
+h3 { font-size: 1.03rem; margin: 1.8rem 0 0.6rem; color: var(--accent); text-transform: none; }
+
+.kicker {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.kicker a { color: var(--accent); border: none; }
+.subtitle {
+  color: var(--ink-soft);
+  font-size: 1.06rem;
+  margin: 0.2rem 0 0;
+  font-style: italic;
+}
+
+p { margin: 0.9rem 0; }
+strong { font-weight: 700; color: #12181d; }
+em { color: inherit; }
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--accent-lo);
+  border: 1px solid #c9e0dc;
+  border-radius: 4px;
+  padding: 0.05em 0.35em;
+  color: #12554f;
+}
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(29,122,114,0.4); }
+a:hover { border-bottom-color: var(--accent); }
+
+/* ---- citations / sources ---- */
+sup.cite { font-size: 0.7em; }
+sup.cite a { border: none; }
+.sources { font-size: 0.84rem; color: var(--ink-soft); font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+.sources li { margin: 0.3rem 0; }
+
+/* ---- "as of" freshness badge — tooling here moves; mark dated facts ---- */
+.asof {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--gov);
+  border-radius: 3px;
+  padding: 0.08em 0.42em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ---- call-out boxes ---- */
+.box {
+  border: 1px solid var(--rule);
+  background: var(--card);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  margin: 1.6rem 0;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.62;
+}
+.box .label {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.box.primary { border-left: 4px solid var(--accent); }
+.box.make    { border-left: 4px solid var(--gov); background: #fdf7ef; }
+.box.make .label { color: var(--gov); }
+.box.spine   { border-left: 4px solid var(--accent); background: var(--accent-lo); }
+.box.spine .label { color: #12554f; }
+.box.ask     { border-left: 4px solid var(--info); }
+.box.ask .label { color: var(--info); }
+.box.warn    { border-left: 4px solid var(--danger); background: #fbeeeb; }
+.box.warn .label { color: var(--danger); }
+
+/* ---- inline term label ---- */
+.term { font-weight: 700; font-family: var(--mono); font-size: 0.9em; color: #12181d; }
+
+/* ---- pipeline / stage diagram (shared with reference docs) ---- */
+.chain { margin: 2rem 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+.chain-node {
+  position: relative;
+  padding: 0.7rem 0 0.7rem 2.2rem;
+  border-left: 3px solid var(--rule);
+  margin-left: 0.6rem;
+}
+.chain-node::before {
+  content: "";
+  position: absolute;
+  left: -0.55rem; top: 1.15rem;
+  width: 0.8rem; height: 0.8rem;
+  background: var(--paper);
+  border: 3px solid var(--ink-soft);
+  border-radius: 50%;
+}
+.chain-node.main::before { background: var(--accent); border-color: var(--accent); }
+.chain-node .n-title { font-weight: 700; font-family: var(--mono); font-size: 0.92rem; color: #12181d; }
+.chain-node .n-note  { font-size: 0.9rem; color: var(--ink-soft); }
+.chain-branch {
+  margin: 0.2rem 0 0.2rem 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px dashed var(--gov);
+  font-size: 0.9rem;
+  color: var(--gov);
+}
+
+/* ---- quiz component (quiz.js) ---- */
+.quiz {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--card);
+  padding: 1.1rem 1.2rem;
+  margin: 1.8rem 0;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+.quiz-q { font-weight: 700; margin: 0 0 0.8rem; color: #12181d; }
+.quiz-opt {
+  display: block; width: 100%; text-align: left;
+  font-family: inherit; font-size: 0.97rem; color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: 0.6rem 0.9rem; margin: 0.45rem 0;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s;
+}
+.quiz-opt:hover { background: var(--accent-lo); }
+.quiz-opt.is-correct { background: #dff0ec; border-color: var(--accent); color: #0f5049; }
+.quiz-opt.is-wrong   { background: #fbe6e1; border-color: var(--danger); color: #8f2f22; }
+.quiz-why {
+  margin: 0.9rem 0 0; padding-top: 0.8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.92rem; color: var(--ink-soft);
+}
+
+/* ---- recall component (recall.js) ---- */
+.recall {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--gov);
+  border-radius: 8px;
+  background: #fdf9f3;
+  padding: 1.1rem 1.2rem;
+  margin: 1.6rem 0;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+.recall-q { font-weight: 700; margin: 0 0 0.8rem; color: #12181d; }
+.recall-show {
+  font-family: inherit; font-size: 0.9rem; color: var(--gov);
+  background: var(--paper);
+  border: 1px solid var(--gov); border-radius: 6px;
+  padding: 0.4rem 1rem; cursor: pointer;
+}
+.recall-show:hover { background: #f6ead9; }
+.recall-a {
+  margin: 0.9rem 0 0; padding-top: 0.8rem;
+  border-top: 1px dashed var(--rule);
+  font-size: 0.95rem; color: var(--ink-soft);
+}
+
+/* ---- table of contents (topic index) ---- */
+.toc { list-style: none; padding: 0; margin: 1.5rem 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+.toc li { border-bottom: 1px solid var(--rule); }
+.toc a {
+  display: flex; gap: 0.9rem; align-items: baseline;
+  padding: 0.95rem 0.3rem; border: none; color: var(--ink);
+}
+.toc a:hover { background: var(--accent-lo); }
+.toc .num { flex: none; width: 3.4rem; color: var(--accent); font-family: var(--mono); font-size: 0.8rem; }
+.toc .t { font-weight: 700; color: #12181d; }
+.toc .d { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.15rem; }
+.toc li.soon a { opacity: 0.55; }
+.toc li.soon .num { color: var(--ink-soft); }
+
+/* ---- comparison / data table ---- */
+.tablewrap { overflow-x: auto; margin: 1.6rem 0; }
+table.cmp { border-collapse: collapse; width: 100%; font-size: 0.9rem; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+table.cmp th, table.cmp td {
+  border: 1px solid var(--rule); padding: 0.55rem 0.7rem;
+  text-align: left; vertical-align: top; line-height: 1.55;
+}
+table.cmp th { background: var(--accent-lo); font-weight: 700; font-family: var(--mono); font-size: 0.78rem; color: #12554f; }
+table.cmp td:first-child { font-weight: 700; color: #12181d; }
+
+/* ---- checklist (procedure walkthroughs) ---- */
+ol.steps { padding-left: 1.4rem; }
+ol.steps li { margin: 0.9rem 0; }
+ol.steps .sub { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.2rem; }
+
+/* ---- syllabus (reference/course-map) ---- */
+.syllabus { margin: 2rem 0; font-family: -apple-system, "Segoe UI", Arial, sans-serif; }
+.syl-unit { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.4rem; }
+.syl-item {
+  display: flex; gap: 0.9rem; align-items: baseline;
+  padding: 0.8rem 0; border-bottom: 1px solid var(--rule);
+}
+.syl-num { flex: none; width: 3rem; color: var(--ink-soft); font-family: var(--mono); font-size: 0.8rem; }
+.syl-tag {
+  flex: none; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 0.12rem 0.55rem; border-radius: 999px; border: 1px solid;
+  white-space: nowrap; align-self: center;
+}
+.syl-tag.done { color: var(--accent); border-color: var(--accent); }
+.syl-tag.now  { color: #fff; background: var(--accent); border-color: var(--accent); }
+.syl-tag.next { color: var(--gov); border-color: var(--gov); }
+.syl-body .t { font-weight: 700; color: #12181d; }
+.syl-body .q { display: block; font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.25rem; }
+
+/* ---- nav ---- */
+.nav {
+  display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: space-between;
+  margin: 3rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 2px solid var(--rule);
+  font-size: 0.9rem;
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+.teacher {
+  margin-top: 2.5rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  text-align: center;
+  font-style: italic;
+}
+
+@media print {
+  body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+  h1, h2, h3, .term, .toc .t, .syl-body .t, .chain-node .n-title, .quiz-q, .recall-q { color: #000; }
+  .quiz-opt:hover { background: none; }
+  .nav, .teacher { display: none; }
+  a { color: #000; border: none; }
+  .box, .quiz, .recall, table.cmp th { background: #f4f4f4; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 2rem 1.1rem 4rem; font-size: 1.02rem; }
+  h1 { font-size: 1.55rem; }
+}

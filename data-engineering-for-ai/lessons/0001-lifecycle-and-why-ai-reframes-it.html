@@ -1,0 +1,118 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0001 | The Lifecycle, and Why AI Reframes It</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit A · Foundations — Lesson A1</div>
+  <h1>Data doesn't arrive AI-ready. Someone has to move it there.</h1>
+  <p class="subtitle">Before an agent can retrieve "the renewal terms for Acme," a long, unglamorous pipeline had to run first. This lesson is the map of that pipeline — and why "for AI" changes what counts as done.</p>
+
+  <p>Your goal in this course is to take <em>all of an organization's data</em> and get it to the point where an agent can find the right slice of it and be trusted to act on it. That end state has a name people started using in 2025–26: <span class="term">AI-ready data</span> — data that's been described and governed well enough that a model can retrieve exactly the right thing and you'd trust the result. The striking part is how rare it is. As of <span class="asof">Mar 2026</span>, only <strong>7% of enterprises say their data is completely ready for AI.</strong><sup class="cite"><a href="https://atlan.com/know/context-layer-for-ai-agents/">[3]</a></sup> Not 7% have adopted AI — 7% have the <em>data</em> ready. The other 93% is the work this course is about.</p>
+
+  <p>To see why that gap is so wide, you need the map of how data gets anywhere at all.</p>
+
+  <h2>What "data engineering" actually is</h2>
+
+  <p><span class="term">Data engineering</span> is the discipline of building the systems that move data from where it's <em>produced</em> to where it's <em>used</em> — reliably, and at the right quality. It's a distinct job from data <em>science</em> (building models) and data <em>analysis</em> (interpreting results): data engineering is the plumbing and the warehousing underneath both. If the data scientist is a chef, the data engineer stocks the kitchen — sourcing, cleaning, labelling, and shelving every ingredient so the right one is within reach when needed.<sup class="cite"><a href="https://xebia.com/blog/fundamentals-of-data-engineering/">[2]</a></sup></p>
+
+  <h2>The data engineering lifecycle — the backbone of the whole course</h2>
+
+  <p>The most widely-used mental model comes from Joe Reis &amp; Matt Housley's <em>Fundamentals of Data Engineering</em>: data flows through <strong>five stages</strong>, from raw production to useful delivery.<sup class="cite"><a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/">[1]</a></sup> Read it top to bottom — each stage feeds the next.</p>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">1 · GENERATION</div>
+      <div class="n-note">Where data is born: an app writes a row, a user files a ticket, a contract is signed. You usually don't control these <em>source systems</em> — you receive from them.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2 · STORAGE</div>
+      <div class="n-note">Where it lands and lives. Not one place — databases, warehouses, lakes (Unit A3). Storage underpins every other stage, so it's both a stage and a constant.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">3 · INGESTION</div>
+      <div class="n-note">Moving it <em>in</em> from source systems — batches on a schedule, or streams in real time. Often the hardest, most brittle part in practice.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">4 · TRANSFORMATION</div>
+      <div class="n-note">Turning raw into useful: cleaning, joining, reshaping, computing. Raw data is rarely usable as-is; this is where it earns its keep.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">5 · SERVING</div>
+      <div class="n-note">Delivering it to whoever uses it — a dashboard, an analyst, an ML model, or (our case) an agent. Data has no value until it's served for a purpose.</div>
+    </div>
+  </div>
+
+  <p>Running <em>underneath</em> all five stages are the <span class="term">undercurrents</span> — concerns that don't sit at one stage but cut across every one: <strong>security, data management (governance), DataOps, data architecture, orchestration, and software engineering.</strong><sup class="cite"><a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/">[1]</a></sup> Hold onto this word. Most of what makes data <em>AI-ready</em> — describing it, governing it — lives in the undercurrents, not the five visible stages. Units B and C of this course are essentially "take two undercurrents and make them the main event."</p>
+
+  <div class="box make">
+    <span class="label">the reframe: what changes when it's "for AI"</span>
+    The five stages are decades old — they're how a 2010 sales dashboard got built too. What changed is the <strong>serving</strong> target and, with it, the bar for the undercurrents. A dashboard serves a <em>human</em> who brings their own judgment, ignores a weird row, and knows Acme is the same as "Acme Corp." An <strong>agent</strong> brings none of that. It will confidently act on the weird row, treat "Acme" and "Acme Corp" as two customers, and expose data it was never meant to touch — unless the <em>description</em> and <em>governance</em> undercurrents did their job upstream. Same pipeline; far less tolerance for a sloppy one.
+  </div>
+
+  <p>How much does closing that gap matter? A concrete, dated data point: OpenAI's own engineering team published its internal data-agent design in <span class="asof">Jan 2026</span>. Time to answer a complex business question dropped <strong>from over 22 minutes to 1 minute 22 seconds</strong> — not by changing the model, but by putting a full "context stack" (governed definitions, entity resolution, lineage) underneath it.<sup class="cite"><a href="https://atlan.com/know/context-layer-for-ai-agents/">[3]</a></sup> The data engineering, not the model, was the bottleneck.</p>
+
+  <h2>Meet Meridian — the company we'll build for</h2>
+
+  <p>Concepts stick when they have something to hold onto, so one example company runs through every lesson. <strong>Meridian</strong> is a mid-size B2B SaaS business (fictional, but realistically messy). Its data is deliberately varied, because yours will be too:</p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>Kind</th><th>Meridian's data</th><th>Why it's here</th></tr>
+    <tr><td>Structured</td><td>Postgres app DB (customers, subscriptions, invoices); a CRM (accounts, deals)</td><td>The "systems of record" — authoritative, schema'd, familiar to you as an engineer</td></tr>
+    <tr><td>Semi-structured</td><td>Support tickets; JSON event &amp; API logs</td><td>Self-describing but irregular — the awkward middle</td></tr>
+    <tr><td>Unstructured</td><td>Product wiki; Slack history; signed-contract PDFs; sales-call transcripts</td><td>No schema at all — the pile traditional analytics ignored, and exactly where AI earns its keep</td></tr>
+  </table>
+  </div>
+
+  <p>We'll follow <strong>one signed-contract PDF</strong> as a recurring thread — call it the Acme contract. Watch what it takes for an agent to safely answer <em>"what are Acme's renewal terms?"</em> It has to be <strong>stored</strong> somewhere it can be found (Unit A), <strong>described</strong> so the system knows it's a contract for Acme signed on a date (Unit B), <strong>governed</strong> so only permitted callers see it (Unit C), <strong>made reachable</strong> to the model as retrievable text (Unit D), and finally <strong>acted on</strong> by an agent that quotes the right clause (Unit E). That path — <strong>store → describe → govern → make reachable → act on</strong> — is the spine of this course.</p>
+
+  <div class="box spine">
+    <span class="label">the spine</span>
+    <strong>store → describe → govern → make reachable → act on.</strong> Each unit owns one segment; the Acme contract travels all of them. If you ever feel lost in a later lesson, ask which segment you're in — the answer re-orients everything.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① From memory: name the five stages of the data engineering lifecycle in order, and say what the "undercurrents" are — and why this course cares about them more than the stages.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden><strong>Stages:</strong> generation → storage → ingestion → transformation → serving. <strong>Undercurrents:</strong> cross-cutting concerns that run under every stage — security, data management/governance, DataOps, data architecture, orchestration, software engineering. This course cares about them most because "AI-ready" is won or lost in the <em>describe</em> and <em>govern</em> undercurrents, not in the five visible stages — an agent, unlike a human, has no judgment to compensate for weak ones.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② A team upgrades from a human dashboard to an AI agent over the very same pipeline. Which single change best explains why the agent needs far more of the pipeline to be right?</p>
+    <button class="quiz-opt" data-key="a">Agents read data far faster than any person can read a dashboard</button>
+    <button class="quiz-opt" data-key="b">Agents require the data to be stored inside a vector database first</button>
+    <button class="quiz-opt" data-key="c">Agents lack the human judgment that quietly forgave messy, ungoverned data</button>
+    <button class="quiz-opt" data-key="d">Agents can only read structured data and never touch document files</button>
+    <p class="quiz-why" hidden>It's the loss of human judgment. A person ignores a weird row, reconciles "Acme"/"Acme Corp," and won't open data they know is off-limits. An agent does none of that unless description and governance handled it upstream — so the same pipeline now needs its undercurrents to actually be right. (Speed is real but not the reason; vector DBs and the structured/unstructured claims are just false as stated.)</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next · primary source</span>
+    The lifecycle comes from <a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/">Reis &amp; Housley, <em>Fundamentals of Data Engineering</em></a> (O'Reilly). If you read one thing alongside this course, read its Chapter 2 (the lifecycle). A free, faithful summary of the stages and undercurrents is <a href="https://xebia.com/blog/fundamentals-of-data-engineering/">here</a> if you want the shape before committing to the book.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    I'm your teacher for this — ask me anything that's fuzzy. Good questions right now: "how is this different from the ETL I've vaguely heard of?", "is "AI-ready data" real or just vendor marketing?", or "where does Mastra fit on that spine?" Next lesson (<strong>A2 — The Shape of Org Data</strong>) zooms into stage 1: we inventory Meridian's data properly and pin down structured vs. semi- vs. unstructured, which everything downstream depends on.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/">Reis &amp; Housley, <em>Fundamentals of Data Engineering</em> — O'Reilly (2022)</a><br>
+    [2] <a href="https://xebia.com/blog/fundamentals-of-data-engineering/">Fundamentals of Data Engineering — lifecycle summary, Xebia</a><br>
+    [3] <a href="https://atlan.com/know/context-layer-for-ai-agents/">Context Layer for AI Agents: Enterprise Guide 2026 — Atlan</a> (7%-AI-ready: Cloudera + HBR Analytic Services, Mar 2026; OpenAI 22 min → 1:22: OpenAI eng, Jan 2026)
+  </p>
+
+  <div class="nav">
+    <a href="../index.html">← Topic index</a>
+    <a href="../reference/course-map.html">Course map →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

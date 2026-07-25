@@ -1,0 +1,123 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Course Map | Data Engineering for AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<div class="wrap">
+
+  <div class="kicker"><a href="../index.html">← Topic index</a> · REFERENCE</div>
+  <h1>Course map</h1>
+  <p class="subtitle">The full syllabus, by unit. The course follows the spine bottom-up: <strong>store → describe → govern → make reachable → act on</strong>. One running example org (Meridian) threads through all of it. Slots beyond the current lesson are planned and may shift to fit where you are.</p>
+
+  <div class="box spine">
+    <span class="label">the spine</span>
+    A single piece of Meridian's data — say, a signed customer contract (a PDF) — travels the whole course: it gets <strong>stored</strong> (A), <strong>described</strong> with metadata and lineage (B), <strong>governed</strong> by classification and policy (C), <strong>made reachable</strong> to a model via embeddings and retrieval (D), and finally <strong>acted on</strong> by an agent or workflow (E). Each unit owns one segment.
+  </div>
+
+  <div class="syllabus">
+
+    <div class="syl-unit">Unit A — Foundations: what data engineering is, and why AI raises the stakes</div>
+    <div class="syl-item">
+      <span class="syl-num">A1</span>
+      <span class="syl-tag now">now</span>
+      <span class="syl-body"><span class="t">The Lifecycle, and Why AI Reframes It</span>
+        <span class="q">The five-stage data engineering lifecycle, its undercurrents, and the "7% AI-ready" gap this course closes. Meet Meridian.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">A2</span>
+      <span class="syl-tag next">next</span>
+      <span class="syl-body"><span class="t">The Shape of Org Data</span>
+        <span class="q">Structured vs. semi- vs. unstructured; systems of record vs. derived copies. Inventory Meridian's real data.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">A3</span>
+      <span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Where Data Lives</span>
+        <span class="q">Database vs. warehouse vs. lake vs. lakehouse; OLTP vs. OLAP. Why the answer isn't "one big folder."</span></span>
+    </div>
+
+    <div class="syl-unit">Unit B — Describing data: metadata, catalogs, lineage, contracts</div>
+    <div class="syl-item">
+      <span class="syl-num">B1</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Metadata — the Four Kinds</span>
+        <span class="q">Technical, business, operational, and active metadata. What each answers, and why agents need all four.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">B2</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Catalogs & the Semantic Layer</span>
+        <span class="q">Finding data you don't already know exists; giving metrics one governed definition. The "context layer" claim, weighed.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">B3</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Lineage & Provenance</span>
+        <span class="q">Tracing where a value came from. OpenLineage/Marquez (deeper than ai-economy B2's landscape pass).</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">B4</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Data Contracts & Quality</span>
+        <span class="q">Schemas as promises; expectations/tests before anything downstream trusts the data.</span></span>
+    </div>
+
+    <div class="syl-unit">Unit C — Governing data: policy, classification, access</div>
+    <div class="syl-item">
+      <span class="syl-num">C1</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Classification & Sensitivity</span>
+        <span class="q">PII/PHI, tiers, tagging. You can't govern what you haven't labelled.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">C2</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Policy-as-Code</span>
+        <span class="q">RBAC vs. ABAC; OPA/Rego vs. Cedar. Rules that live in version control, not a wiki. (Cross-ref ai-economy B5.)</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">C3</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Governance for Agents</span>
+        <span class="q">"Can find it" vs. "is allowed to act on it." Decision governance — the underrated 2026 gap.</span></span>
+    </div>
+
+    <div class="syl-unit">Unit D — Making data reachable by a model</div>
+    <div class="syl-item">
+      <span class="syl-num">D1</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Embeddings & Vector Search</span>
+        <span class="q">Turning meaning into geometry; nearest-neighbour retrieval. Built from foundations.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">D2</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Chunking & Indexing</span>
+        <span class="q">How Meridian's contracts and docs get cut up so retrieval returns the right slice.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">D3</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">RAG vs. Long-Context vs. Fine-Tuning</span>
+        <span class="q">Three ways to get data into a model; GraphRAG. When to use which. (Cross-ref ai-economy B3.)</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">D4</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">MCP & Tools</span>
+        <span class="q">How an agent actually reaches governed data at runtime — and where policy gets enforced.</span></span>
+    </div>
+
+    <div class="syl-unit">Unit E — Agents & workflows over governed data</div>
+    <div class="syl-item">
+      <span class="syl-num">E1</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Agent vs. Workflow</span>
+        <span class="q">Open-ended reasoning vs. deterministic pipeline. When each is the right tool.</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">E2</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">The Framework Landscape</span>
+        <span class="q">Mastra, LlamaIndex, LangGraph and peers — placed in the stack, none crowned. (Cross-ref ai-economy B4.)</span></span>
+    </div>
+    <div class="syl-item">
+      <span class="syl-num">E3</span><span class="syl-tag next">planned</span>
+      <span class="syl-body"><span class="t">Putting It Together</span>
+        <span class="q">One governed retrieval workflow over Meridian, end to end. The spine's payoff.</span></span>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <a href="../index.html">← Topic index</a>
+    <a href="../lessons/0001-lifecycle-and-why-ai-reframes-it.html">Start: A1 →</a>
+  </div>
+
+</div>
