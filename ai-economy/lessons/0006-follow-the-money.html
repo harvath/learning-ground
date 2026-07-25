@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0006 | Follow the Money</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · THE ECONOMIC STRUCTURE — LESSON 0006</div>
+  <h1>How the money actually moves</h1>
+  <p class="subtitle">A1 flagged "circular financing" and moved on. This lesson opens the mechanism properly — plus the concentration and capex numbers that make funding headlines make sense.</p>
+
+  <h2>Funding is extremely concentrated</h2>
+
+  <p>Global VC investment hit $285.5B in Q1 2026 alone — the highest quarterly total ever recorded. But a single deal, OpenAI's $122B round, accounted for 43% of that entire quarter's total.<sup class="cite"><a href="https://www.cbinsights.com/research/report/venture-trends-q1-2026/">[1]</a></sup> AI's share of <em>all</em> global venture capital jumped from roughly 48% across all of 2025 to about 80% in Q1 2026 alone, and mega-rounds ($100M+) made up 86% of all dollars deployed. This isn't broad-based investment across many companies — it's a small number of enormous checks.</p>
+
+  <h2>The hyperscaler capex arms race</h2>
+
+  <p>Separately from venture funding, the five biggest tech companies committed $660–690B in 2026 capital expenditure — roughly double 2025 levels: Amazon ~$200B, Alphabet ~$175–185B, Meta ~$115–135B, Microsoft ~$120B+, Oracle ~$50B.<sup class="cite"><a href="https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/">[2]</a></sup> Epoch AI's tracking shows why: frontier training compute has grown 4–5x per year since 2020 (doubling roughly every 5.2 months), with training costs doubling every 7–8 months. A frontier training run in 2026 costs an estimated $200–500M, with runs of $1–3B projected for late 2027.<sup class="cite"><a href="https://epoch.ai/blog/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year">[3]</a></sup></p>
+
+  <h2>Revenue vs. burn — the number that actually matters</h2>
+
+  <p>A1 already gave you the headline pair: OpenAI running roughly $14B in annual losses against ~$25B revenue, cumulative losses projected at $115B through 2029; Anthropic with meaningfully better unit economics, burn falling toward roughly 9% of revenue by 2027. The contrast is worth sitting with directly: two labs at similar valuations, on very different trajectories toward (or away from) actually making money — "AI company" tells you almost nothing about which side of that line a specific company is on.</p>
+
+  <h2>Circular financing — the actual mechanism, not just the label</h2>
+
+  <p><span class="term">Circular financing</span> works like this: a chipmaker or hyperscaler invests capital into an AI lab — and that same investor also sells the lab compute. The lab's reported growth then partly reflects money that started with the investor, flowed to the lab as "investment," and flowed straight back to the investor as a compute purchase. Critics (economist Paul Krugman among them) describe this as "the same stock of money going in circles" rather than genuine independent demand.<sup class="cite"><a href="https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/market-updates/on-the-minds-of-investors/does-circularity-in-ai-deals-warn-of-a-bubble/">[4]</a></sup> It's not accounting fraud — both the investment and the compute purchase are real, disclosed transactions — but it does mean some of the revenue growth being cited as evidence of real demand is, structurally, the investor paying itself.</p>
+
+  <div class="box warn">
+    <span class="label">a signal worth noticing</span>
+    In March 2026, Jensen Huang told investors that a rumored $100B Nvidia investment in OpenAI "is not in the cards" — a small but real data point suggesting even insiders are pulling back from the most aggressive versions of this structure, not just critics on the outside.<sup class="cite"><a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">[5]</a></sup>
+  </div>
+
+  <p>Safe Superintelligence is the purest illustration of a related but distinct pattern: a $32B valuation on zero revenue and no shipped product — not circular financing exactly, but the same underlying question (is this valuation tracking anything real yet?) in its starkest form.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Explain circular financing as a mechanism, not just a definition — walk through where the money actually goes.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>An investor (chipmaker or hyperscaler) puts capital into a lab. The lab then spends some of that same capital buying compute from that same investor. The investor's money effectively flows out as "investment" and back in as "revenue from a compute sale" — so part of the lab's reported growth traces back to the investor paying itself, not to independent customer demand.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② What did Jensen Huang's March 2026 comment that a rumored $100B Nvidia-OpenAI investment "is not in the cards" most likely signal?</p>
+    <button class="quiz-opt" data-key="a">Nvidia was cutting all investment in AI labs entirely</button>
+    <button class="quiz-opt" data-key="b">Even an industry insider was pulling back from the most aggressive circular-financing structures, not just outside critics</button>
+    <button class="quiz-opt" data-key="c">OpenAI no longer needed Nvidia's chips</button>
+    <p class="quiz-why" hidden>The comment is notable specifically because it comes from inside the industry, not from a skeptic — a small but real signal that even the parties who'd benefit most from circular deals are showing some caution about the most extreme versions of the structure.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    CB Insights' <a href="https://www.cbinsights.com/research/report/venture-trends-q1-2026/">Q1 2026 Venture Trends report</a> is the primary quantitative source behind this lesson's concentration numbers, and is the right place to check whether the pattern has continued or shifted by the time you're reading this.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, A7 closes out the unit with the bubble debate itself — held deliberately open, not resolved — using AGI as the worked example of a term with real dollar stakes.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.cbinsights.com/research/report/venture-trends-q1-2026/">Q1 2026 Venture Trends — CB Insights</a><br>
+    [2] <a href="https://futurumgroup.com/insights/ai-capex-2026-the-690b-infrastructure-sprint/">AI capex 2026: the $690B infrastructure sprint — Futurum</a><br>
+    [3] <a href="https://epoch.ai/blog/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year">Training compute of frontier AI models grows 4-5x per year — Epoch AI</a><br>
+    [4] <a href="https://am.jpmorgan.com/us/en/asset-management/adv/insights/market-insights/market-updates/on-the-minds-of-investors/does-circularity-in-ai-deals-warn-of-a-bubble/">Does circularity in AI deals warn of a bubble? — J.P. Morgan Asset Management</a><br>
+    [5] <a href="https://www.aljazeera.com/economy/2026/5/21/nvidia-posts-record-profit-and-revenue-amid-ai-chip-boom">Nvidia posts record profit and revenue amid AI chip boom — Al Jazeera</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0005-the-labor-market.html">← A5 The Labor Market</a>
+    <a href="./0007-reading-claims-critically.html">A7 Reading Claims Critically →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

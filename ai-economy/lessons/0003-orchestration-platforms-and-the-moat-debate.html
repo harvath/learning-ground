@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0003 | Orchestration Platforms &amp; the Moat Debate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · THE ECONOMIC STRUCTURE — LESSON 0003</div>
+  <h1>n8n, and which tooling companies actually have a moat</h1>
+  <p class="subtitle">A1 raised the wrapper-vs-moat question and deferred it. This lesson answers it with real numbers, using n8n as the clearest case and pi/OpenClaw from A2 as points of comparison.</p>
+
+  <h2>n8n's transformation into an AI-agent platform</h2>
+
+  <p><span class="term">n8n</span> is a long-running, open-source, node-based, self-hostable workflow-automation platform — the kind of tool people reached for as a Zapier alternative. What's changed is what it's <em>for</em>: n8n 2.0 (January 2026) added native LangChain integration, 70+ AI-specific nodes, persistent agent memory, self-hosted LLM support, and multi-agent orchestration.<sup class="cite"><a href="https://www.digidop.com/blog/n8n-vs-make-vs-zapier">[1]</a></sup> The result: more than 80% of workflows built on the platform now involve an AI agent somewhere in the chain.<sup class="cite"><a href="https://www.startupriders.com/p/n8n-growth-playbook">[2]</a></sup></p>
+
+  <p>The money followed the repositioning fast. A $180M Series C in October 2025 (Nvidia among the backers) valued n8n at $2.5B.<sup class="cite"><a href="https://www.pymnts.com/news/investment-tracker/2025/ai-agent-startup-n8n-valued-at-2-5-billion-after-series-c/">[3]</a></sup> Seven months later, SAP invested over €60M at a <strong>$5.2B valuation</strong> — more than double — announced at SAP Sapphire Orlando in May 2026, with a licensing deal to embed n8n's technology directly into SAP's own products.<sup class="cite"><a href="https://www.trendingtopics.eu/sap-bets-big-on-ai-invests-in-n8n-at-a-5-2-billion-valuation/">[4]</a></sup> That made n8n Germany's most valuable AI company, and #2 in Europe behind Sweden's Lovable. Scale to match: 230,000+ active users, 3,000+ enterprise customers including Microsoft, KPMG, Vodafone, Volkswagen, and Mercedes-Benz, and ARR that grew from roughly $40M in 2025 past $100M since.<sup class="cite"><a href="https://www.startupriders.com/p/n8n-growth-playbook">[2]</a></sup></p>
+
+  <p>n8n isn't the only platform making this pivot — Zapier ("Zapier Agents") and Make ("Maia AI") both launched competing AI-agent capabilities around the same time — but n8n's SAP deal and valuation trajectory currently put it ahead on the enterprise-distribution axis specifically.<sup class="cite"><a href="https://www.digidop.com/blog/n8n-vs-make-vs-zapier">[1]</a></sup></p>
+
+  <div class="box primary">
+    <span class="label">a citable name for this layer, not just this course's invention</span>
+    A 2026 industry framework, "The 6 Layers of the AI Economy," explicitly places n8n alongside LangChain and Zapier in <strong>Tier 4: Orchestration &amp; Tools</strong> — distinct from Tier 3 (Foundation Models) below it and Tier 5 (Applications) above it. The framing: this tier "builds the skeleton and wiring that lets the [foundation-model] brain do something useful."<sup class="cite"><a href="https://www.aifire.co/p/the-6-layers-of-the-ai-economy-2026-infrastructure-guide">[5]</a></sup> Worth knowing this isn't a category this course invented — it's a real, named layer in current industry analysis.
+  </div>
+
+  <h2>The wrapper-vs-moat debate, with real numbers</h2>
+
+  <p>The bear case is sharp and current: one estimate puts 80% of AI "wrapper" startups (a thin interface over a frontier model's API) at risk of failure by end of 2026, and OpenAI's own feature releases have reportedly cannibalized 200+ funded wrapper companies — a pattern with its own nickname, <strong>"getting GPT-5'd."</strong> One concrete example: an AI writing tool saw its $50K monthly revenue fall 70% in 60 days after a model update shipped similar functionality natively.<sup class="cite"><a href="https://hatchworks.com/blog/gen-ai/ai-wrapper-product-strategy/">[6]</a></sup> A Google Cloud VP put it bluntly on a 2026 podcast: wrapper companies are "heading toward extinction — not eventually, now."</p>
+
+  <p>But it's not a blanket death sentence. ICONIQ Capital's January 2026 "State of AI" report found vertical AI products with a genuine data or workflow moat still raising at 15–30x ARR, while thin wrappers don't get that support — and that ~70% of builders now focus on vertical applications specifically, with 49% saying their primary differentiation comes from application-layer innovation rather than proprietary model work.<sup class="cite"><a href="https://www.iconiq.com/growth/reports/2026-state-of-ai-bi-annual-snapshot">[7]</a></sup> The analysts' rule of thumb: survival requires at least two durable advantages at once — compute access, governed/proprietary data, or genuine ownership of a customer's workflow. One alone isn't enough.</p>
+
+  <div class="box make">
+    <span class="label">running the test on A2's examples</span>
+    n8n looks like the moat side of this debate on two counts at once: it owns the workflow (thousands of enterprise automations already built on it) and it now has enterprise distribution baked in via SAP. OpenClaw isn't really playing this game at all — it's open-source and community-driven, not a thin commercial layer trying to out-feature a lab's roadmap. pi is the genuinely interesting edge case: it has no clear monetization moat of its own, and its value is precisely that it's the substrate other things (like OpenClaw) get built on top of — moat questions don't really apply to infrastructure the way they apply to a product.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What are the two durable advantages ICONIQ's research says a tooling/application company needs, and why does having just one usually not survive?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>At least two of: compute access, governed/proprietary data, or genuine ownership of a customer's workflow. A thin wrapper with none of these — just a UI over a frontier model's API — gets absorbed the moment the underlying lab ships the same feature natively ("getting GPT-5'd"); one moat alone tends not to be defensible enough on its own.</div>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">② Which specific fact from n8n's story is the strongest evidence it has a real moat, not just a wrapper?</p>
+    <button class="quiz-opt" data-key="a">SAP invested and signed a licensing deal to embed n8n directly into SAP's own products</button>
+    <button class="quiz-opt" data-key="b">It uses LangChain under the hood</button>
+    <button class="quiz-opt" data-key="c">It supports 70+ AI-specific nodes</button>
+    <p class="quiz-why" hidden>The SAP deal is the concrete evidence of a real moat — a major enterprise vendor paying to license and embed n8n's technology is direct proof of workflow ownership and enterprise distribution, the two advantages ICONIQ's research says matter. Node count and using LangChain are features, not evidence of defensibility.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    ICONIQ Capital's <a href="https://www.iconiq.com/growth/reports/2026-state-of-ai-bi-annual-snapshot">2026 State of AI: Bi-Annual Snapshot</a> is the clearest, most current primary source for the moat-vs-wrapper data underlying this lesson.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, A4 places the big names — CEOs, founders, researchers — across all four layers from A1, including the tooling layer this lesson and A2 just opened.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.digidop.com/blog/n8n-vs-make-vs-zapier">n8n vs. Make vs. Zapier — Digidop</a><br>
+    [2] <a href="https://www.startupriders.com/p/n8n-growth-playbook">n8n's growth playbook — Startup Riders</a><br>
+    [3] <a href="https://www.pymnts.com/news/investment-tracker/2025/ai-agent-startup-n8n-valued-at-2-5-billion-after-series-c/">AI agent startup n8n valued at $2.5 billion after Series C — PYMNTS</a><br>
+    [4] <a href="https://www.trendingtopics.eu/sap-bets-big-on-ai-invests-in-n8n-at-a-5-2-billion-valuation/">SAP bets big on AI, invests in n8n at a $5.2 billion valuation — Trending Topics</a><br>
+    [5] <a href="https://www.aifire.co/p/the-6-layers-of-the-ai-economy-2026-infrastructure-guide">The 6 Layers of the AI Economy — aifire.co</a><br>
+    [6] <a href="https://hatchworks.com/blog/gen-ai/ai-wrapper-product-strategy/">AI wrapper product strategy — Hatchworks</a><br>
+    [7] <a href="https://www.iconiq.com/growth/reports/2026-state-of-ai-bi-annual-snapshot">2026 State of AI: Bi-Annual Snapshot — ICONIQ Capital</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0002-harnesses-and-agent-products.html">← A2 Harnesses &amp; Agent Products</a>
+    <a href="./0004-big-figures.html">A4 Big Figures →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

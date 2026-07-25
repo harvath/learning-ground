@@ -1,0 +1,102 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0013 | Agentic Development Methodologies</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0013</div>
+  <h1>Named vs. real practice</h1>
+  <p class="subtitle">AI-DLC isn't the only named methodology for building software alongside agents — and the honest evidence suggests most teams aren't using a named one at all.</p>
+
+  <h2>AI-DLC — AWS's named methodology</h2>
+
+  <p><span class="term">AI-DLC</span> ("AI-Driven Development Lifecycle") runs on a unit called a <span class="term">Bolt</span> — the smallest iteration across three phases (Inception, Construction, Operations), sized in hours or days rather than a fixed two-week sprint.<sup class="cite"><a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">[1]</a></sup> Its two signature ceremonies, <strong>Mob Elaboration</strong> and <strong>Mob Construction</strong>, explicitly borrow from Woody Zuill's mob-programming practice (the whole team working the same task, same time, same space): AI drafts requirements or code, the whole cross-functional team validates live, compressing what traditionally takes weeks into hours. The stated core philosophy is "AI proposes, human approves," with gates at every stage.<sup class="cite"><a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">[1]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">read the adoption numbers skeptically</span>
+    The specific case studies cited for AI-DLC — Wipro compressing ~3 months of planned work into ~20 hours, a fintech building an app in 48 hours, "10–15x productivity" — all trace back to AWS's own re:Invent 2025 session and blog posts, based on "100+ customer experiments" AWS itself ran or co-ran. No independently audited case study exists yet. Treat these like any vendor benchmark: real, but not neutral.
+  </div>
+
+  <h2>The competing (and non-competing) framings</h2>
+
+  <p>AI-DLC is a real, named, AWS-specific artifact — but it's one of several, and some of the most credible names in software deliberately chose <em>not</em> to name one at all. Worth surveying honestly rather than treating AI-DLC as the default:</p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Vendor / org</th><th>What they actually did</th></tr>
+      <tr><td>AWS</td><td>Named methodology (AI-DLC): phases, Bolts, Mob Elaboration/Construction, reference tooling (Kiro, Amazon Q, Strands, AgentCore).</td></tr>
+      <tr><td>GitHub</td><td><strong>Spec Kit</strong> — an open-source, vendor-agnostic toolkit for Spec-Driven Development: a repeatable specify → plan → tasks → implement workflow via CLI, working across 30+ coding agents (not just Copilot). 111k GitHub stars — arguably the most credible AI-DLC peer, since it's genuinely vendor-neutral by design.<sup class="cite"><a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">[2]</a></sup></td></tr>
+      <tr><td>Microsoft</td><td>"Agentic DevOps" — looser than it sounds: no fixed ceremony structure like Bolts. Operationalized mainly as a <strong>partner certification track</strong> ("Agentic DevOps with Microsoft Azure and GitHub"), not an open workflow spec.<sup class="cite"><a href="https://devblogs.microsoft.com/all-things-azure/agentic-devops-practices-principles-strategic-direction/">[3]</a></sup></td></tr>
+      <tr><td>Thoughtworks</td><td><strong>Agent/works, "3-3-3"</strong> — concept in 3 days, functional prototype in 3 weeks, production-ready MVP in 3 months. A genuine named consultancy methodology, distinct from AWS's.<sup class="cite"><a href="https://www.thoughtworks.com/ai/works/">[4]</a></sup></td></tr>
+      <tr><td>Atlassian, GitLab</td><td>Explicitly chose <strong>not</strong> to brand a methodology. Atlassian ships principles ("structured intent," "observable autonomy") and product features (Jira Planner, Coding Agent) instead of a ceremony framework; GitLab's Duo Agent Platform (GA Jan 2026) embeds agents as platform capabilities, same pattern.<sup class="cite"><a href="https://www.atlassian.com/blog/company-news/ai-sdlc">[5]</a></sup></td></tr>
+      <tr><td>Google Cloud</td><td>Investment/ecosystem-focused (~$750M partner fund for systems integrators), not a competing named workflow.</td></tr>
+    </table>
+  </div>
+
+  <p>One more data point on how unsettled this still is: Forrester's Top 10 Emerging Technologies for 2026 names "agentic software development" as a distinct emerging category — but explicitly says it's 2–5 years from delivering significant benefit, and there's no Gartner Magic Quadrant or Forrester Wave yet treating "agentic SDLC" as a ratable market. The analysts who normally certify "this is now a category" haven't done so.<sup class="cite"><a href="https://www.forrester.com/press-newsroom/forresters-top-10-emerging-technologies-for-2026/">[6]</a></sup></p>
+
+  <h2>What teams are actually doing</h2>
+
+  <p>Five independent 2026 surveys converge on the same honest picture, and it's not "teams are adopting a named methodology":</p>
+
+  <ul>
+    <li><strong>Stack Overflow 2026</strong>: AI tool adoption hit a record 84% — but 52% of developers don't use agents or stick to simpler AI tools, and 38% have no plans to adopt agents at all. Trust is falling: only 29% trust AI output to be accurate, down from 40% in 2024.<sup class="cite"><a href="https://stackoverflow.blog/2026/06/23/the-2026-developer-survey-is-now-open-for-human-developers-only/">[7]</a></sup></li>
+    <li><strong>Digital.ai State of Agile</strong>: 84% of agile practitioners report AI adoption (up from 68%) — but only 49% have any governance or guardrails in place. AI is being folded into <em>existing</em> Agile practice, not replaced by a new named lifecycle.</li>
+    <li><strong>Sonar 2026</strong>: 42% of committed code is now AI-generated/assisted, but 96% of developers don't fully trust it, and only 48% always verify it before merging.</li>
+    <li><strong>DORA / Google 2025</strong>: 90% of developers use AI daily. Individual output rises sharply, but organization-level delivery metrics don't move proportionally — DORA's own framing is that AI is "an amplifier of existing conditions," good or bad, tied to organizational capability rather than to which named methodology (if any) a team adopted.<sup class="cite"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/">[8]</a></sup></li>
+    <li><strong>Perforce 2026 State of DevOps</strong>: DevOps maturity predicts AI success far better than methodology choice does — 72% of high-maturity organizations report deeply embedded AI, versus 18% of low-maturity ones.</li>
+  </ul>
+
+  <div class="box warn">
+    <span class="label">the fair conclusion</span>
+    AI-DLC, Spec Kit, and Agent/works are real, distinct artifacts — not interchangeable, and not fabricated. But the adoption evidence points the same direction across five independent surveys: most teams are integrating agents informally into their existing Scrum/Kanban practice, with governance and trust badly lagging tool adoption, and success correlating with pre-existing engineering maturity rather than which branded lifecycle (if any) they picked. Treat any of these named methodologies as one vendor's or consultancy's packaging of a shift that's mostly happening without a name, not as the industry standard.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Name two organizations that deliberately chose <em>not</em> to brand a named development methodology, and what they shipped instead.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Atlassian (principles like "structured intent" and "observable autonomy," plus product features like Jira Planner and Coding Agent, not a ceremony framework) and GitLab (the Duo Agent Platform, embedding agents as platform capabilities rather than a named lifecycle) — both shipped features/principles instead of a branded methodology like AI-DLC.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② What do five independent 2026 developer/DevOps surveys converge on regarding how teams actually adopt AI agents?</p>
+    <button class="quiz-opt" data-key="a">Most teams have fully adopted a named methodology like AI-DLC or Spec Kit</button>
+    <button class="quiz-opt" data-key="b">Adoption is low and teams are waiting for a standard methodology to emerge first</button>
+    <button class="quiz-opt" data-key="c">Tool adoption is very high (84-90%), but mostly folded informally into existing Scrum/Kanban practice, with governance and trust badly lagging</button>
+    <p class="quiz-why" hidden>Stack Overflow, Digital.ai, Sonar, DORA, and Perforce all show high tool adoption but informal integration into existing practices, weak governance, and success tied to pre-existing DevOps/engineering maturity rather than to adopting any specific named methodology.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    GitHub's own <a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">Spec Kit announcement</a> is a useful contrast to AWS's AI-DLC material — read both back to back to see two genuinely different philosophies (branded ceremony vs. open, vendor-agnostic toolkit) aimed at the same underlying problem.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, B7 closes Unit B the same way this lesson closed AI-DLC's story — giving Hugging Face the fair, competitor-aware treatment instead of a single-vendor spotlight.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://michaelrishiforrester.com/2026/03/11/deep-dive-aws-ai-development.html">Deep dive: AWS AI-Driven Development Lifecycle — michaelrishiforrester.com</a><br>
+    [2] <a href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">Spec-Driven Development with AI: get started with Spec Kit — GitHub Blog</a><br>
+    [3] <a href="https://devblogs.microsoft.com/all-things-azure/agentic-devops-practices-principles-strategic-direction/">Agentic DevOps: practices, principles, strategic direction — Microsoft DevBlogs</a><br>
+    [4] <a href="https://www.thoughtworks.com/ai/works/">Agent/works — Thoughtworks</a><br>
+    [5] <a href="https://www.atlassian.com/blog/company-news/ai-sdlc">Atlassian's approach to AI in the SDLC — Atlassian Blog</a><br>
+    [6] <a href="https://www.forrester.com/press-newsroom/forresters-top-10-emerging-technologies-for-2026/">Forrester's Top 10 Emerging Technologies for 2026</a><br>
+    [7] <a href="https://stackoverflow.blog/2026/06/23/the-2026-developer-survey-is-now-open-for-human-developers-only/">The 2026 Developer Survey — Stack Overflow Blog</a><br>
+    [8] <a href="https://blog.google/innovation-and-ai/technology/developers-tools/dora-report-2025/">DORA 2025 State of AI-assisted Software Development — Google</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0012-ontology-deep-dive.html">← B5 Ontology, Deep Dive</a>
+    <a href="./0014-model-hubs-and-inference-marketplaces.html">B7 Model Hubs &amp; Inference Marketplaces →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

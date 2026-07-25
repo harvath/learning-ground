@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0014 | Model Hubs &amp; Inference Marketplaces</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0014</div>
+  <h1>Where Hugging Face leads, and where it doesn't</h1>
+  <p class="subtitle">This closes Unit B the way B6 closed AI-DLC's story — a fair, competitor-aware picture instead of a single-vendor spotlight. The honest answer turns out to be genuinely split in two.</p>
+
+  <h2>The model hub layer — Hugging Face, largely unchallenged</h2>
+
+  <p>As a global, general-purpose registry for open models and datasets, Hugging Face's scale is hard to overstate: 2M+ public models, 500K+ datasets, 13M+ monthly active users, 500K+ organizations, and over 30% of the Fortune 500 hold verified accounts.<sup class="cite"><a href="https://fueler.io/blog/hugging-face-usage-revenue-valuation-growth-statistics">[1]</a></sup></p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Platform</th><th>Scale</th><th>Where it actually competes</th></tr>
+      <tr><td>ModelScope (Alibaba)</td><td>~80,000–170,000 models, reportedly 25M developers (Apr 2026)</td><td>Dominant inside China specifically, where Hugging Face access is intermittent — geography-bounded, not a global challenger.</td></tr>
+      <tr><td>Civitai</td><td>23M+ monthly accesses</td><td>Deep in one niche — image/diffusion models (Stable Diffusion, Flux) and LoRAs — a category HF doesn't lead in, but not a general-purpose competitor.</td></tr>
+      <tr><td>Azure AI Foundry / Vertex AI Model Garden / AWS Bedrock</td><td>1,700+ / 200+ / 100+ models respectively</td><td>Cloud-vendor catalogs, curated and much smaller — convenient if you're already committed to that cloud, not a discovery hub.</td></tr>
+    </table>
+  </div>
+
+  <p>The honest verdict: at the general-purpose, global model-hub layer, <strong>Hugging Face has no serious rival</strong>. ModelScope and Civitai are real, but geography- or content-bounded, not category challengers.</p>
+
+  <h2>The inference-serving layer — where Hugging Face is actually a minor player</h2>
+
+  <p>This is the layer that changes the picture entirely. Hugging Face's <strong>Inference Providers</strong> — the pay-per-use router across 15+ hosted-inference partners, introduced in B1/B3 — takes no markup and is explicitly a funnel to keep developer attention inside HF's ecosystem, not a revenue driver.<sup class="cite"><a href="https://huggingface.co/docs/inference-providers/pricing">[2]</a></sup> The partners it routes to are themselves the real story:</p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Provider</th><th>2026 valuation / funding</th><th>Revenue scale</th></tr>
+      <tr><td>Fireworks AI</td><td>$17.5B</td><td>Crossed $1B ARR in 2026</td></tr>
+      <tr><td>Together AI</td><td>$8.3B (July 2026)</td><td>~$1.15B ARR/bookings</td></tr>
+      <tr><td>Baseten</td><td>up to $13B (June 2026)</td><td>—</td></tr>
+      <tr><td>Groq</td><td>$6.9B (June 2026)</td><td>—</td></tr>
+      <tr><td>fal.ai</td><td>$4.5B</td><td>—</td></tr>
+      <tr><td>Modal</td><td>—</td><td>~$300M ARR (Apr 2026)</td></tr>
+      <tr><td>OpenRouter</td><td>$1.3B (more than doubled in a year)</td><td>~$50M ARR; 25 trillion tokens/week, 8M+ users</td></tr>
+    </table>
+  </div>
+
+  <div class="box warn">
+    <span class="label">the number that makes the picture click</span>
+    Hugging Face's <em>entire company</em> revenue is roughly $130M ARR (on a ~$7B valuation after an August 2025 raise) — smaller than Fireworks' or Together's inference-layer-alone revenue.<sup class="cite"><a href="https://sacra.com/c/hugging-face/">[3]</a></sup> At the hub layer, Hugging Face is the clear leader. At the inference-serving layer — arguably the faster-growing, more capital-intensive part of the stack right now — it's a small, deliberately non-monetizing aggregator sitting next to companies several times its size. <strong>OpenRouter</strong> is Hugging Face's closest structural twin (same "one API, many models, aggregator" model) and is scaling faster on its own metrics.
+  </div>
+
+  <h2>Ollama — a channel that deepens Hugging Face's role, not a bypass</h2>
+
+  <p><span class="term">Ollama</span>, the popular tool for running open models locally, might look like a way around Hugging Face — but the dominant real-world pattern is the opposite. Ollama's own curated library holds a few hundred official models, while Hugging Face hosts 45,000+ public GGUF checkpoints runnable with a single <code>ollama run</code> command, and Hugging Face publishes the official integration docs for this.<sup class="cite"><a href="https://huggingface.co/docs/hub/ollama">[4]</a></sup> Ollama is a distribution/runtime channel that extends Hugging Face's reach, not a competitor displacing it.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Is Hugging Face's market position the same across the model-hub layer and the inference-serving layer? Explain the difference.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>No — it's genuinely bifurcated. At the model-hub layer (browsing/downloading open models and datasets), Hugging Face has no serious general-purpose rival. At the inference-serving layer (paying to run those models), Hugging Face's own revenue is smaller than several individual competitors' inference-layer revenue alone (Fireworks, Together) — it's a small, zero-markup aggregator there, not a leader.</div>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">② Is Ollama best understood as a competitor to Hugging Face's model hub, or something else?</p>
+    <button class="quiz-opt" data-key="a">A distribution/runtime channel that pulls from Hugging Face's hub (45,000+ GGUF checkpoints) — it deepens HF's reach rather than bypassing it</button>
+    <button class="quiz-opt" data-key="b">A direct competitor with its own independent model catalog that has overtaken Hugging Face</button>
+    <button class="quiz-opt" data-key="c">An inference-serving marketplace competing with Fireworks and Together</button>
+    <p class="quiz-why" hidden>Ollama's own curated library is small (a few hundred models); the dominant usage pattern is pulling models directly from Hugging Face's hub. Hugging Face even documents this integration officially — it's complementary, extending HF's role as the underlying registry rather than displacing it.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Hugging Face's own <a href="https://huggingface.co/docs/inference-providers/pricing">Inference Providers pricing docs</a> state the no-markup funnel strategy plainly, in the company's own words — useful to read alongside a competitor's pricing page (Fireworks, Together) to see the same layer from both sides.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    That closes Unit B. Next up, Unit C shifts from facts to a meta-skill: C1 catalogs what's already come and gone in this space, so you can recognize a stale narrative on sight.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://fueler.io/blog/hugging-face-usage-revenue-valuation-growth-statistics">Hugging Face usage, revenue, valuation, growth statistics — Fueler</a><br>
+    [2] <a href="https://huggingface.co/docs/inference-providers/pricing">Inference Providers pricing — Hugging Face docs</a><br>
+    [3] <a href="https://sacra.com/c/hugging-face/">Hugging Face — Sacra</a><br>
+    [4] <a href="https://huggingface.co/docs/hub/ollama">Use Ollama with any GGUF model on Hugging Face Hub — Hugging Face docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0013-agentic-development-methodologies.html">← B6 Agentic Development Methodologies</a>
+    <a href="./0015-what-came-and-went.html">C1 What Came and Went →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

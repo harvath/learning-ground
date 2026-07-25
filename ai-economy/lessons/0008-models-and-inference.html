@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0008 | Models &amp; Inference</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0008</div>
+  <h1>Training, inference, and the word that means three things</h1>
+  <p class="subtitle">Unit A covered who's in the industry. Unit B covers what's actually being built — starting from the bottom of the stack, since everything else (B2–B7) sits on top of this.</p>
+
+  <p>A model is, mechanically, a very large set of numbers (parameters) tuned so that feeding text in produces useful text out. Two distinct phases matter here, and confusing them causes real misreadings of headlines: <span class="term">training</span> is the process of learning those parameters from data — expensive, slow, done rarely, and the thing labs spend their enormous compute budgets on (A6). <span class="term">Inference</span> is running the already-trained model to actually produce an output — cheap per-request by comparison, done constantly, and the thing every product built on a model (Unit A's whole tooling layer) actually pays for on an ongoing basis.</p>
+
+  <h2>"Inference" — one word, three senses</h2>
+
+  <p>You'll see "inference" used loosely across three genuinely different things. Worth disambiguating explicitly, since conflating them causes real confusion:</p>
+
+  <p><strong>(a) The base ML sense</strong> — running a trained model to produce output, as opposed to training it. This is the definition above, and every other sense below builds on it.</p>
+  <p><strong>(b) Hugging Face's Inference Providers</strong> (B7 goes deep on this) — a marketplace/router giving pay-per-use access to 15+ hosted-inference partners (Groq, Together AI, Fireworks, Cerebras, and others) through one unified API. Hugging Face takes no markup on this — it's a funnel to keep developer attention in its ecosystem, not a direct profit center.<sup class="cite"><a href="https://huggingface.co/docs/inference-providers/pricing">[1]</a></sup></p>
+  <p><strong>(c) Inference-time / test-time compute</strong> — reasoning models spending extra computation <em>at answer time</em> (extended "thinking") to improve accuracy on hard problems, popularized by OpenAI's o1 (Sept 2024) and DeepSeek-R1 (Jan 2025). A reasoning-model query typically costs 30–100x the tokens of a normal chat query — and the technique's cost-efficiency depends heavily on the specific model, not just "spend more, get more": DeepSeek-R1 delivered comparable reasoning quality to o1 at roughly 27x cheaper API pricing at the time.<sup class="cite"><a href="https://www.vellum.ai/blog/the-training-of-deepseek-r1-and-ways-to-use-it">[2]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">why this distinction is worth the effort</span>
+    "Inference costs are falling" and "inference-time compute is rising" are both true statements in 2026, about different things, and people run them together constantly. (a)/(b) — the cost of running a fixed-size model per request — has generally been falling as hardware and serving techniques improve. (c) — a newer technique of deliberately spending <em>more</em> compute per request to reason longer — pushes the other direction for the specific queries that use it. A headline about "inference costs" without specifying which of these it means is not fully readable yet.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What's the difference between training and inference, and which one do A1's "labs burning cash" figures mostly reflect?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Training is the expensive, infrequent process of learning a model's parameters from data. Inference is running the already-trained model to produce output, done constantly and comparatively cheap per request. Labs' huge compute spending (A6) is mostly training cost — the enormous one-time-ish investment behind each new model generation — plus the serving infrastructure for inference at massive scale.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② A reasoning model spending extra tokens "thinking" before answering a hard question is an example of which sense of "inference"?</p>
+    <button class="quiz-opt" data-key="a">The base ML sense — running a trained model</button>
+    <button class="quiz-opt" data-key="b">Hugging Face's Inference Providers marketplace</button>
+    <button class="quiz-opt" data-key="c">Inference-time / test-time compute</button>
+    <p class="quiz-why" hidden>All reasoning-model "thinking" happens during inference in the base sense too, but the specific named phenomenon — spending extra compute at answer-time to trade latency/cost for accuracy — is inference-time (test-time) compute, popularized by o1 and DeepSeek-R1.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    DeepSeek's own technical report on R1 is the clearest primary-source explanation of how a model can achieve o1-class reasoning at a fraction of the inference cost — worth reading once as the concrete case behind sense (c) above.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, B2 goes one level further down the stack: before a model can retrieve or act on data at all (B3), that data has to be built, validated, and traced — the data-engineering substrate most AI discussions skip entirely.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://huggingface.co/docs/inference-providers/pricing">Inference Providers pricing — Hugging Face docs</a><br>
+    [2] <a href="https://www.vellum.ai/blog/the-training-of-deepseek-r1-and-ways-to-use-it">The training of DeepSeek-R1 and ways to use it — Vellum</a>
+  </p>
+
+  <div class="nav">
+    <a href="../reference/course-map.html">Course map</a>
+    <a href="./0009-the-data-layer-underneath-ai.html">B2 The Data Layer Underneath AI →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

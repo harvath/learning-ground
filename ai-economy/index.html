@@ -6,29 +6,73 @@
 
   <div class="kicker"><a href="../index.html">← Learning Ground</a> · TOPIC</div>
   <h1>The Current AI Economy</h1>
-  <p class="subtitle">Who's building, who's paying, what the tools actually are, and what's already dated. Grounded in dated, cited research — this topic decays fast on purpose.</p>
+  <p class="subtitle">Who's building, who's paying, what the tools actually are, and what's already dated. Grounded in dated, cited research — this topic decays fast on purpose. Three units: the economic structure, the technology stack, and how to keep reading the discourse yourself.</p>
 
-  <h2>Lessons</h2>
+  <h2>Unit A — The Economic Structure</h2>
   <ul class="toc">
-    <li><a href="lessons/0001-the-layers-of-the-industry.html">
-      <span class="num">0001</span>
-      <span><span class="t">The Layers of the Industry</span><span class="d">Labs vs. infra/compute vs. capital — where every big name sits, and the big figures behind them</span></span></a></li>
-    <li><a href="lessons/0002-the-toolbox.html">
-      <span class="num">0002</span>
-      <span><span class="t">The Toolbox</span><span class="d">MCP, agent frameworks (Mastra et al.), RAG vs. long-context vs. fine-tuning, ontology, Hugging Face</span></span></a></li>
-    <li><a href="lessons/0003-the-agent-tooling-family-tree.html">
-      <span class="num">0003</span>
-      <span><span class="t">The Agent Tooling Family Tree</span><span class="d">AGENTS.md, goose, Semantic Kernel/AutoGen, LlamaIndex, "inference" disambiguated, and the genealogy connecting them</span></span></a></li>
-    <li><a href="lessons/0004-ontology-and-ai-dlc.html">
-      <span class="num">0004</span>
-      <span><span class="t">Ontology &amp; AI-DLC, Deep Dive</span><span class="d">Palantir's Ontology mechanics and its critics; AI-DLC's Bolts/Mob ceremonies and how they compare industry-wide</span></span></a></li>
+    <li><a href="lessons/0001-the-four-layers.html">
+      <span class="num">A1</span>
+      <span><span class="t">The Four Layers</span><span class="d">Labs, infra/compute, capital, and tooling &amp; services — the mental model everything else hangs off</span></span></a></li>
+    <li><a href="lessons/0002-harnesses-and-agent-products.html">
+      <span class="num">A2</span>
+      <span><span class="t">Harnesses &amp; Agent Products</span><span class="d">pi and OpenClaw — an engine and the consumer product built directly on top of it</span></span></a></li>
+    <li><a href="lessons/0003-orchestration-platforms-and-the-moat-debate.html">
+      <span class="num">A3</span>
+      <span><span class="t">Orchestration Platforms &amp; the Moat Debate</span><span class="d">n8n's transformation into an AI-agent platform, and which tooling companies actually have a moat</span></span></a></li>
+    <li><a href="lessons/0004-big-figures.html">
+      <span class="num">A4</span>
+      <span><span class="t">Big Figures</span><span class="d">The names, placed across all four layers</span></span></a></li>
+    <li><a href="lessons/0005-the-labor-market.html">
+      <span class="num">A5</span>
+      <span><span class="t">The Labor Market</span><span class="d">Forward Deployed Engineers, the "40 titles, 3 real jobs" problem, Mercor, and the simultaneous layoffs-vs-talent-war tension</span></span></a></li>
+    <li><a href="lessons/0006-follow-the-money.html">
+      <span class="num">A6</span>
+      <span><span class="t">Follow the Money</span><span class="d">Funding concentration, hyperscaler capex, revenue vs. burn, and how circular financing actually works</span></span></a></li>
+    <li><a href="lessons/0007-reading-claims-critically.html">
+      <span class="num">A7</span>
+      <span><span class="t">Reading Claims Critically</span><span class="d">The bubble debate held open on purpose, AGI as the worked example, and the base rate of startup failure</span></span></a></li>
+  </ul>
+
+  <h2>Unit B — The Technology Stack</h2>
+  <ul class="toc">
+    <li><a href="lessons/0008-models-and-inference.html">
+      <span class="num">B1</span>
+      <span><span class="t">Models &amp; Inference</span><span class="d">Training vs. inference, and the three senses of "inference" disambiguated</span></span></a></li>
+    <li><a href="lessons/0009-the-data-layer-underneath-ai.html">
+      <span class="num">B2</span>
+      <span><span class="t">The Data Layer Underneath AI</span><span class="d">dbt/Fivetran, Great Expectations, OpenLineage, and Marquez — how trustworthy data gets built before any agent touches it</span></span></a></li>
+    <li><a href="lessons/0010-getting-data-and-tools-to-a-model.html">
+      <span class="num">B3</span>
+      <span><span class="t">Getting Data &amp; Tools to a Model</span><span class="d">MCP, RAG vs. long-context vs. fine-tuning (incl. GraphRAG), and a first pass at ontology</span></span></a></li>
+    <li><a href="lessons/0011-building-agents.html">
+      <span class="num">B4</span>
+      <span><span class="t">Building Agents</span><span class="d">The taxonomy and genealogy — Mastra, LangGraph, goose, AGENTS.md, Semantic Kernel/AutoGen's merger, LlamaIndex</span></span></a></li>
+    <li><a href="lessons/0012-ontology-deep-dive.html">
+      <span class="num">B5</span>
+      <span><span class="t">Ontology, Deep Dive</span><span class="d">Palantir's Ontology mechanics, the real skeptic critique, and OPA/Rego vs. Cedar as the open alternative</span></span></a></li>
+    <li><a href="lessons/0013-agentic-development-methodologies.html">
+      <span class="num">B6</span>
+      <span><span class="t">Agentic Development Methodologies</span><span class="d">AI-DLC vs. GitHub Spec Kit vs. Agentic DevOps vs. Agent/works — named methodologies vs. what teams actually do</span></span></a></li>
+    <li><a href="lessons/0014-model-hubs-and-inference-marketplaces.html">
+      <span class="num">B7</span>
+      <span><span class="t">Model Hubs &amp; Inference Marketplaces</span><span class="d">Where Hugging Face leads (the hub) and where it doesn't (inference-serving, against Fireworks/Together/Groq/OpenRouter)</span></span></a></li>
+  </ul>
+
+  <h2>Unit C — Reading the Discourse</h2>
+  <ul class="toc">
+    <li><a href="lessons/0015-what-came-and-went.html">
+      <span class="num">C1</span>
+      <span><span class="t">What Came and Went</span><span class="d">AutoGPT, the death of "prompt engineer," the DeepSeek moment, and vibe coding's semantic drift</span></span></a></li>
+    <li><a href="lessons/0016-staying-current.html">
+      <span class="num">C2</span>
+      <span><span class="t">Staying Current</span><span class="d">Turning this course's sourcing discipline into a habit that outlasts its facts</span></span></a></li>
   </ul>
 
   <h2>Reference</h2>
   <ul class="toc">
     <li><a href="reference/course-map.html">
       <span class="num">map</span>
-      <span><span class="t">Course map</span><span class="d">Full syllabus and what's next</span></span></a></li>
+      <span><span class="t">Course map</span><span class="d">Full syllabus by unit</span></span></a></li>
     <li><a href="reference/state-of-play.html">
       <span class="num">ref</span>
       <span><span class="t">State of play</span><span class="d">Dated cheat sheet — players, money, big figures, what's already stale</span></span></a></li>

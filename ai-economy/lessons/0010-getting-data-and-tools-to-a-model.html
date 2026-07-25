@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0010 | Getting Data &amp; Tools to a Model</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0010</div>
+  <h1>How a model reaches the world beyond its training data</h1>
+  <p class="subtitle">B2 covered how trustworthy data gets built. This lesson is the next layer up: how a model actually gets that data, and the tools around it, at query time.</p>
+
+  <h2>MCP — the connector every agent now speaks</h2>
+
+  <p><span class="term">Model Context Protocol (MCP)</span> is an open standard for connecting a model to external tools and data sources through one common interface, instead of every app writing its own bespoke integration for every tool. The common analogy is "USB-C for AI" — one physical connector, many devices.<sup class="cite"><a href="https://www.anthropic.com/news/model-context-protocol">[1]</a></sup></p>
+
+  <p>Anthropic created and announced MCP in November 2024. What matters for "is this current" purposes: in December 2025, Anthropic donated MCP to the <span class="term">Agentic AI Foundation</span>, a new directed fund under the Linux Foundation, co-founded alongside Block and <strong>OpenAI</strong> — meaning MCP is no longer an Anthropic-only protocol, it's cross-vendor, neutrally governed infrastructure.<sup class="cite"><a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">[2]</a></sup> Adoption is real and large: 97M+ monthly SDK downloads and 10,000+ active MCP servers in production.<sup class="cite"><a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/">[3]</a></sup> Of everything in this unit, MCP is the term you can treat as <strong>settled</strong>, not in flux — and you already saw it show up again in B2 as the connective layer for dbt Agents.</p>
+
+  <h2>RAG vs. long-context vs. fine-tuning</h2>
+
+  <p>For about two years, the prediction was "context windows will keep growing until RAG (<span class="term">retrieval-augmented generation</span> — fetching relevant documents and feeding them to the model at query time) becomes unnecessary." 2026 evidence says the opposite: a controlled comparison found brute-force long-context lost to RAG at scale — up to ~24x more expensive, and prone to losing facts before even hitting its advertised limit.<sup class="cite"><a href="https://pub.towardsai.net/i-tested-rag-vs-fine-tuning-vs-long-context-on-the-same-docs-the-1m-token-window-collapsed-at-24x-0cf96ad88eee">[4]</a></sup></p>
+
+  <p>The current working division of labor: <strong>fine-tuning</strong> changes how a model behaves (tone, format, task shape) — it's a poor tool for facts that change often. <strong>RAG</strong> supplies current, citable facts, and wins whenever the underlying data changes faster than the model gets retrained. <strong>Long-context</strong> is genuinely useful for one-off, whole-document reasoning — not as a RAG replacement at scale. Treat the three as complementary layers of one system, not competing techniques.</p>
+
+  <div class="box make">
+    <span class="label">a RAG variant worth naming precisely: GraphRAG</span>
+    Standard RAG retrieves by similarity (vector search). <span class="term">GraphRAG</span> retrieves by traversing relationships in a knowledge graph instead — better suited to multi-hop questions ("who reports to the person who approved this vendor's last contract?") that vector search handles poorly. Be precise about which "GraphRAG" you mean: <strong>Microsoft GraphRAG</strong> is a specific research technique (LLM-extracted entity/relationship graph, clustered via Leiden community detection, with hierarchical summaries). <strong>neo4j-graphrag</strong> is Neo4j's own, simpler, first-party package — Cypher graph queries plus text-chunk retrieval, not a reimplementation of Microsoft's method. A separate, explicitly experimental community project (<code>ms-graphrag-neo4j</code>) does reimplement Microsoft's specific technique using Neo4j as the backing store — but that's a distinct bridge project, not what "neo4j-graphrag" means by default. The one-line rule: <strong>GraphRAG is a retrieval pattern, not a single product</strong> — you can implement it on Neo4j, Postgres, or a custom graph engine.<sup class="cite"><a href="https://pypi.org/project/neo4j-graphrag/">[5]</a></sup> Adoption is real but still a minority approach — under 15% of enterprises had graph-based retrieval in production as of 2025 — though intent to adopt <em>hybrid</em> vector-plus-graph retrieval tripled in a single quarter of 2026 (10.3% to 33.3%). The 2026 direction is hybrid, not graph replacing vector.
+  </div>
+
+  <h2>Ontology — a first pass</h2>
+
+  <p>"Ontology" has two live meanings right now, and mixing them up is an easy tell that someone hasn't caught up with 2025–2026 usage. The <strong>classical</strong> sense, from knowledge representation and the semantic web, is a formal specification of the concepts, properties, and relationships in a domain (think RDF/OWL). The <strong>newer enterprise-AI</strong> sense, popularized specifically by <strong>Palantir</strong>, is a governed <em>semantic layer</em> sitting on top of an organization's raw data — every noun, relationship, rule, and permission modeled as a queryable, actionable object that AI agents act on directly instead of touching raw unstructured data.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/architecture-center/ontology-system">[6]</a></sup> If you hear "ontology" in an AI-agent conversation in 2026, assume the Palantir-flavored sense unless context says otherwise. This is deliberately just the surface — B5 opens the actual mechanics and the real critique of this term.</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What problem does MCP solve, and why is it safe to treat as "settled" rather than "in flux"?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>It gives models one common interface for connecting to external tools/data instead of a bespoke integration per tool. It's settled because Anthropic donated it to the Linux Foundation's Agentic AI Foundation (co-founded with Block and OpenAI) in Dec 2025 — it's now cross-vendor governed infrastructure with large real adoption, not a single company's proprietary protocol.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② You need a support bot to answer questions from a knowledge base that gets updated daily. Which approach fits best?</p>
+    <button class="quiz-opt" data-key="a">Fine-tune the model weekly on the latest knowledge base</button>
+    <button class="quiz-opt" data-key="b">RAG — retrieve current documents at query time</button>
+    <button class="quiz-opt" data-key="c">Load the entire knowledge base into a long-context prompt every time</button>
+    <p class="quiz-why" hidden>Fine-tuning is the worst fit for facts that change often — you'd be constantly retraining. Long-context works but loses on cost (up to ~24x more expensive at scale) and can drop facts before hitting its limit. RAG is built exactly for data that changes faster than a model gets retrained.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ Is "neo4j-graphrag" the same thing as "Microsoft GraphRAG" running on a Neo4j database?</p>
+    <button class="quiz-opt" data-key="a">No — neo4j-graphrag is Neo4j's own, simpler, distinct approach; a separate experimental project bridges Microsoft's specific technique to Neo4j</button>
+    <button class="quiz-opt" data-key="b">Yes, they're the same technique, just branded differently by each company</button>
+    <button class="quiz-opt" data-key="c">No — they're entirely unrelated products with nothing in common</button>
+    <p class="quiz-why" hidden>Neo4j's first-party neo4j-graphrag package uses Cypher queries plus text-chunk retrieval, not Microsoft's Leiden-clustering method. A separate, explicitly experimental community project (ms-graphrag-neo4j) does reimplement Microsoft's specific technique on Neo4j — but that's a distinct bridge, not what neo4j-graphrag means by default.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Anthropic's own <a href="https://www.anthropic.com/news/model-context-protocol">Model Context Protocol announcement</a> is short and is the clearest statement of the actual problem MCP solves, straight from its creator.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, B4 covers how agents actually get built on top of all this — the frameworks, protocols, and genealogy connecting Mastra, LangGraph, goose, AGENTS.md, and more.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.anthropic.com/news/model-context-protocol">Introducing the Model Context Protocol — Anthropic</a><br>
+    [2] <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">Linux Foundation announces the Agentic AI Foundation</a><br>
+    [3] <a href="https://blog.modelcontextprotocol.io/posts/2025-12-09-mcp-joins-agentic-ai-foundation/">MCP joins the Agentic AI Foundation</a><br>
+    [4] <a href="https://pub.towardsai.net/i-tested-rag-vs-fine-tuning-vs-long-context-on-the-same-docs-the-1m-token-window-collapsed-at-24x-0cf96ad88eee">RAG vs. fine-tuning vs. long-context, tested — Towards AI</a><br>
+    [5] <a href="https://pypi.org/project/neo4j-graphrag/">neo4j-graphrag — PyPI</a><br>
+    [6] <a href="https://www.palantir.com/docs/foundry/architecture-center/ontology-system">Ontology system — Palantir Foundry docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0009-the-data-layer-underneath-ai.html">← B2 The Data Layer Underneath AI</a>
+    <a href="./0011-building-agents.html">B4 Building Agents →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

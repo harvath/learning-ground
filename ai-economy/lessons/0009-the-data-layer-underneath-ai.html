@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0009 | The Data Layer Underneath AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0009</div>
+  <h1>Before a model can use data, someone has to build it</h1>
+  <p class="subtitle">B3 covers how a model reaches data. This lesson is one level below that: how the data gets modeled, validated, and traced in the first place — the part most AI discussions skip entirely.</p>
+
+  <h2>dbt and Fivetran — now one company, and it changes the pitch</h2>
+
+  <p><span class="term">dbt</span> is a SQL-based data-transformation tool — the standard way analytics-engineering teams model raw warehouse data into clean, reusable tables. In 2026 this stopped being a standalone story: dbt Labs merged with <span class="term">Fivetran</span> (a data-integration company) in an all-stock deal announced October 2025 and completed June 1, 2026. Fivetran's CEO George Fraser leads the combined company; dbt's CEO Tristan Handy becomes co-founder/President. Combined ARR was roughly $600M at announcement, valuing the merged entity at $9.8B.<sup class="cite"><a href="https://www.fivetran.com/press/fivetran-dbt-labs-complete-merger-to-create-the-data-infrastructure-for-trusted-ai-agents">[1]</a></sup></p>
+
+  <p>The merger's own branding is explicit about why: <strong>"the Data Infrastructure for Trusted AI Agents,"</strong> not a BI consolidation play.<sup class="cite"><a href="https://www.fivetran.com/press/fivetran-dbt-labs-complete-merger-to-create-the-data-infrastructure-for-trusted-ai-agents">[1]</a></sup> Concretely, this shows up as: <strong>Agents Schema</strong>, an open standard storing semantic models, metric definitions, dbt lineage, and business documentation as plain SQL tables in the warehouse — a "customer-owned context layer" any SQL-capable agent can read, reducing retrieval hops and avoiding vendor lock-in; <strong>dbt Agents</strong>, built on top of dbt and exposed via a dbt MCP server (B3's MCP, now showing up here too), turning structured dbt context into auditable actions; and <strong>dbt Fusion Engine</strong>, a new transformation engine that skips re-running unchanged models specifically to control AI-pipeline compute cost.<sup class="cite"><a href="https://www.getdbt.com/product/dbt-agents">[2]</a></sup></p>
+
+  <h2>Great Expectations — split in two directions at once</h2>
+
+  <p><span class="term">Great Expectations (GX)</span> is a data-validation framework — you write "Expectations" (assertions like "this column is never null") and it checks incoming data against them before anything downstream trusts it. In 2026 it split into two separate stories, which is worth getting precisely right rather than glossing over: <strong>FICO acquired GX Cloud</strong> (the commercial SaaS product) and folded it into FICO's own AI-decisioning platform — GX Cloud stopped being publicly available June 1, 2026. Meanwhile, <strong>Fivetran became the new steward of the open-source GX Core framework</strong> — the same Fivetran from the dbt merger above.<sup class="cite"><a href="https://greatexpectations.io/blog/an-update-from-great-expectations/">[3]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">don't trust stale knowledge — a clean example</span>
+    Within a few months of each other in 2025–2026, Fivetran ended up stewarding <em>both</em> major open-source data-tooling projects in this space: dbt (via the full merger) and GX Core (via the FICO-acquisition side deal). Anyone still describing dbt Labs and Great Expectations as separate, unrelated companies — which was accurate as recently as 2024 — is working from an out-of-date picture. This is exactly the kind of fast-moving consolidation this course's whole premise is built around.
+  </div>
+
+  <p>Before the split, GX had already shipped <strong>ExpectAI</strong> — AI-assisted generation of data-quality Expectations from profiling and business context, with a bring-your-own-credentials mode specifically built for "Agent deployments" where data never leaves the customer's environment, aimed at regulated industries (financial services, healthcare, automotive).<sup class="cite"><a href="https://greatexpectations.io/blog/secure-ai-powered-data-quality-expectai-for-the-agent/">[4]</a></sup></p>
+
+  <h2>OpenLineage and Marquez — the project came first, the standard came after</h2>
+
+  <p>Here the intuitive assumption (a spec exists, then a reference implementation follows) runs backwards from what actually happened. <span class="term">Marquez</span> — a metadata service for tracking data-pipeline lineage — was built by Willy Lulciuc and Julien Le Dem at WeWork starting in 2017 and open-sourced in 2019. <span class="term">OpenLineage</span>, the open specification for what lineage events should look like, was created <em>afterward</em>, standardizing the API that Marquez had already built.<sup class="cite"><a href="https://atlan.com/marquez-wework-open-source/">[5]</a></sup> Both are now graduated projects under the Linux Foundation AI &amp; Data Foundation — OpenLineage graduated July 2023, Marquez separately, though the two remain tightly coupled (Marquez is still effectively OpenLineage's reference implementation).<sup class="cite"><a href="https://lfaidata.foundation/projects/openlineage/">[6]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">precision matters here: the spec vs. what's built on it</span>
+    You'll see "lineage tracing lets you audit what data an AI agent's decision was based on" as a 2026 selling point — real, but it's happening one layer above OpenLineage itself. The concrete example is <strong>Atlan</strong>, a commercial data-catalog company whose MCP server lets an AI agent query a lineage graph before using a column of data, returning provenance, transformation history, quality checks, and ownership in one call.<sup class="cite"><a href="https://atlan.com/know/what-is-atlan-mcp/">[7]</a></sup> OpenLineage's own specification has not, as far as can be confirmed, been formally extended with agent-specific fields — the "lineage for agent governance" story is being built by vendors consuming OpenLineage events, not by the standard itself evolving. Worth keeping that distinction sharp rather than crediting the spec with a capability that actually lives one layer up.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① As of mid-2026, which company controls both dbt and the open-source Great Expectations Core framework, and via what two different deals?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Fivetran. It fully merged with dbt Labs (announced Oct 2025, completed June 2026). Separately, it became the new steward of the open-source GX Core project as part of the deal in which FICO acquired the commercial GX Cloud product — a different, parallel transaction happening around the same time.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Which came first: the OpenLineage specification, or Marquez (its reference implementation)?</p>
+    <button class="quiz-opt" data-key="a">OpenLineage — Marquez was built afterward to implement the new standard</button>
+    <button class="quiz-opt" data-key="b">Marquez — built at WeWork starting 2017, with OpenLineage created afterward to standardize the API it had already built</button>
+    <button class="quiz-opt" data-key="c">They were released simultaneously by the same team</button>
+    <p class="quiz-why" hidden>Marquez came first (WeWork, 2017, open-sourced 2019). OpenLineage was created afterward as the open specification standardizing the lineage-event API that Marquez had already built — the reverse order of what "a spec and its reference implementation" usually implies.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Fivetran's own <a href="https://www.fivetran.com/press/fivetran-dbt-labs-complete-merger-to-create-the-data-infrastructure-for-trusted-ai-agents">merger announcement</a> is short and states the "why now" rationale directly, in the company's own words rather than secondhand analysis.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, B3 moves one level up the stack from "is the data trustworthy" to "how does a model actually reach it" — RAG, long-context, fine-tuning, MCP, and a first pass at ontology.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.fivetran.com/press/fivetran-dbt-labs-complete-merger-to-create-the-data-infrastructure-for-trusted-ai-agents">Fivetran, dbt Labs complete merger — Fivetran press release</a><br>
+    [2] <a href="https://www.getdbt.com/product/dbt-agents">dbt Agents — getdbt.com</a><br>
+    [3] <a href="https://greatexpectations.io/blog/an-update-from-great-expectations/">An update from Great Expectations — GX blog</a><br>
+    [4] <a href="https://greatexpectations.io/blog/secure-ai-powered-data-quality-expectai-for-the-agent/">Secure, AI-powered data quality: ExpectAI for the agent — GX blog</a><br>
+    [5] <a href="https://atlan.com/marquez-wework-open-source/">Marquez by WeWork — Atlan</a><br>
+    [6] <a href="https://lfaidata.foundation/projects/openlineage/">OpenLineage — LF AI &amp; Data Foundation</a><br>
+    [7] <a href="https://atlan.com/know/what-is-atlan-mcp/">What is Atlan MCP? — Atlan</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0008-models-and-inference.html">← B1 Models &amp; Inference</a>
+    <a href="./0010-getting-data-and-tools-to-a-model.html">B3 Getting Data &amp; Tools to a Model →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

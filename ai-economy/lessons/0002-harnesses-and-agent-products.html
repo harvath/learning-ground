@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0002 | Harnesses &amp; Agent Products</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · THE ECONOMIC STRUCTURE — LESSON 0002</div>
+  <h1>pi and OpenClaw: an engine and the product built on it</h1>
+  <p class="subtitle">The tooling layer isn't a grab-bag of unrelated startups. This pair is a genealogy in miniature — and a case study in how small this world actually is.</p>
+
+  <p>A <span class="term">harness</span> is the industry's word for the scaffolding wrapped around a raw model that turns it into something that acts — the tool-use loop, the file-editing logic, the shell access. Claude Code, Cursor, and Aider are all harnesses. So is the example this lesson opens with, and it's a genuinely interesting one because of what got built on top of it.</p>
+
+  <h2>pi — radical minimalism as the whole pitch</h2>
+
+  <p><span class="term">pi</span> is an open-source coding-agent harness built by Mario Zechner (online as "badlogic," previously known for creating the libGDX game framework), first released August 2025.<sup class="cite"><a href="https://ai.miraheze.org/wiki/Pi.dev">[1]</a></sup> Its entire design philosophy is minimalism taken seriously: only four built-in tools — Read, Write, Edit, Bash. Everything else — extensions, skills, prompt templates, themes — gets added at runtime through a TypeScript extension system, and it works across 20+ model providers (Claude, GPT-5, Gemini, Grok, DeepSeek) with bring-your-own-key.<sup class="cite"><a href="https://vibecodinghub.org/tools/pi">[2]</a></sup> It's become one of the most popular open-source coding agents by developer adoption — roughly 62,000–67,000 GitHub stars as of mid-2026.<sup class="cite"><a href="https://dalenguyen.me/blog/2026-06-07-pi-dev-agent-harness">[3]</a></sup></p>
+
+  <p>In May 2026, Zechner joined <strong>Earendil Inc.</strong>, a venture-backed public-benefit corporation co-founded by Armin Ronacher (creator of the Flask web framework) — pi moved under Earendil's banner, backed by Accel and Balderton.<sup class="cite"><a href="https://earendil.com/posts/announcing-pi-and-lefos/">[4]</a></sup> One detail worth noticing: Earendil's own announcement names angel backers including the founders of <strong>n8n</strong> (A3) — this small cluster of tooling builders keeps showing up backing each other, which is itself a useful signal about how tight this layer's social network is.</p>
+
+  <h2>OpenClaw — the product built directly on pi</h2>
+
+  <p><span class="term">OpenClaw</span> is a different kind of thing: an autonomous, self-hosted <em>personal</em> AI agent, built by Peter Steinberger (previously bootstrapped the PDF-tooling company PSPDFKit). It runs as a persistent background process on your own machine, and you talk to it through WhatsApp, Telegram, Slack, Discord, iMessage, or Signal — it can run shell commands, control a browser, and manage files, calendar, and email, aimed explicitly at non-technical users.<sup class="cite"><a href="https://milvus.io/blog/openclaw-formerly-clawdbot-moltbot-explained-a-complete-guide-to-the-autonomous-ai-agent.md">[5]</a></sup> It launched under the name Clawdbot in November 2025, was briefly renamed Moltbot, then settled on OpenClaw — partly to avoid trademark friction with Anthropic over the "Claw(de)" wordplay. Growth was fast even by this industry's standards: 9,000 GitHub stars in the first 24 hours, and by February 2026 roughly 200,000 stars and ~2M weekly visitors — a pace commentators compared to Docker's or Kubernetes's early trajectories.<sup class="cite"><a href="https://the-decoder.com/for-1-3-million-a-month-openclaw-founder-peter-steinberger-runs-100-ai-agents-that-code-review-prs-and-find-bugs/">[6]</a></sup> One widely-shared anecdote: a user had it negotiate $4,200 off a car purchase, entirely through autonomous email handling.</p>
+
+  <div class="box primary">
+    <span class="label">the connection that makes this a genealogy, not two bullet points</span>
+    OpenClaw's core agent loop <em>is</em> pi — Armin Ronacher himself described pi as "the minimal agent within OpenClaw." OpenClaw consumes pi as an SDK and adds a messaging-gateway layer (WhatsApp/Telegram/Slack/Discord) on top of it.<sup class="cite"><a href="https://lucumr.pocoo.org/2026/1/31/pi/">[7]</a></sup> Treating pi and OpenClaw as two unrelated examples of "AI agents" understates how tightly connected this corner of the tooling layer actually is — one is the engine, the other is the consumer product built on it, and the same small circle of people (Zechner, Ronacher, and n8n's founders as backers) shows up across both.
+  </div>
+
+  <h2>What happened to OpenClaw as a business — a genuinely different outcome</h2>
+
+  <p>No independent venture round was raised for OpenClaw. Instead, in roughly February 2026, <strong>OpenAI hired Steinberger</strong> — announced personally by Sam Altman — to work on next-generation personal AI agents. OpenClaw itself continues as an open-source project, now under an independent foundation that OpenAI funds.<sup class="cite"><a href="https://mlq.ai/news/openai-hires-openclaw-founder-to-advance-personal-ai-agents-while-keeping-project-open-source/">[8]</a></sup> That's a distinct pattern worth naming on its own: not an acquisition, not a funding round, but a talent acquihire that leaves the open-source project running independently — a third path alongside "raise VC money" and "get acquired and shut down."</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What's the actual relationship between pi and OpenClaw — not "two similar agent tools," but structurally?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>pi is the engine — a minimal, four-tool coding-agent harness. OpenClaw is a consumer product built on top of pi, using it as its core agent loop (via SDK) and adding a messaging-gateway layer (WhatsApp/Telegram/Slack/Discord/etc.) so non-technical users can talk to it. One is infrastructure, the other is the product built on that infrastructure.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② What actually happened to OpenClaw as a business?</p>
+    <button class="quiz-opt" data-key="a">It raised a large Series A and hired a commercial team</button>
+    <button class="quiz-opt" data-key="b">Its founder was hired by OpenAI (an acquihire), while the project stayed open-source under an independent, OpenAI-funded foundation</button>
+    <button class="quiz-opt" data-key="c">It was acquired outright and shut down</button>
+    <p class="quiz-why" hidden>No VC round was raised. Sam Altman personally announced OpenAI hiring Peter Steinberger to work on next-gen personal agents, while OpenClaw itself kept running as an open-source project under an independent foundation OpenAI funds — a distinct outcome from either "raise venture money" or "get acquired and shut down."</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Armin Ronacher's own post, <a href="https://lucumr.pocoo.org/2026/1/31/pi/">"pi — the minimal agent within OpenClaw,"</a> is short and is the clearest primary-source statement of the engine/product relationship from someone directly involved in both.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, A3 covers the other side of this layer — workflow-orchestration platforms, led by n8n's transformation into an AI-agent company, and returns to the wrapper-vs-moat question from A1 with concrete examples to test it against.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://ai.miraheze.org/wiki/Pi.dev">Pi.dev — AI Wiki</a><br>
+    [2] <a href="https://vibecodinghub.org/tools/pi">pi — Vibe Coding Hub</a><br>
+    [3] <a href="https://dalenguyen.me/blog/2026-06-07-pi-dev-agent-harness">pi.dev agent harness — dalenguyen.me</a><br>
+    [4] <a href="https://earendil.com/posts/announcing-pi-and-lefos/">Announcing pi and Lefos — Earendil</a><br>
+    [5] <a href="https://milvus.io/blog/openclaw-formerly-clawdbot-moltbot-explained-a-complete-guide-to-the-autonomous-ai-agent.md">OpenClaw (formerly Clawdbot/Moltbot) explained — Milvus blog</a><br>
+    [6] <a href="https://the-decoder.com/for-1-3-million-a-month-openclaw-founder-peter-steinberger-runs-100-ai-agents-that-code-review-prs-and-find-bugs/">OpenClaw founder Peter Steinberger runs 100 AI agents — the-decoder.com</a><br>
+    [7] <a href="https://lucumr.pocoo.org/2026/1/31/pi/">pi — the minimal agent within OpenClaw — Armin Ronacher</a><br>
+    [8] <a href="https://mlq.ai/news/openai-hires-openclaw-founder-to-advance-personal-ai-agents-while-keeping-project-open-source/">OpenAI hires OpenClaw founder, keeps project open source — MLQ.ai</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0001-the-four-layers.html">← A1 The Four Layers</a>
+    <a href="./0003-orchestration-platforms-and-the-moat-debate.html">A3 Orchestration Platforms &amp; the Moat Debate →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

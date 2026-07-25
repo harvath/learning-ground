@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0012 | Ontology, Deep Dive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT B · THE TECHNOLOGY STACK — LESSON 0012</div>
+  <h1>Ontology, taken apart</h1>
+  <p class="subtitle">B3 introduced ontology lightly. This time: the actual mechanics, the real critique, and the open-source alternative for the governance problem it's solving.</p>
+
+  <h2>Palantir's Ontology, piece by piece</h2>
+
+  <p>Palantir's own docs split the Ontology into two families: <strong>semantic elements</strong>, which describe structure, and <strong>kinetic elements</strong>, which enable change.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">[1]</a></sup></p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Element</th><th>Family</th><th>What it is</th></tr>
+      <tr><td>Object Type</td><td>Semantic</td><td>An entity or event in the organization — e.g. "Vehicle," "Employee," "Shipment."</td></tr>
+      <tr><td>Property</td><td>Semantic</td><td>An Object Type's characteristics/attributes.</td></tr>
+      <tr><td>Link Type</td><td>Semantic</td><td>A relationship between two Object Types.</td></tr>
+      <tr><td>Action Type</td><td>Kinetic</td><td>The schema for a bounded, permissioned set of edits (plus side effects) that a human <em>or an agent</em> can submit.</td></tr>
+      <tr><td>Function</td><td>Kinetic</td><td>Server-side code, run inside Foundry's governed execution environment, that reads properties, traverses links, and makes edits.</td></tr>
+    </table>
+  </div>
+
+  <div class="box make">
+    <span class="label">how an agent actually *acts*, not just queries</span>
+    The governance boundary sits at the Action Type level. An agent given access to an Ontology isn't handed open-ended write access to the underlying data — it's scoped to a specific, pre-defined, auditable set of Action Types. "This agent may submit Action X on Object Type Y" is the actual permission being granted, not "this agent may edit anything." That's the mechanism behind Palantir's claim of governed agent autonomy, not a vague promise.
+  </div>
+
+  <p><span class="term">Ontology MCP</span> is the bridge to the rest of the ecosystem from B4: a Developer Console feature that exposes an application's Ontology resources as MCP tools, so external agents (Claude, Copilot Studio, Gemini Enterprise) can act as MCP clients against it. It exposes exactly three tool classes — read objects, execute pre-approved actions, query data — and the scope is configured per-application by an admin, so an external agent only ever sees the slice an admin explicitly opened up.<sup class="cite"><a href="https://www.palantir.com/docs/foundry/ontology-mcp/overview">[2]</a></sup></p>
+
+  <h2>The skeptic's case</h2>
+
+  <p>There's a real, pointed critique here, not just marketing pushback. A February 2026 piece, <em>"Palantir's 'Ontology' Hustle,"</em> makes the sharpest version of it plainly: <strong>Object Type = table, Property = column, Link Type = foreign key, Action = stored procedure</strong> — i.e., this is entity-relationship modeling, a technique Peter Chen formalized in 1976, wearing a philosophy-department word. The argument is that the term's main function is to make people unfamiliar with databases believe they're looking at something new.<sup class="cite"><a href="https://pigsty.io/blog/db/ontology-bullshit/">[3]</a></sup> This isn't a fringe take — a follow-up public debate on the claim reportedly landed 75% of the audience on the critic's side, real traction among data-infrastructure practitioners.<sup class="cite"><a href="https://vonng.com/en/db/ontology-again/">[4]</a></sup></p>
+
+  <p>The fair counterpoint: the genuinely hard, valuable part may not be the vocabulary at all, but the governance/permissioning layer around Actions, plus the hands-on work of actually curating an ontology for one organization's messy real-world data (Palantir's "forward-deployed engineer" practice — A5 covers how that role has since spread industry-wide). Whether "ontology" the word is doing real technical work, or just branding on top of familiar database primitives, is a separate question from whether the product is useful.</p>
+
+  <div class="box warn">
+    <span class="label">teaching takeaway</span>
+    Treat "Ontology" as Palantir's product name for a governed semantic layer + write-permission layer, built on conventional data-modeling primitives (entity-relationship modeling + scoped write permissions + an MCP-exposed API surface). Useful to know as a concrete pattern. But recognize both the mechanics <em>and</em> the critique when the term comes up — using it uncritically as if it were self-evidently novel is a small tell.
+  </div>
+
+  <h2>Governing what agents can do — the open, non-proprietary version</h2>
+
+  <p>Action Types are Palantir's proprietary answer to a general problem: how do you let an agent take real actions while keeping it inside a bounded, auditable permission set? Two open policy-as-code engines solve the same problem without a platform lock-in.</p>
+
+  <p><span class="term">OPA (Open Policy Agent)</span> is a CNCF-graduated policy engine (graduated January 2021) using its own language, Rego, originally built for use cases like Kubernetes admission control and API-gateway authorization. The 2025-2026 pattern for agents: OPA runs as a sidecar in front of an agent's tool-call gateway — before every tool invocation, the agent runtime queries OPA with the principal, the tool, and the arguments, and OPA returns an allow/deny decision (plus reasoning) in sub-millisecond time, with every decision streamed to a SIEM for audit.<sup class="cite"><a href="https://tianpan.co/blog/2026-04-25-policy-as-code-agent-permissions-opa-rego">[5]</a></sup> The logic: even if a prompt-injected or hijacked agent <em>decides</em> to do something disallowed, it can't actually execute it, because authorization lives entirely outside the model's own control. This pattern is getting real attention now partly because the OWASP Top 10 for Agentic Applications (2026) names "Agent Goal Hijacking" as its top risk.</p>
+
+  <div class="box warn">
+    <span class="label">don't trust stale knowledge — OPA had a real shock</span>
+    In August 2025, Apple hired away OPA's core maintainer team from Styra (the company that commercialized OPA) — Teemu Koponen, Torin Sandall, and Tim Hinrichs among them — without formally acquiring Styra itself. Styra appears to have shut down; as part of the wind-down, its commercial tools (Enterprise OPA, OPA Control Plane, the Regal linter) were released as open source. The CNCF retains formal control of the OPA project itself, which continues as community-maintained.<sup class="cite"><a href="https://cloudnativenow.com/features/apple-buys-styra-brains-opa-remains-open/">[6]</a></sup> Anyone still picturing "OPA, made by Styra" is working from a picture that stopped being accurate in the second half of 2025 — a clean example of exactly the kind of shift this course keeps warning about.
+  </div>
+
+  <p><span class="term">Cedar</span> is AWS's own open-source policy language (Apache 2.0, 2023), powering Amazon Verified Permissions. It joined the CNCF too — as a Sandbox-maturity project (the earliest tier) in October 2025, meaning Cedar and OPA are now both CNCF projects, just at very different maturity levels.<sup class="cite"><a href="https://www.cncf.io/projects/cedar/">[7]</a></sup> Cedar's flagship 2026 agent use case is AWS's own: Amazon Bedrock AgentCore integrated Cedar-based policy, reaching general availability March 3, 2026, letting teams attach deterministic Cedar policies to a Bedrock AgentCore Gateway to govern exactly what tools an agent can reach. AWS's stated rationale for Cedar specifically: it's formally verified and analyzable (built on automated reasoning, so policy conflicts are detectable, not just pattern-matched), evaluates in bounded time for predictable low-latency decisions in an agent's live tool-call path, and uses human-readable syntax meant to be legible to compliance staff, not just engineers.</p>
+
+  <div class="box make">
+    <span class="label">OPA vs. Cedar for agent governance — current discourse, not a settled benchmark</span>
+    No rigorous, vendor-neutral benchmark comparing the two for this specific use case was found — what exists is qualitative industry commentary treating "OPA with Rego, or AWS Cedar" as the two most-cited choices for the agent-gateway policy-decision-point pattern. The rough positioning: Cedar pitches formal verifiability and analyzability; OPA pitches ecosystem maturity, broader existing deployment, and Rego's more flexible general-purpose data-joining. Treat any confident "X is just better" claim about this pair with the same skepticism A7 taught for funding numbers — this is live, evolving discourse, not measured fact.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① In Palantir's Ontology, what's the difference between the semantic elements and the kinetic elements?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Semantic elements describe structure: Object Types (entities/events), Properties (attributes), Link Types (relationships). Kinetic elements enable change: Action Types (schema for a bounded, permissioned set of edits an agent or human can submit) and Functions (server-side code that reads/traverses/edits via the governed execution environment).</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">② What's the skeptic's one-line mapping of Ontology terms onto plain old database terms — and what's the argument behind it?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Object Type = table, Property = column, Link Type = foreign key, Action = stored procedure. The argument: this is 1976-era entity-relationship modeling wearing new, philosophy-flavored branding — the word's main effect is making it look novel to people unfamiliar with databases.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">③ Why does OPA run as a sidecar in front of an agent's tool-call gateway, rather than trusting the agent/model itself to decide what's allowed?</p>
+    <button class="quiz-opt" data-key="a">It's faster than checking permissions inside the model</button>
+    <button class="quiz-opt" data-key="b">So that even a hijacked or prompt-injected agent can't actually execute a disallowed action — authorization lives entirely outside the model's control</button>
+    <button class="quiz-opt" data-key="c">Because Rego can only run outside of language models</button>
+    <p class="quiz-why" hidden>The whole point of the pattern is that the agent's own "decision" to do something is never trusted as the final word — a hijacked or manipulated agent might decide to do something harmful, but it physically cannot execute it if the authorization check sits in an independent system outside the model's control.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary sources</span>
+    Palantir's own <a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">Ontology core concepts docs</a> for the mechanics, and <a href="https://pigsty.io/blog/db/ontology-bullshit/">"Palantir's 'Ontology' Hustle"</a> for the sharpest version of the skeptic's case — read both, since this lesson deliberately doesn't resolve the tension between them.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Next up, B6 turns to how software teams themselves are (or aren't) restructuring around AI agents — surveying AI-DLC alongside its real competitors, with an honest look at how much of this is genuine methodology versus branding.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    [1] <a href="https://www.palantir.com/docs/foundry/ontology/core-concepts">Ontology core concepts — Palantir Foundry docs</a><br>
+    [2] <a href="https://www.palantir.com/docs/foundry/ontology-mcp/overview">Ontology MCP overview — Palantir Foundry docs</a><br>
+    [3] <a href="https://pigsty.io/blog/db/ontology-bullshit/">Palantir's "Ontology" Hustle — pigsty.io</a><br>
+    [4] <a href="https://vonng.com/en/db/ontology-again/">After the debate, let's talk seriously about "Ontology" — vonng.com</a><br>
+    [5] <a href="https://tianpan.co/blog/2026-04-25-policy-as-code-agent-permissions-opa-rego">Policy-as-code for agents: OPA, Rego, and the decision point your tool loop doesn't have — tianpan.co</a><br>
+    [6] <a href="https://cloudnativenow.com/features/apple-buys-styra-brains-opa-remains-open/">Apple buys Styra's brains, OPA remains open — Cloud Native Now</a><br>
+    [7] <a href="https://www.cncf.io/projects/cedar/">Cedar — CNCF project page</a>
+  </p>
+
+  <div class="nav">
+    <a href="./0011-building-agents.html">← B4 Building Agents</a>
+    <a href="./0013-agentic-development-methodologies.html">B6 Agentic Development Methodologies →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
