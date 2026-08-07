@@ -18,7 +18,7 @@
     <table class="cmp">
       <tr><th>Kind</th><th>What it actually is</th><th>Examples</th></tr>
       <tr><td>Protocol / convention</td><td>A rule everyone agrees to follow. Not software — a shared format or contract.</td><td>MCP (B3), AGENTS.md</td></tr>
-      <tr><td>Runnable agent</td><td>Software you install and run directly. It <em>is</em> the agent.</td><td>goose, Claude Code, Cursor, Aider, pi, OpenClaw (A2 covers the business story behind the last two)</td></tr>
+      <tr><td>Runnable agent</td><td>Software you install and run directly. It <em>is</em> the agent.</td><td>goose, Claude Code, Cursor, Aider, pi, OpenClaw (A2 covers the business story behind the last two), Factory's Droids (below)</td></tr>
       <tr><td>Framework / SDK</td><td>A library you import to build <em>your own</em> custom agent.</td><td>Mastra, LangGraph, CrewAI, OpenAI Agents SDK, Microsoft Agent Framework</td></tr>
       <tr><td>Retrieval specialist</td><td>Agent-adjacent, but its core job is getting the right data in front of a model.</td><td>LlamaIndex</td></tr>
     </table>
@@ -45,7 +45,7 @@
 
   <p><span class="term">AGENTS.md</span> is a plain markdown file at a repo's root — setup commands, code-style rules, test instructions, PR conventions — kept separate from the human-facing README so that stays concise. It exists because, before it, every agent vendor invented its own instructions file: <code>.cursorrules</code> for Cursor, <code>CLAUDE.md</code> for Claude Code, <code>.github/copilot-instructions.md</code> for Copilot — forcing teams to duplicate the same guidance for every tool or pick one to optimize for.<sup class="cite"><a href="https://agents.md/">[4]</a></sup></p>
 
-  <p>It shipped in August 2025 as a genuine multi-vendor effort — OpenAI (Codex) as lead contributor, alongside Sourcegraph (Amp), Google (Jules), Cursor, and Factory — and is now used in 60,000+ open-source projects, read natively by Codex, Jules, Devin, VS Code, Cursor, Zed, Aider, Copilot, and more.<sup class="cite"><a href="https://agents.md/">[4]</a></sup></p>
+  <p>It shipped in August 2025 as a genuine multi-vendor effort — OpenAI (Codex) as lead contributor, alongside Sourcegraph (Amp), Google (Jules), Cursor, and <span class="term">Factory</span> (its Droids agent, covered below) — and is now used in 60,000+ open-source projects, read natively by Codex, Jules, Devin, VS Code, Cursor, Zed, Aider, Copilot, and more.<sup class="cite"><a href="https://agents.md/">[4]</a></sup></p>
 
   <div class="box warn">
     <span class="label">a gotcha that affects how you work</span>
@@ -60,6 +60,12 @@
     <span class="label">where these three meet</span>
     On December 9, 2025, the Linux Foundation announced the <span class="term">Agentic AI Foundation (AAIF)</span>, founded with exactly three contributed projects: Anthropic's <strong>MCP</strong>, Block's <strong>goose</strong>, and OpenAI's <strong>AGENTS.md</strong> — one protocol, one runnable agent, one convention, now under neutral, cross-vendor governance. Platinum members include AWS, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, and OpenAI.<sup class="cite"><a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">[7]</a></sup> This is the concrete answer to "how do these relate": they don't just resemble each other, they were formally bundled together as the foundation's founding trio.
   </div>
+
+  <h2>Factory's Droids — a runnable agent built as a coordinator, not a single loop</h2>
+
+  <p><span class="term">Factory</span> (founded 2023 by Matan Grinberg and Eno Reyes) builds <span class="term">Droids</span> — runnable agents in the same category as goose or Claude Code, but architecturally different: rather than one generalist agent looping on a task, Factory ships a coordinator agent that decomposes the work and dispatches it to specialized droids with distinct role boundaries (code, review, docs, test, and a "Knowledge" droid), then returns a reviewable change.<sup class="cite"><a href="https://theaiagentindex.com/agents/factory-ai">[11]</a></sup> It's deliberately model-agnostic — any LLM, any IDE — and ships both a web experience and a CLI, so it fits into an existing git workflow rather than requiring a hosted browser workspace.<sup class="cite"><a href="https://www.aidoers.io/blog/droid-factory-ai-coding-agent-runs-every-model">[12]</a></sup></p>
+
+  <p>Factory raised a $150M Series C led by Khosla Ventures in April 2026 at a $1.5B post-money valuation ($220M total raised across five rounds), with named enterprise customers including Nvidia, Adobe, EY, Morgan Stanley, and MongoDB — and as of mid-2026 claims the number one position on Terminal-Bench, a benchmark for autonomous terminal task execution.<sup class="cite"><a href="https://theaiagentindex.com/agents/factory-ai">[11]</a></sup> Worth placing correctly: this is a well-capitalized, credible competitor to goose/Claude Code/Aider in the runnable-agent bucket, not a framework like Mastra or LangGraph — you install and run a Droid, you don't import Factory as a library to build your own agent.</p>
 
   <h2>Two framework lineages that just merged</h2>
 
@@ -94,6 +100,10 @@
       <div class="n-title">2023 — Semantic Kernel released (Microsoft)</div>
     </div>
     <div class="chain-node">
+      <div class="n-title">2023 — Factory founded</div>
+      <div class="n-note">Matan Grinberg &amp; Eno Reyes; Droids, its coordinator-pattern runnable agent, ships later.</div>
+    </div>
+    <div class="chain-node">
       <div class="n-title">Oct 2024 — OpenAI's Swarm (experimental)</div>
     </div>
     <div class="chain-node">
@@ -120,6 +130,9 @@
     <div class="chain-node">
       <div class="n-title">Jan 2026 — Mastra reaches 1.0</div>
     </div>
+    <div class="chain-node">
+      <div class="n-title">Apr 2026 — Factory raises $150M Series C at $1.5B valuation</div>
+    </div>
     <div class="chain-node main">
       <div class="n-title">Apr 2026 — Microsoft Agent Framework GA</div>
       <div class="n-note">AutoGen + Semantic Kernel merged.</div>
@@ -135,13 +148,19 @@
   </div>
 
   <div class="recall">
-    <p class="recall-q">② Semantic Kernel and AutoGen used to be separate Microsoft projects. What are they now, and what should you do if you're maintaining code on either one?</p>
+    <p class="recall-q">② Factory's Droids are also called an "AI agent," same as goose. What's architecturally different about how Droids handle a task?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>goose (and Claude Code, Aider, pi) are single generalist agents looping on a task themselves. Factory ships a coordinator agent that decomposes the work and dispatches pieces to specialized droids with distinct roles — code, review, docs, test, Knowledge — then returns a reviewable change. Both are still "runnable agents" you install and run, not frameworks — the difference is one-agent-loops vs. coordinator-plus-specialists.</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ Semantic Kernel and AutoGen used to be separate Microsoft projects. What are they now, and what should you do if you're maintaining code on either one?</p>
     <button class="recall-show">Reveal answer</button>
     <div class="recall-a" hidden>They were merged into Microsoft Agent Framework (GA April 2026). Both originals are now in maintenance mode (bug fixes only, no new features) — Microsoft's own guidance recommends migrating off Semantic Kernel within 6–12 months.</div>
   </div>
 
   <div class="quiz" data-answer="b">
-    <p class="quiz-q">③ Does Claude Code (this tool) natively read AGENTS.md files as of 2026?</p>
+    <p class="quiz-q">④ Does Claude Code (this tool) natively read AGENTS.md files as of 2026?</p>
     <button class="quiz-opt" data-key="a">Yes, natively, same as Cursor</button>
     <button class="quiz-opt" data-key="b">No — it only reads CLAUDE.md natively, though a one-line import workaround exists</button>
     <button class="quiz-opt" data-key="c">Only when run inside VS Code</button>
@@ -169,7 +188,9 @@
     [7] <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation">Linux Foundation announces the Agentic AI Foundation</a><br>
     [8] <a href="https://learn.microsoft.com/en-us/agent-framework/migration-guide/from-semantic-kernel/">Migrate from Semantic Kernel to Microsoft Agent Framework — Microsoft Learn</a><br>
     [9] <a href="https://en.wikipedia.org/wiki/LlamaIndex">LlamaIndex — Wikipedia</a><br>
-    [10] <a href="https://www.llamaindex.ai/blog/llamaindex-is-more-than-a-rag-framework">LlamaIndex is more than a RAG framework — LlamaIndex blog</a>
+    [10] <a href="https://www.llamaindex.ai/blog/llamaindex-is-more-than-a-rag-framework">LlamaIndex is more than a RAG framework — LlamaIndex blog</a><br>
+    [11] <a href="https://theaiagentindex.com/agents/factory-ai">Factory AI (Droids) — The AI Agent Index</a><br>
+    [12] <a href="https://www.aidoers.io/blog/droid-factory-ai-coding-agent-runs-every-model">Droid by Factory AI: a coding agent that runs every model — aidoers.io</a>
   </p>
 
   <div class="nav">

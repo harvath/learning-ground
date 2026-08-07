@@ -18,9 +18,20 @@
 
   <p>Job postings with the exact title "Prompt Engineer" cratered roughly 40% between mid-2024 and early 2025, and are now near-zero in most markets. The underlying <em>skill</em> didn't disappear — demand for it roughly tripled from 2024 to 2026 — it just stopped being a standalone job and got absorbed into broader AI/agent engineering roles (A5's "naming chaos" section covers what replaced it). Frontier models simply got robust enough that careful, expert-crafted prompts stopped being the differentiator vague natural-language requests couldn't match.</p>
 
+  <h2>The next handoff: "loop engineering" (June 2026)</h2>
+
+  <p>If prompt engineering is already dated, the term that's displacing it in mid-2026 discourse is <span class="term">loop engineering</span> — and it's recent enough that it's worth catching while it's still live rather than looking it up cold in conversation. On June 7, 2026, <strong>Peter Steinberger</strong> — OpenClaw's creator, now at OpenAI after the acquihire (A2) — posted a line that reached 6.5M views: "You shouldn't be prompting coding agents anymore. You should be designing loops that prompt your agents." <strong>Boris Cherny</strong>, who leads Claude Code at Anthropic, said essentially the same thing independently: "I don't prompt Claude anymore. I have loops running that prompt Claude and figuring out what to do. My job is to write loops." Two weeks later, <strong>Addy Osmani</strong> (Google Chrome engineering lead) published the essay that gave the idea a name and a structure.<sup class="cite"><a href="https://addyo.substack.com/p/loop-engineering">[1]</a></sup></p>
+
+  <div class="box primary">
+    <span class="label">the actual distinction</span>
+    Prompt engineering is a single-turn skill: write a prompt, read the output, write the next prompt yourself. <span class="term">Loop engineering</span> is a systems-design skill one level up — you build the thing that finds work, hands it to the agent, verifies the result, records progress, and decides what to run next, so the agent iterates for minutes or hours without you typing each step. Osmani's own framing: "Loop engineering is replacing yourself as the person who prompts the agent. You design the system that does it instead."<sup class="cite"><a href="https://addyo.substack.com/p/loop-engineering">[1]</a></sup> His essay names five concrete components of a loop — scheduled automations, isolated worktrees for parallel runs, codified <code>SKILL.md</code> project knowledge, MCP plugins/connectors, and subagents for independent verification — plus external state (markdown files or a board) so progress survives between runs.
+  </div>
+
+  <p>Same arc as "prompt engineer" above, one turn further: as agents got capable enough to run unattended for hours, the bottleneck moved from "can you phrase the instruction well" to "can you design the system that keeps re-instructing it correctly." Whether "loop engineer" becomes an actual job title or, like prompt engineering, gets folded into general agent-engineering practice within a year, is exactly the kind of thing worth checking rather than assuming — see C2 for how to keep this current.</p>
+
   <h2>The DeepSeek moment — and what actually changed</h2>
 
-  <p>On January 20, 2025, DeepSeek released R1, an o1-class reasoning model, fully open-weight, at a fraction of the training cost OpenAI and others had assumed necessary. A week later, on January 27, Nvidia lost about 17% of its market cap — roughly $600B — in a single day, the largest one-day market-cap loss by any public company ever, on fears that efficient open models would crater GPU demand.<sup class="cite"><a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">[1]</a></sup></p>
+  <p>On January 20, 2025, DeepSeek released R1, an o1-class reasoning model, fully open-weight, at a fraction of the training cost OpenAI and others had assumed necessary. A week later, on January 27, Nvidia lost about 17% of its market cap — roughly $600B — in a single day, the largest one-day market-cap loss by any public company ever, on fears that efficient open models would crater GPU demand.<sup class="cite"><a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">[2]</a></sup></p>
 
   <div class="box make">
     <span class="label">the stock move wasn't the lasting story</span>
@@ -44,8 +55,14 @@
     <div class="recall-a" hidden>Nvidia's ~17% single-day stock drop was temporary — it fully reversed within about a month. What stuck permanently was the establishment of "open-weight models can credibly chase the frontier at a fraction of the cost" as an ongoing feature of the landscape, not a one-off surprise — a pattern that's continued through DeepSeek's later releases.</div>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">② "Loop engineering" and "prompt engineering" both involve talking to an AI agent. What's the actual difference in what you're doing?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Prompt engineering is single-turn: you write a prompt, read the result, and write the next prompt yourself. Loop engineering is a systems-design skill one level up: you build the automated system — scheduling, verification, state-tracking — that finds work, prompts the agent, checks the result, and decides what to run next, so the agent iterates for minutes or hours without you typing each step.</div>
+  </div>
+
   <div class="quiz" data-answer="b">
-    <p class="quiz-q">② Someone describes "vibe coding" today as a positive term for professional, production-grade software engineering. What does that suggest?</p>
+    <p class="quiz-q">③ Someone describes "vibe coding" today as a positive term for professional, production-grade software engineering. What does that suggest?</p>
     <button class="quiz-opt" data-key="a">They're using the term exactly as Karpathy originally intended</button>
     <button class="quiz-opt" data-key="b">They picked up a diluted, drifted version of the term — it's now mildly negative and specifically discouraged for serious production work</button>
     <button class="quiz-opt" data-key="c">This is a newly coined term unrelated to Karpathy's original</button>
@@ -64,7 +81,8 @@
 
   <p class="sources">
     Sources:<br>
-    [1] <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">Why DeepSeek's V4 matters — MIT Technology Review</a>
+    [1] <a href="https://addyo.substack.com/p/loop-engineering">Loop Engineering — Addy Osmani, Elevate (Substack)</a><br>
+    [2] <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">Why DeepSeek's V4 matters — MIT Technology Review</a>
   </p>
 
   <div class="nav">
