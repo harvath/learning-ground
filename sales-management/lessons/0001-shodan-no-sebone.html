@@ -1,0 +1,120 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0001 | 商談の背骨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit A・案件管理の基礎 — レッスン A1</div>
+  <h1>商談の背骨：リードから受注／失注まで</h1>
+  <p class="subtitle">セグメント分析も、メンバー別効率も、着地予測も——経営が見たい指標は全部、この一本の道筋に沿って記録されたデータから作られる。指標の話に入る前に、まずこの背骨を頭に入れる。</p>
+
+  <p>既存の営業管理システムからTwentyへの移行で最初に決めるべきは、画面のデザインでも移行スケジュールでもない。<strong>「案件（商談）にまつわるデータが、どういう順序でどう記録されていくか」</strong>という一本の道筋——このコースではこれを「背骨」と呼ぶ——を先に固めることだ。セグメント分析や着地予測のような経営指標は、すべてこの背骨のどこかの時点で記録されたデータの集計にすぎない。背骨が曖昧なままTwentyのオブジェクト設計に入ると、後で「あの指標を出すためのフィールドがそもそも無い」という事態になる。</p>
+
+  <h2>リードと案件は別物 — クオリフィケーションという関門</h2>
+
+  <p>営業管理の世界では、まだ何者かわからない見込み客と、正式に追いかけると決めた商談を、明確に区別する。前者を<span class="term">リード（Lead）</span>と呼ぶ——展示会で名刺交換した相手、問い合わせフォームから来た相手など、まだ「追う価値があるか」を判定していない接点のことだ。リードが<span class="term">クオリフィケーション（Qualification）</span>という関門を通過すると、初めて正式な<span class="term">案件／オポチュニティ（Opportunity）</span>に昇格する。</p>
+
+  <p>クオリフィケーションの判定基準として広く使われる型が2つある。ひとつは<strong>BANT</strong>（Budget＝予算／Authority＝決裁権／Need＝ニーズ／Timeline＝導入時期）。もうひとつはより複雑な商談向けの<strong>MEDDIC</strong>（Metrics＝定量的な効果指標／Economic Buyer＝決裁権者／Decision Criteria＝決裁基準／Decision Process＝決裁プロセス／Identify Pain＝顧客の課題／Champion＝社内推進者）。短いサイクルの商談はBANTで素早く判定し、複雑な商談ではMEDDICでより深く判定する、という使い分けが一般的。<sup class="cite"><a href="https://www.scratchpad.com/blog/bant-vs-meddic">[3]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">なぜこの区別が重要か</span>
+    リードと案件を同じデータとして扱ってしまうと、「今どれだけの見込みがあるか」を測る<span class="term">パイプライン</span>（案件全体の集合）に、まだ何の判定もしていない名刺の山まで混ざり込む。案件化率（リード→案件への転換率）のような基本指標すら、この区別なしには計算できない。
+  </div>
+
+  <h2>パイプラインステージ — 案件が通過する段階</h2>
+
+  <p>案件に昇格した後、それは受注（または失注）に至るまでいくつかの<span class="term">パイプラインステージ（Pipeline Stage）</span>を順に通過する。業界・組織によって名称は違うが、典型的な形はこうなる。<sup class="cite"><a href="https://www.salesforce.com/sales/pipeline/stages/">[1]</a></sup></p>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">1・初回接触／ディスカバリー</div>
+      <div class="n-note">クオリフィケーションを通過した直後。相手の課題・目的をヒアリングする段階。</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2・デモ／提案</div>
+      <div class="n-note">製品・サービスを見せる、あるいは具体的な提案書を出す段階。</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">3・見積・条件交渉</div>
+      <div class="n-note">価格や契約条件のすり合わせ。ここでERP側（見積・契約）との接続が発生し始める。</div>
+    </div>
+    <div class="chain-node won">
+      <div class="n-title">4a・受注（Closed Won）</div>
+      <div class="n-note">契約成立。パイプラインを離れ、以後は契約管理・請求の領域に引き継がれる。</div>
+    </div>
+    <div class="chain-branch">4b・失注（Closed Lost）— どのステージからでも起こりうる終端。理由を記録できるかが後の分析を左右する（Unit B3で扱う）</div>
+  </div>
+
+  <p>パイプラインの健全性は、慣習的に<span class="term">4つのV</span>という4つの軸で見る——<strong>Volume</strong>（案件の件数）、<strong>Value</strong>（金額の合計）、<strong>Velocity</strong>（ステージ通過の速さ）、<strong>Conversion</strong>（次のステージへの転換率）。<sup class="cite"><a href="https://www.salesforce.com/sales/pipeline/stages/">[1]</a></sup> この4つは、後で扱うほぼすべての経営指標の材料になる。</p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>V</th><th>何を測るか</th><th>背骨のどの記録が必要か</th></tr>
+    <tr><td>Volume</td><td>今パイプラインに何件あるか</td><td>案件レコードの件数（ステージ別）</td></tr>
+    <tr><td>Value</td><td>パイプライン全体の金額</td><td>案件ごとの金額フィールド</td></tr>
+    <tr><td>Velocity</td><td>ステージ間の移動にかかった日数</td><td>ステージが変わった日時の履歴</td></tr>
+    <tr><td>Conversion</td><td>あるステージから次に進んだ割合</td><td>各案件の現在／過去のステージ</td></tr>
+  </table>
+  </div>
+
+  <h2>受注と失注 — 終端で何を残すか</h2>
+
+  <p>案件は最終的に<span class="term">受注／失注（Closed Won / Closed Lost）</span>のどちらかでパイプラインを離れる。ここで実務上つまずきやすいのが、<strong>失注を「消える」データとして扱ってしまうこと</strong>だ。失注した案件に<span class="term">失注理由</span>（価格が合わなかった、競合に負けた、タイミングが合わなかった等）を定型カテゴリで残しておかないと、後で「なぜ負けているのか」を分析できない。失注分析（Win-Loss分析）の実務ガイドは、失注理由をあらかじめ決めた選択肢で分類し、クローズ直後に記録することを推奨している。記憶は急速に薄れるため、後からまとめて埋めるのは実質不可能になる。<sup class="cite"><a href="https://klue.com/blog/win-loss-analysis-guide">[4]</a></sup></p>
+
+  <div class="box spine">
+    <span class="label">背骨と経営指標のつながり</span>
+    ここまでの背骨——リード→クオリフィケーション→案件→ステージ→受注／失注——の各時点で何を記録するかが、そのままUnit Bで扱う指標の材料になる。<strong>セグメント分析</strong>は案件に紐づく顧客属性（業種・規模等）、<strong>メンバー別効率</strong>は案件の担当者と活動記録、<strong>失注インパクト</strong>は失注理由と失注時の金額、<strong>着地予測</strong>はステージと確度と成約予定日、<strong>季節性／YoY</strong>は受注日の時系列——すべて背骨のどこかのフィールドだ。指標を先に決めて、そこから逆算して背骨に必要なフィールドを設計する、という順番がこのコースの進め方になる。
+  </div>
+
+  <div class="box twenty">
+    <span class="label">Twentyではこの背骨をどう表現するか</span>
+    Twentyには<span class="term">標準オブジェクト</span>として最初から<code>Opportunities</code>（案件）があり、ステージ・金額・成約予定日・関連する<code>Companies</code>（会社）への関係を持つ。パイプラインはカンバン表示でステージ間を視覚的に管理できる。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">[6]</a></sup> ただし<strong>失注理由やフォーキャストカテゴリのようなフィールドは標準には無い</strong>——Twentyの設計指針は「単なる属性のバリエーションは<span class="term">カスタムフィールド</span>で足す。独自のライフサイクルや複数のリレーションを持つ概念だけを<span class="term">カスタムオブジェクト</span>にする」というものだ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/overview">[5]</a></sup> 失注理由は「Opportunityの一属性」でしかないので、原則としてカスタムフィールド（選択式）で足りる——新しいオブジェクトを作る話ではない。この判断基準は、Unit Cで実際に設計するときに何度も使うことになる。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：リードと案件（オポチュニティ）の違いを説明してください。両者の間にある「関門」の名前と、その判定に使われる2つのフレームワーク名も挙げてください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden><strong>リード</strong>はまだクオリフィケーション（適格性判定）を経ていない見込み接点。<strong>案件（オポチュニティ）</strong>はクオリフィケーションを通過し、正式に追跡対象となった商談。関門は<strong>クオリフィケーション</strong>で、判定フレームワークは<strong>BANT</strong>（予算・決裁権・ニーズ・導入時期）と<strong>MEDDIC</strong>（指標・決裁者・決裁基準・決裁プロセス・課題・社内推進者）。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② ある案件が失注した。管理者は「なぜ負けたか」を後で分析したいが、Twentyの標準のOpportunitiesオブジェクトには失注理由を記録する場所がない。最も妥当な対応はどれか？</p>
+    <button class="quiz-opt" data-key="a">失注のたびにNoteへ自由記述で理由を書き残す</button>
+    <button class="quiz-opt" data-key="b">Opportunitiesに選択式のカスタムフィールドで失注理由を追加する</button>
+    <button class="quiz-opt" data-key="c">「失注理由」という新しいカスタムオブジェクトを作りOpportunityと1対1で結ぶ</button>
+    <button class="quiz-opt" data-key="d">失注案件はレコードごと削除し、件数だけ別に記録する</button>
+    <p class="quiz-why" hidden>失注理由はOpportunityの一属性（バリエーション）であり、独自のライフサイクルや複数のリレーションを持つ概念ではない。Twentyの設計指針では、この場合はカスタムフィールドで足りる——カスタムオブジェクトを作るのは過剰設計。自由記述（a）は集計・分析ができず、Win-Loss分析の「定型カテゴリで分類する」という実務原則にも反する。レコード削除（d）はそもそも分析材料を失う。</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    パイプラインステージと4つのVについては、<a href="https://www.salesforce.com/sales/pipeline/stages/">Salesforceの解説</a>が標準的な整理として読みやすい。Twenty側の対応は<a href="https://docs.twenty.com/user-guide/data-model/overview">Twenty Docsのデータモデル概要</a>を合わせて読むと、この背骨がどう画面上のオブジェクトになるかが繋がる。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    ここまでの内容で曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「移行元のようなERPは、この背骨のどこからが自分たちの領分か？」「BANTとMEDDICは実務上どっちを先に使うべき？」「カスタムフィールドとカスタムオブジェクトの判断に迷ったときの具体例をもっと見せて」。次のレッスン（A2）ではクオリフィケーションをもう一段深掘りし、顧客・組織構造（会社／担当者／決裁関係）の管理に進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.salesforce.com/sales/pipeline/stages/">What are the Stages of a Sales Pipeline? — Salesforce</a><br>
+    [2] <a href="https://www.pipedrive.com/en/blog/sales-pipeline-fundamental-stages">Building a Sales Pipeline: Ultimate Guide — Pipedrive</a><br>
+    [3] <a href="https://www.scratchpad.com/blog/bant-vs-meddic">BANT vs MEDDIC — Scratchpad</a><br>
+    [4] <a href="https://klue.com/blog/win-loss-analysis-guide">The Ultimate 7-Step Guide to Win-Loss Analysis — Klue</a><br>
+    [5] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
+    [6] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="../index.html">← コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
