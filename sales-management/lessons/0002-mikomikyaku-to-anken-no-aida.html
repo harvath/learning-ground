@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0002 | 「見込み客」と「案件」のあいだ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit A・案件管理の基礎 — レッスン A2</div>
+  <h1>「見込み客」と「案件」のあいだ ― クオリフィケーションの深掘り</h1>
+  <p class="subtitle">A1でクオリフィケーションを「関門」と呼んだ。この関門、実務では誰がいつ何を記録し、どうAEに引き継ぐかで失敗しやすい。そしてTwentyは、この関門をSalesforceとはまったく違う設計で扱う——ここが今日の核心。</p>
+
+  <p>BANT・MEDDICという判定基準の名前を知っているだけでは、クオリフィケーションは運用できない。実務でつまずくのは「誰が、いつ、どの情報を、どこに記録するか」という運用設計の部分だ。今日はまずBANT/MEDDICの実際の使われ方を深掘りし、その上で「クオリフィケーションを通過する」という出来事が、CRMの中でデータとしてどう起きるのかをTwentyで具体的に見る。</p>
+
+  <h2>誰がクオリフィケーションを行うか — SDRとAEの分業</h2>
+
+  <p>多くの営業組織では、クオリフィケーションは1人で完結しない。<span class="term">SDR</span>（Sales/Business Development Rep、新規の見込み客に最初に接触する担当）が、ごく短い会話でニーズ・決裁権・導入時期をざっくり確認する——BANTを、深追いせず3〜5問程度で済ませる。<sup class="cite"><a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">[1]</a></sup> ここで合格した見込み客だけが<span class="term">AE</span>（Account Executive、案件を実際にクロージングする担当）に引き継がれ、AEが商談を進めながらMEDDICのような、より深い判定軸を時間をかけて埋めていく。</p>
+
+  <div class="box make">
+    <span class="label">実務で壊れやすいポイント</span>
+    SDRとAEの引き継ぎ（ハンドオフ）で最も多い失敗は、「クオリファイ済み」の定義がチーム間で揃っていないことだ。<sup class="cite"><a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">[1]</a></sup> SDRは「予算がありそう」で合格にし、AEは「決裁者に会えていない」で不合格だと感じる——このズレがあると、せっかく記録したBANTのデータも信用されなくなる。クオリフィケーションを設計するとは、判定基準の名前を選ぶことではなく、「誰が」「どの基準で」「何を根拠に」合格と判断するかを、チーム間で先に合意することだ。
+  </div>
+
+  <h2>MEDDICは一度の判定ではなく、案件と一緒に育つ</h2>
+
+  <p>BANTが「入り口の足切り」なのに対し、MEDDICの6要素（指標・決裁権者・決裁基準・決裁プロセス・課題・社内推進者）は、商談が進むほど確度が上がっていく性質のものだ。落とし穴は、各項目が「確認済み／未確認」のチェックボックスとして扱われ、実際には根拠のない自己申告のまま埋まってしまうこと——「決裁者：確認済み」と書いてあっても、それが担当者に本当に会った証拠なのか、単なる希望的観測なのかをCRMは区別してくれない。<sup class="cite"><a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">[3]</a></sup></p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>MEDDIC要素</th><th>問うこと</th><th>記録すべき「根拠」の例</th></tr>
+    <tr><td>Metrics（指標）</td><td>導入で何がどれだけ改善するか</td><td>顧客自身の口から出た定量目標</td></tr>
+    <tr><td>Economic Buyer（決裁権者）</td><td>誰が予算を承認するか</td><td>直接会話した記録・その人の役職</td></tr>
+    <tr><td>Decision Criteria（決裁基準）</td><td>何を基準に選定するか</td><td>比較表・要件書などの一次情報</td></tr>
+    <tr><td>Decision Process（決裁プロセス）</td><td>どういう手順・時期で決まるか</td><td>顧客社内の稟議フロー・関係者リスト</td></tr>
+    <tr><td>Identify Pain（課題）</td><td>放置すると何が困るか</td><td>顧客が語った具体的な困りごと</td></tr>
+    <tr><td>Champion（社内推進者）</td><td>社内で自分たちを推してくれる人は誰か</td><td>その人が能動的に動いた事実（資料共有・紹介等）</td></tr>
+  </table>
+  </div>
+
+  <h2>Twentyでの実装 — Salesforceとの決定的な違い</h2>
+
+  <p>ここがA1で触れた「Twentyが従来型と大きく違う場合」の代表例になる。Salesforceには専用の<span class="term">Leadオブジェクト</span>があり、クオリフィケーションを通過すると<span class="term">Lead Convert</span>という専用操作で、Lead 1件がContact・Account・Opportunityという3つの別オブジェクトに変換される——製品自身が「クオリフィケーション」という出来事をライフサイクル遷移として扱ってくれる設計だ。</p>
+
+  <p>Twentyには、<span class="asof">2026年時点</span>で専用のLeadオブジェクトが存在しない。標準オブジェクトはPeople（個人）・Companies（会社）・Opportunities（案件）・Tasks・Notesで、見込み客は最初からPeople（＋関連するCompanies）として存在する。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/overview">[4]</a></sup> つまり「リード」とは、Twentyでは特別なオブジェクトではなく<strong>「まだOpportunityが紐づいていないPerson」</strong>でしかない。クオリフィケーションを通過するという出来事は、Lead Convertのような専用機能ではなく、<strong>そのPersonに新しいOpportunityレコードを作って関連付ける</strong>という、ただのレコード追加操作になる。実際、TwentyのOSSコミュニティでは「あるオブジェクトを別のオブジェクトに変換する機能が欲しい」という要望がissueとして挙がっており、<span class="asof">2026年時点</span>ではまだ実装されていない——Salesforceの変換ワークフローが「当たり前」ではないことがわかる好例だ。<sup class="cite"><a href="https://github.com/twentyhq/twenty/issues/10422">[5]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">設計上の含意</span>
+    Twentyでは「未クオリファイの見込み客」と「クオリファイ済みの案件」を区別する仕組みを、製品ではなく自分たちで決める必要がある。典型的な選択肢は2つ：①そのPersonに紐づくOpportunityの有無そのものを判定材料にする（Opportunityが無ければ未クオリファイ）、②Personに「ステータス」のようなカスタムフィールド（選択式）を持たせ、未クオリファイ／クオリファイ済みを明示する。②の方がSDR/AEの分業を可視化しやすいが、フィールドの運用ルール（誰がいつ更新するか）を決めておかないと、A1で見た「単なる属性はカスタムフィールドで」という原則通りに作っても形骸化する。
+  </div>
+
+  <p>MEDDICの6要素そのものは、案件（Opportunity）の属性として扱うのが自然だ。ただしEconomic BuyerとChampionは「誰か」という<span class="term">人</span>を指すため、テキストではなくPeopleオブジェクトへの<span class="term">リレーション</span>フィールドにするのが筋がいい——A1の「属性かリレーションか」という判断基準が、ここでも同じ形で使える。</p>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：SDRとAEの分業において、BANTとMEDDICはそれぞれどう役割分担されるか。また、この分業で最も壊れやすいポイントは何か。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden><strong>BANT</strong>はSDRが入り口で短時間・少ない質問数で行う足切り判定。<strong>MEDDIC</strong>はAEが商談を進めながら時間をかけて深めていく判定。最も壊れやすいのは、SDRとAEの間で「クオリファイ済み」の定義が揃っていないこと——同じデータを見ても合否の判断がズレる。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② SalesforceのLead Convert機能に相当する操作を、Twentyで再現しようとするとどうなるか？</p>
+    <button class="quiz-opt" data-key="a">Twentyにも同名の「Convert」ボタンがあり、ワンクリックで完了する</button>
+    <button class="quiz-opt" data-key="b">「リード」は最初からPerson（＋Company）として存在し、クオリファイ後に新しくOpportunityを作って紐づける運用でカバーする</button>
+    <button class="quiz-opt" data-key="c">Twentyでは案件化という概念自体がサポートされていないため実現不可能</button>
+    <button class="quiz-opt" data-key="d">Salesforceからのインポート時にだけ、変換ロジックが自動生成される</button>
+    <p class="quiz-why" hidden>Twentyには専用のLeadオブジェクトも、それを別オブジェクトへ変換する専用機能もない（2026年時点、OSSコミュニティでも要望として挙がっている段階）。見込み客は最初からPersonとして存在し、クオリファイ後にOpportunityレコードを新規作成して紐づけるという、ただのレコード追加操作でカバーするのが実務上の対応になる。</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    SDR/AEのハンドオフ設計は<a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">Dievioのガイド</a>が実務チェックリストとして具体的。MEDDICが形骸化する理由は<a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Futureman Labsの記事</a>が的確に指摘している。Twenty側の設計思想は<a href="https://docs.twenty.com/user-guide/data-model/overview">Twenty Docsのデータモデル概要</a>で確認できる。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「MQLとSQLという言葉はBANT/MEDDICとどう関係する？」「Twentyでステータスのカスタムフィールドを作るなら、選択肢は具体的に何を用意すべき？」「Salesforceのように変換機能がない設計は、実務上どこまで痛手になる？」。次のレッスン（A3）では、案件そのものではなく、その周りにいる顧客・組織構造（会社／担当者／決裁関係）の管理に進む——Economic BuyerやChampionを「誰か」として正しく扱うための土台になる。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">SDR-to-AE Handoff Workflow: Criteria, Checklist, Template — Dievio</a><br>
+    [2] <a href="https://www.datamaticsbpm.com/blog/complete-guide-on-bant-qualified-leads/">BANT Qualified Leads: Complete Guide — Datamatics</a><br>
+    [3] <a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Track MEDDIC in Your CRM Without It Going Stale — Futureman Labs</a><br>
+    [4] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
+    [5] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a>
+  </p>
+
+  <div class="nav">
+    <a href="../lessons/0001-shodan-no-sebone.html">← A1</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>

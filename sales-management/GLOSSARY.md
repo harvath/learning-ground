@@ -12,6 +12,9 @@
 - **パイプラインステージ（Pipeline Stage）** — 案件が受注（または失注）に至るまでに通過する段階（例：初回接触→提案→交渉→受注）。ステージは組織ごとにカスタマイズされる。 (L0001)
 - **4つのV** — パイプラインの健全性を見る4つの軸：Volume（件数）・Value（金額）・Velocity（速度＝ステージ通過スピード）・Conversion（転換率）。 (L0001)
 - **受注／失注（Closed Won / Closed Lost）** — 案件のパイプラインを離れる2つの終端状態。失注には理由（失注理由）が付随することが多い。 (L0001)
+- **SDR（Sales/Business Development Rep）** — 新規の見込み客に最初に接触し、短時間でBANT相当の足切り判定を行う担当。合格した見込み客をAEに引き継ぐ。 (L0002)
+- **AE（Account Executive）** — SDRから引き継いだ案件を、MEDDICのような深い判定軸を埋めながらクロージングまで進める担当。 (L0002)
+- **Lead Convert（リード変換）** — Salesforceにおいて、クオリファイ済みのLeadをContact・Account・Opportunityの3オブジェクトへ変換する専用操作。Twentyには対応する専用機能がなく、Opportunityレコードの新規作成で代替する。 (L0002)
 
 ## Unit B — 経営指標（未着手）— *到達時に定義*
 - **セグメント分析**、**メンバー別生産性・効率**、**アクティビティ指標／アウトカム指標**、**クオータ達成率**、**Win-Loss分析／失注理由**、**着地予測**、**フォーキャストカテゴリ（Pipeline/Best Case/Commit）**、**加重パイプライン（Weighted Pipeline）**、**季節性**、**YoY比較** — *(Unit B)*
