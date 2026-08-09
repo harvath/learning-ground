@@ -5,7 +5,9 @@
 ## Knowledge — パイプライン・案件管理の基礎
 
 - [Salesforce — "What are the Stages of a Sales Pipeline?"](https://www.salesforce.com/sales/pipeline/stages/)
-  パイプラインステージの標準的な考え方（Lead→Qualification→Proposal→Negotiation→Closed）と、案件の「4つのV」（Volume/Value/Velocity/Conversion）の枠組み。**使いどころ**：ステージ設計・パイプライン健全性の指標を説明するとき。
+  パイプラインステージの標準的な考え方（Lead→Qualification→Proposal→Negotiation→Closed）。**使いどころ**：ステージ設計の型を確認するとき。
+- [HubSpot — "Sales Velocity: What It Is & How to Measure It"](https://blog.hubspot.com/sales/sales-velocity)
+  案件の「4つのV」（Volume/Value/Velocity/Conversion）の元になっているSales Velocityの式（案件数×平均金額×勝率÷商談期間）を明確に定義している。**使いどころ**：パイプライン健全性の指標を説明するとき。
 - [Pipedrive — "Building a Sales Pipeline: Ultimate Guide"](https://www.pipedrive.com/en/blog/sales-pipeline-fundamental-stages)
   実務寄りのステージ例とパイプライン運用の基本。**使いどころ**：業種による典型的ステージ差を確認するとき。
 - [Scratchpad — "BANT vs MEDDIC"](https://www.scratchpad.com/blog/bant-vs-meddic)

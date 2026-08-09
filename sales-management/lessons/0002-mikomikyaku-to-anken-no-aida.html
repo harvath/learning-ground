@@ -23,7 +23,7 @@
 
   <h2>MEDDICは一度の判定ではなく、案件と一緒に育つ</h2>
 
-  <p>BANTが「入り口の足切り」なのに対し、MEDDICの6要素（指標・決裁権者・決裁基準・決裁プロセス・課題・社内推進者）は、商談が進むほど確度が上がっていく性質のものだ。落とし穴は、各項目が「確認済み／未確認」のチェックボックスとして扱われ、実際には根拠のない自己申告のまま埋まってしまうこと——「決裁者：確認済み」と書いてあっても、それが担当者に本当に会った証拠なのか、単なる希望的観測なのかをCRMは区別してくれない。<sup class="cite"><a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">[3]</a></sup></p>
+  <p>BANTが「入り口の足切り」なのに対し、MEDDICの6要素（指標・決裁権者・決裁基準・決裁プロセス・課題・社内推進者）は、商談が進むほど確度が上がっていく性質のものだ。落とし穴は、各項目が「確認済み／未確認」のチェックボックスとして扱われ、実際には根拠のない自己申告のまま埋まってしまうこと——「決裁者：確認済み」と書いてあっても、それが担当者に本当に会った証拠なのか、単なる希望的観測なのかをCRMは区別してくれない。<sup class="cite"><a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">[2]</a></sup></p>
 
   <div class="tablewrap">
   <table class="cmp">
@@ -41,7 +41,7 @@
 
   <p>ここがA1で触れた「Twentyが従来型と大きく違う場合」の代表例になる。Salesforceには専用の<span class="term">Leadオブジェクト</span>があり、クオリフィケーションを通過すると<span class="term">Lead Convert</span>という専用操作で、Lead 1件がContact・Account・Opportunityという3つの別オブジェクトに変換される——製品自身が「クオリフィケーション」という出来事をライフサイクル遷移として扱ってくれる設計だ。</p>
 
-  <p>Twentyには、<span class="asof">2026年時点</span>で専用のLeadオブジェクトが存在しない。標準オブジェクトはPeople（個人）・Companies（会社）・Opportunities（案件）・Tasks・Notesで、見込み客は最初からPeople（＋関連するCompanies）として存在する。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/overview">[4]</a></sup> つまり「リード」とは、Twentyでは特別なオブジェクトではなく<strong>「まだOpportunityが紐づいていないPerson」</strong>でしかない。クオリフィケーションを通過するという出来事は、Lead Convertのような専用機能ではなく、<strong>そのPersonに新しいOpportunityレコードを作って関連付ける</strong>という、ただのレコード追加操作になる。実際、TwentyのOSSコミュニティでは「あるオブジェクトを別のオブジェクトに変換する機能が欲しい」という要望がissueとして挙がっており、<span class="asof">2026年時点</span>ではまだ実装されていない——Salesforceの変換ワークフローが「当たり前」ではないことがわかる好例だ。<sup class="cite"><a href="https://github.com/twentyhq/twenty/issues/10422">[5]</a></sup></p>
+  <p>Twentyには、<span class="asof">2026年時点</span>で専用のLeadオブジェクトが存在しない。標準オブジェクトはPeople（個人）・Companies（会社）・Opportunities（案件）・Tasks・Notesで、見込み客は最初からPeople（＋関連するCompanies）として存在する。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/overview">[3]</a></sup> つまり「リード」とは、Twentyでは特別なオブジェクトではなく<strong>「まだOpportunityが紐づいていないPerson」</strong>でしかない。クオリフィケーションを通過するという出来事は、Lead Convertのような専用機能ではなく、<strong>そのPersonに新しいOpportunityレコードを作って関連付ける</strong>という、ただのレコード追加操作になる。実際、TwentyのOSSコミュニティでは「あるオブジェクトを別のオブジェクトに変換する機能が欲しい」という要望がissueとして挙がっており、<span class="asof">2026年時点</span>ではまだ実装されていない——Salesforceの変換ワークフローが「当たり前」ではないことがわかる好例だ。<sup class="cite"><a href="https://github.com/twentyhq/twenty/issues/10422">[4]</a></sup></p>
 
   <div class="box twenty">
     <span class="label">設計上の含意</span>
@@ -80,10 +80,9 @@
   <p class="sources">
     出典：<br>
     [1] <a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">SDR-to-AE Handoff Workflow: Criteria, Checklist, Template — Dievio</a><br>
-    [2] <a href="https://www.datamaticsbpm.com/blog/complete-guide-on-bant-qualified-leads/">BANT Qualified Leads: Complete Guide — Datamatics</a><br>
-    [3] <a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Track MEDDIC in Your CRM Without It Going Stale — Futureman Labs</a><br>
-    [4] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
-    [5] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a>
+    [2] <a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Track MEDDIC in Your CRM Without It Going Stale — Futureman Labs</a><br>
+    [3] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
+    [4] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a>
   </p>
 
   <div class="nav">

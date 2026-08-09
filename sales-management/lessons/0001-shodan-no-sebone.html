@@ -47,7 +47,7 @@
     <div class="chain-branch">4b・失注（Closed Lost）— どのステージからでも起こりうる終端。理由を記録できるかが後の分析を左右する（Unit B3で扱う）</div>
   </div>
 
-  <p>パイプラインの健全性は、慣習的に<span class="term">4つのV</span>という4つの軸で見る——<strong>Volume</strong>（案件の件数）、<strong>Value</strong>（金額の合計）、<strong>Velocity</strong>（ステージ通過の速さ）、<strong>Conversion</strong>（次のステージへの転換率）。<sup class="cite"><a href="https://www.salesforce.com/sales/pipeline/stages/">[1]</a></sup> この4つは、後で扱うほぼすべての経営指標の材料になる。</p>
+  <p>パイプラインの健全性は、慣習的に<span class="term">4つのV</span>という4つの軸で見る——<strong>Volume</strong>（案件の件数）、<strong>Value</strong>（金額の合計）、<strong>Velocity</strong>（ステージ通過の速さ）、<strong>Conversion</strong>（次のステージへの転換率）。この4つは、<span class="term">Sales Velocity（セールス・ベロシティ）</span>という単一の指標の構成要素そのものでもある——「案件数 × 平均金額 × 勝率 ÷ 商談期間」という式で、パイプライン全体の生産性を1つの数字にまとめる。<sup class="cite"><a href="https://blog.hubspot.com/sales/sales-velocity">[7]</a></sup> この4つは、後で扱うほぼすべての経営指標の材料になる。</p>
 
   <div class="tablewrap">
   <table class="cmp">
@@ -92,7 +92,7 @@
 
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    パイプラインステージと4つのVについては、<a href="https://www.salesforce.com/sales/pipeline/stages/">Salesforceの解説</a>が標準的な整理として読みやすい。Twenty側の対応は<a href="https://docs.twenty.com/user-guide/data-model/overview">Twenty Docsのデータモデル概要</a>を合わせて読むと、この背骨がどう画面上のオブジェクトになるかが繋がる。
+    パイプラインステージについては<a href="https://www.salesforce.com/sales/pipeline/stages/">Salesforceの解説</a>が標準的な整理として読みやすい。4つのVの元になっているSales Velocityの式は<a href="https://blog.hubspot.com/sales/sales-velocity">HubSpotの解説</a>が具体的。Twenty側の対応は<a href="https://docs.twenty.com/user-guide/data-model/overview">Twenty Docsのデータモデル概要</a>を合わせて読むと、この背骨がどう画面上のオブジェクトになるかが繋がる。
   </div>
 
   <div class="box ask">
@@ -107,7 +107,8 @@
     [3] <a href="https://www.scratchpad.com/blog/bant-vs-meddic">BANT vs MEDDIC — Scratchpad</a><br>
     [4] <a href="https://klue.com/blog/win-loss-analysis-guide">The Ultimate 7-Step Guide to Win-Loss Analysis — Klue</a><br>
     [5] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
-    [6] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a>
+    [6] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a><br>
+    [7] <a href="https://blog.hubspot.com/sales/sales-velocity">Sales Velocity: What It Is & How to Measure It — HubSpot</a>
   </p>
 
   <div class="nav">
