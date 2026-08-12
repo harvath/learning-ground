@@ -16,6 +16,8 @@
 
   <p>多くの営業組織では、クオリフィケーションは1人で完結しない。<span class="term">SDR</span>（Sales/Business Development Rep、新規の見込み客に最初に接触する担当）が、ごく短い会話でニーズ・決裁権・導入時期をざっくり確認する——BANTを、深追いせず3〜5問程度で済ませる。<sup class="cite"><a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">[1]</a></sup> ここで合格した見込み客だけが<span class="term">AE</span>（Account Executive、案件を実際にクロージングする担当）に引き継がれ、AEが商談を進めながらMEDDICのような、より深い判定軸を時間をかけて埋めていく。</p>
 
+  <p>マーケティング側の文脈では、同じ移行を<span class="term">MQL</span>（Marketing Qualified Lead：資料ダウンロードやサイト訪問など、マーケティング活動への反応から「見込みがありそうだ」と判定されたリード）から<span class="term">SQL</span>（Sales Qualified Lead：SDRがBANT的な基準で「追う価値がある」と判定したリード）への昇格、と呼ぶことが多い。データベースの問い合わせ言語のSQLとは綴りが同じだけの無関係な別語——営業管理の文脈でSQLと言えば、まず間違いなくSales Qualified Leadを指す。SDRが行う足切りは、実質的にMQLをSQLへ昇格させる工程そのものだ。</p>
+
   <div class="box make">
     <span class="label">実務で壊れやすいポイント</span>
     SDRとAEの引き継ぎ（ハンドオフ）で最も多い失敗は、「クオリファイ済み」の定義がチーム間で揃っていないことだ。<sup class="cite"><a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">[1]</a></sup> SDRは「予算がありそう」で合格にし、AEは「決裁者に会えていない」で不合格だと感じる——このズレがあると、せっかく記録したBANTのデータも信用されなくなる。クオリフィケーションを設計するとは、判定基準の名前を選ぶことではなく、「誰が」「どの基準で」「何を根拠に」合格と判断するかを、チーム間で先に合意することだ。
@@ -50,6 +52,26 @@
 
   <p>MEDDICの6要素そのものは、案件（Opportunity）の属性として扱うのが自然だ。ただしEconomic BuyerとChampionは「誰か」という<span class="term">人</span>を指すため、テキストではなくPeopleオブジェクトへの<span class="term">リレーション</span>フィールドにするのが筋がいい——A1の「属性かリレーションか」という判断基準が、ここでも同じ形で使える。</p>
 
+  <h2>なぜTwentyはこの設計を選んだか — 「配線済みの製品」ではなく「材料としてのプラットフォーム」</h2>
+
+  <p>Leadオブジェクトが無いのは、単なる機能の抜け漏れではなく、明言された設計思想の帰結だ。Twenty自身の言葉を借りれば——</p>
+
+  <div class="box twenty">
+    <span class="label">Twentyの公式な立ち位置</span>
+    「Twenty is a platform you can build on, not a product you configure.」（Twentyは、設定して使う<em>製品</em>ではなく、その上に作る<em>プラットフォーム</em>である）<sup class="cite"><a href="https://docs.twenty.com/getting-started/introduction">[5]</a></sup>
+  </div>
+
+  <p>「設定して使う製品」とは、Salesforceのように、Lead・Account・Contact・Opportunityという4つの型と、その間を移動する専用の儀式（Lead Convert）が、あらかじめ全ユーザー共通で配線されているという意味だ。「その上に作るプラットフォーム」は、その配線そのものを提供しない——ユーザーが自分の業種・自分のプロセスに合わせて型を作る前提に立つ。</p>
+
+  <p>この方針は思いつきではない。創業者のFélix Malfaitは、Salesforceが強力な理由を「3つのレンガ」で説明している——<strong>柔軟なデータモデル</strong>、<strong>Apexというプログラミング言語</strong>、そして<strong>フロントエンドのカスタマイズ基盤</strong>。この3つが揃うと、データを保存し、裏側でロジックを組み、好きな見た目で表示できる——つまり「なんでもできる」状態になる、と語っている。<sup class="cite"><a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">[6]</a></sup> Twentyが再現しようとしているのは、Salesforceの<em>個別の機能</em>（LeadやOpportunityという名前の型）ではなく、この<em>3つのレンガ</em>の方だ。Malfaitが例に挙げるのは、カンファレンス主催者のための「conference object」や、レストランチェーンのための「restaurant object」——つまり最初からLead/Opportunityという名前を前提にしていない。多くの組織の実際のデータ形は汎用的な「Lead」「Opportunity」とは似ても似つかないはずだ、というのがTwenty側の賭けになる。</p>
+
+  <p>この賭けを、クオリフィケーションという一点に絞って言い直すとこうなる：Salesforceは「未クオリファイ」と「クオリファイ済み」を<strong>別の種類のレコード</strong>として扱い、専用の変換操作でその境界を越える設計にした。Twentyは、それを<strong>同じPersonレコードの状態の違い</strong>（Opportunityの有無、あるいはステータスフィールド）として扱えばよい、という賭けに出ている。どちらが「正しい」かではなく、どちらの前提が自分たちの業務に近いかという話だ。</p>
+
+  <div class="box warn">
+    <span class="label">この賭けのコスト — タダではない</span>
+    A1・A2で見てきたTwentyの issue（<a href="https://github.com/twentyhq/twenty/issues/10422">[4]</a>）自体が、この賭けが無傷ではないことの証拠だ。実際に「LeadをOpportunityに変換する機能が欲しい」というユーザーの声が上がっている——「Personの状態の違いとして扱えばよい」という設計は、理屈の上では十分でも、Lead特有の項目（流入経路、獲得キャンペーン等）を大量に持つ組織や、LeadとOpportunityで全く別のレポートを見たいチームには、実務上の摩擦として現れる。興味深いのは<strong>直し方</strong>だ。要望は「Salesforceと同じLeadオブジェクトを追加してほしい」ではなく、「任意のオブジェクト同士を変換する、汎用的な仕組みが欲しい」という形で挙がっている。つまり圧力を受けてもなお、「特定の業務プロセス（Lead→Opportunity）を製品に焼き込む」方向ではなく、「業務プロセスを表現するための、より一般的な材料を足す」方向で解決しようとしている——プラットフォーム思想が、個別要望への対処の仕方にまで一貫している例だ。
+  </div>
+
   <h2>理解を確認する</h2>
 
   <div class="recall">
@@ -67,14 +89,20 @@
     <p class="quiz-why" hidden>Twentyには専用のLeadオブジェクトも、それを別オブジェクトへ変換する専用機能もない（2026年時点、OSSコミュニティでも要望として挙がっている段階）。見込み客は最初からPersonとして存在し、クオリファイ後にOpportunityレコードを新規作成して紐づけるという、ただのレコード追加操作でカバーするのが実務上の対応になる。</p>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：Twentyの「platform you can build on, not a product you configure」という立場は、Leadオブジェクトを持たないという判断とどうつながるか。また、この判断が実際に払っているコストは何か、その根拠となる具体的な事実も挙げてください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>「製品」はSalesforceのように、Lead/Account/Contact/Opportunityという型と、その間の専用変換操作があらかじめ配線されている。「プラットフォーム」はその配線を提供せず、ユーザーが自分の業務に合わせて型を作る前提に立つ——だからLeadという特定の型を持たない。コストの根拠：GitHub issue #10422で、実際にLead→Opportunity変換が欲しいという要望が挙がっている。ただし解決の方向性も「Lead限定の機能」ではなく「任意のオブジェクト間の汎用変換」であり、圧力下でもプラットフォーム思想を貫いている。</div>
+  </div>
+
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    SDR/AEのハンドオフ設計は<a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">Dievioのガイド</a>が実務チェックリストとして具体的。MEDDICが形骸化する理由は<a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Futureman Labsの記事</a>が的確に指摘している。Twenty側の設計思想は<a href="https://docs.twenty.com/user-guide/data-model/overview">Twenty Docsのデータモデル概要</a>で確認できる。
+    SDR/AEのハンドオフ設計は<a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">Dievioのガイド</a>が実務チェックリストとして具体的。MEDDICが形骸化する理由は<a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Futureman Labsの記事</a>が的確に指摘している。Twentyの設計思想そのものは<a href="https://docs.twenty.com/getting-started/introduction">Twenty Docsの「Why Twenty」</a>と、創業者Félix Malfaitの<a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">TechCrunchインタビュー</a>が一次情報として読みやすい。
   </div>
 
   <div class="box ask">
     <span class="label">先生に質問する</span>
-    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「MQLとSQLという言葉はBANT/MEDDICとどう関係する？」「Twentyでステータスのカスタムフィールドを作るなら、選択肢は具体的に何を用意すべき？」「Salesforceのように変換機能がない設計は、実務上どこまで痛手になる？」。次のレッスン（A3）では、案件そのものではなく、その周りにいる顧客・組織構造（会社／担当者／決裁関係）の管理に進む——Economic BuyerやChampionを「誰か」として正しく扱うための土台になる。
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「Twentyでステータスのカスタムフィールドを作るなら、選択肢は具体的に何を用意すべき？」「MQL/SQLの区切りは、自分の組織にマーケティングチームが無い場合はどう考えればいい？」「『プラットフォームか製品か』という考え方は、Twenty以外のOSSツールにも当てはまる？」。次のレッスン（A3）では、案件そのものではなく、その周りにいる顧客・組織構造（会社／担当者／決裁関係）の管理に進む——Economic BuyerやChampionを「誰か」として正しく扱うための土台になる。
   </div>
 
   <p class="sources">
@@ -82,7 +110,9 @@
     [1] <a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">SDR-to-AE Handoff Workflow: Criteria, Checklist, Template — Dievio</a><br>
     [2] <a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Track MEDDIC in Your CRM Without It Going Stale — Futureman Labs</a><br>
     [3] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
-    [4] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a>
+    [4] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a><br>
+    [5] <a href="https://docs.twenty.com/getting-started/introduction">Why Twenty — Twenty Documentation</a><br>
+    [6] <a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">Twenty is building an open source alternative to Salesforce — TechCrunch, Nov 2024</a>
   </p>
 
   <div class="nav">

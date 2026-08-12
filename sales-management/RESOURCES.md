@@ -53,6 +53,10 @@
   カスタムフィールドの作成手順。**使いどころ**：Unit Cで実際の設定演習を行うとき。
 - [GitHub — twentyhq/twenty](https://github.com/twentyhq/twenty)
   Twenty本体のOSSリポジトリ。「Salesforceのオープンな代替」を標榜。**使いどころ**：バージョンや機能の最新状況を確認するとき（動きが速い領域なので日付を明記する）。
+- [Twenty Docs — "Why Twenty"](https://docs.twenty.com/getting-started/introduction)
+  「platform you can build on, not a product you configure」という設計思想の一次情報。**使いどころ**：Twentyが特定オブジェクト（Lead等）を持たない理由を説明するとき。
+- [TechCrunch — "Twenty is building an open source alternative to Salesforce"](https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/)（2024年11月）
+  創業者Félix Malfaitへのインタビュー。Salesforceの強さを「柔軟なデータモデル・Apex・フロントエンドカスタマイズ」の3要素に分解し、Twentyがその3要素の再現を狙っていると明言。**使いどころ**：Twentyの設計判断の「なぜ」を説明するとき。
 
 ## Gaps（今後埋めたい）
 

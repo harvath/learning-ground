@@ -15,6 +15,9 @@
 - **SDR（Sales/Business Development Rep）** — 新規の見込み客に最初に接触し、短時間でBANT相当の足切り判定を行う担当。合格した見込み客をAEに引き継ぐ。 (L0002)
 - **AE（Account Executive）** — SDRから引き継いだ案件を、MEDDICのような深い判定軸を埋めながらクロージングまで進める担当。 (L0002)
 - **Lead Convert（リード変換）** — Salesforceにおいて、クオリファイ済みのLeadをContact・Account・Opportunityの3オブジェクトへ変換する専用操作。Twentyには対応する専用機能がなく、Opportunityレコードの新規作成で代替する。 (L0002)
+- **MQL（Marketing Qualified Lead）** — マーケティング活動への反応（資料DL・サイト訪問等）から「見込みがありそうだ」と判定されたリード。SDRによるクオリフィケーション前の段階。 (L0002)
+- **SQL（Sales Qualified Lead）** — SDRがBANT的な基準で「追う価値がある」と判定したリード。データベースの問い合わせ言語SQLとは無関係の同綴り別語。MQL→SQLの昇格は、SDRのクオリフィケーション作業と同じ工程を指す。 (L0002)
+- **「platform you can build on, not a product you configure」** — Twenty自身が掲げる設計思想。Lead等の特定オブジェクトを配線済みで提供する「製品」ではなく、Salesforceを強くしている「3つのレンガ」（柔軟なデータモデル・スクリプト可能なロジック・カスタマイズ可能なUI）だけを提供し、業務固有の型はユーザー自身が作る「プラットフォーム」を志向する。Leadオブジェクトが無いことの直接の根拠。 (L0002)
 
 ## Unit B — 経営指標（未着手）— *到達時に定義*
 - **セグメント分析**、**メンバー別生産性・効率**、**アクティビティ指標／アウトカム指標**、**クオータ達成率**、**Win-Loss分析／失注理由**、**着地予測**、**フォーキャストカテゴリ（Pipeline/Best Case/Commit）**、**加重パイプライン（Weighted Pipeline）**、**季節性**、**YoY比較** — *(Unit B)*
