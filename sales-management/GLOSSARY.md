@@ -18,6 +18,9 @@
 - **MQL（Marketing Qualified Lead）** — マーケティング活動への反応（資料DL・サイト訪問等）から「見込みがありそうだ」と判定されたリード。SDRによるクオリフィケーション前の段階。 (L0002)
 - **SQL（Sales Qualified Lead）** — SDRがBANT的な基準で「追う価値がある」と判定したリード。データベースの問い合わせ言語SQLとは無関係の同綴り別語。MQL→SQLの昇格は、SDRのクオリフィケーション作業と同じ工程を指す。 (L0002)
 - **「platform you can build on, not a product you configure」** — Twenty自身が掲げる設計思想。Lead等の特定オブジェクトを配線済みで提供する「製品」ではなく、Salesforceを強くしている「3つのレンガ」（柔軟なデータモデル・スクリプト可能なロジック・カスタマイズ可能なUI）だけを提供し、業務固有の型はユーザー自身が作る「プラットフォーム」を志向する。Leadオブジェクトが無いことの直接の根拠。 (L0002)
+- **Buying Committee（購買委員会）** — B2B購買の意思決定を担う複数のステークホルダー集団。平均10人前後（調査により9〜19人の幅）。Economic Buyer・Technical Evaluator・End-User Champion・Procurement/Legal・Executive Sponsor・Internal Validatorの6役割が典型。単一の決裁者という前提は成り立たない。 (L0003)
+- **アカウント階層（Account Hierarchy）** — 本社・子会社・部門という、顧客企業そのものの親子構造。管理しないと部門間の営業重複やテリトリー衝突、クロスセル機会の見落としが起きる。 (L0003)
+- **中間オブジェクト（ジャンクションオブジェクト）** — 2つのレコードの「関係」自体に属性（例：Role）を持たせるための第三のオブジェクト。Salesforceの Opportunity Contact Role が代表例。役割が固定・少数なら個別リレーションフィールドで足りるが、可変・多数なら中間オブジェクトの方が拡張性が高い。 (L0003)
 
 ## Unit B — 経営指標（未着手）— *到達時に定義*
 - **セグメント分析**、**メンバー別生産性・効率**、**アクティビティ指標／アウトカム指標**、**クオータ達成率**、**Win-Loss分析／失注理由**、**着地予測**、**フォーキャストカテゴリ（Pipeline/Best Case/Commit）**、**加重パイプライン（Weighted Pipeline）**、**季節性**、**YoY比較** — *(Unit B)*

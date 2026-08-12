@@ -12,6 +12,10 @@
   実務寄りのステージ例とパイプライン運用の基本。**使いどころ**：業種による典型的ステージ差を確認するとき。
 - [Scratchpad — "BANT vs MEDDIC"](https://www.scratchpad.com/blog/bant-vs-meddic)
   リード・案件の「クオリフィケーション」フレームワーク比較。BANT（Budget/Authority/Need/Timeline）とMEDDIC（Metrics/Economic Buyer/Decision Criteria/Decision Process/Identify Pain/Champion）の使い分け。**使いどころ**：「案件化」の判断基準を設計するとき。
+- [Apollo — "How Do You Map a B2B Buying Committee?"](https://www.apollo.io/insights/how-do-i-identify-decision-makers-and-buying-committee-members-within-a-target-account)
+  購買委員会の規模（他調査の引用含め9〜19人）と6つの役割（Economic Buyer/Technical Evaluator/End-User Champion/Procurement-Legal/Executive Sponsor/Internal Validator）を整理。**使いどころ**：MEDDICのEconomic Buyer/Championを、より広い合議体の中に位置づけるとき。
+- [DealHub — "What is an Account Hierarchy?"](https://dealhub.io/glossary/account-hierarchy/)
+  本社・子会社・部門というアカウント階層の定義と、管理しない場合の実務上の摩擦（テリトリー衝突・重複営業）。**使いどころ**：顧客企業の組織構造をデータモデルに落とすとき。
 
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
@@ -57,6 +61,8 @@
   「platform you can build on, not a product you configure」という設計思想の一次情報。**使いどころ**：Twentyが特定オブジェクト（Lead等）を持たない理由を説明するとき。
 - [TechCrunch — "Twenty is building an open source alternative to Salesforce"](https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/)（2024年11月）
   創業者Félix Malfaitへのインタビュー。Salesforceの強さを「柔軟なデータモデル・Apex・フロントエンドカスタマイズ」の3要素に分解し、Twentyがその3要素の再現を狙っていると明言。**使いどころ**：Twentyの設計判断の「なぜ」を説明するとき。
+- [Twenty Releases](https://twenty.com/releases)
+  バージョンごとの変更履歴。多対多リレーション（v1.16.0, 2026年1月）や柔軟なリレーション（v1.11.0, 2025年11月）など、データモデル機能の進化を日付付きで追える。**使いどころ**：Twentyの機能について「いつから」を確認するとき（動きが速い領域）。
 
 ## Gaps（今後埋めたい）
 

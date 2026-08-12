@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0003 | 「一人」ではなく「合議体」を管理する</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit A・案件管理の基礎 — レッスン A3</div>
+  <h1>「一人」ではなく「合議体」を管理する</h1>
+  <p class="subtitle">A2でEconomic BuyerとChampionを「人」へのリレーションとして扱う、と言った。だが実際のB2B購買を動かしているのは、単一の決裁者ではなく数人〜十数人の合議体だ。今日は、その合議体と顧客企業そのものの構造を、データとしてどう表現するかを見る。</p>
+
+  <h2>顧客は「一人」ではない — 購買委員会（Buying Committee）</h2>
+
+  <p>案件（Opportunity）には金額・ステージ・成約予定日という属性がある一方で、「誰が買うのか」は単一の値では表現できない。B2Bの購買委員会（<span class="term">Buying Committee</span>）は、平均で13人ほどの規模になるという調査があり、他の調査でも9〜19人という幅で報告されている——企業規模や案件の大きさによって変わるが、どの数字を取っても「決裁者は1人」という前提はまず成り立たない。<sup class="cite"><a href="https://www.apollo.io/insights/how-do-i-identify-decision-makers-and-buying-committee-members-within-a-target-account">[1]</a></sup></p>
+
+  <p>この合議体には、典型的に6つの役割がある——それぞれ見ているものが違う。</p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>役割</th><th>典型的な肩書</th><th>気にしていること</th></tr>
+    <tr><td>Economic Buyer</td><td>CFO／財務担当役員</td><td>ROIと予算</td></tr>
+    <tr><td>Technical Evaluator</td><td>IT／セキュリティ担当</td><td>既存システムとの統合・セキュリティ</td></tr>
+    <tr><td>End-User Champion</td><td>現場の部門リーダー</td><td>使いやすさ・自分たちの業務に合うか</td></tr>
+    <tr><td>Procurement / Legal</td><td>調達・法務</td><td>契約条件・ベンダーリスク</td></tr>
+    <tr><td>Executive Sponsor</td><td>経営層</td><td>全社戦略との整合性</td></tr>
+    <tr><td>Internal Validator</td><td>RevOps／データ担当</td><td>データの整合性・業務プロセスへの影響</td></tr>
+  </table>
+  </div>
+
+  <p>A2で扱ったEconomic BuyerとChampion（この表のEnd-User Championに近い）は、この6役割のうちの2つでしかない。案件が複雑になるほど、残り4つ——特にTechnical EvaluatorとProcurement/Legal——が終盤で案件を止める力を持つ。<sup class="cite"><a href="https://www.apollo.io/insights/how-do-i-identify-decision-makers-and-buying-committee-members-within-a-target-account">[1]</a></sup></p>
+
+  <h2>会社そのものにも構造がある — アカウント階層</h2>
+
+  <p>合議体が「案件の中の複数の人」の話だとすれば、<span class="term">アカウント階層（Account Hierarchy）</span>は「顧客企業そのものの構造」の話だ。本社・子会社・部門は独立して動きつつ、親会社の下に紐づいている。<sup class="cite"><a href="https://dealhub.io/glossary/account-hierarchy/">[2]</a></sup> これを管理しないと何が起きるか——ある部門がすでに契約済みの相手に、別の部門が知らずに営業をかけてしまう、テリトリー（担当割り）が衝突する、全社レベルでのクロスセルの機会が見えなくなる、といった実務上の摩擦が起きる。<sup class="cite"><a href="https://dealhub.io/glossary/account-hierarchy/">[2]</a></sup></p>
+
+  <h2>Twentyでの実装 — 「関係そのもの」に属性を持たせる</h2>
+
+  <p>ここがA1・A2で繰り返してきた「属性かリレーションか」の判断基準を、もう一段複雑にする場面になる。Economic BuyerとChampionの2人だけなら、A2で示した通りOpportunityに「Economic Buyer」「Champion」という2つのリレーションフィールドを作れば足りる。だが6役割・複数人になると、この方式は崩れる——役割の数だけ固定フィールドを増やし続けることになり、役割が案件ごとに変わる（あるOpportunityにはProcurementがいない、別のOpportunityには2人のTechnical Evaluatorがいる）ケースに対応できない。</p>
+
+  <p>これは<strong>「役割（Role）」という情報が、PersonにもOpportunityにも属さず、その2つの<em>関係</em>そのものに属している</strong>ということだ。Salesforceはこの問題に、Opportunity Contact Roleという専用の中間オブジェクトで答えている——Opportunity 1件とContact 1人のペアごとに、Roleという属性を持つレコードを作る仕組みだ。</p>
+
+  <div class="box twenty">
+    <span class="label">Twentyでの再現方法</span>
+    Twentyは<span class="asof">2025年11月</span>に「1つのリレーションフィールドが複数の異なるオブジェクト型に接続できる」柔軟なリレーションを、<span class="asof">2026年1月</span>には「より高度な多対多（many-to-many）のリレーション設定」を追加した。<sup class="cite"><a href="https://twenty.com/releases">[3]</a></sup> これにより、People・Opportunitiesとは別に「Deal Stakeholder」のようなカスタムオブジェクトを作り、それをPersonとOpportunityの両方にリレーションさせ、Roleという選択式のカスタムフィールドを持たせる——という設計がTwenty上で再現できる。中間オブジェクト1件が「このPersonは、このOpportunityにおいてTechnical Evaluatorである」という一つの事実を表す。役割の数や人数が変わっても、フィールドを増やす必要はなく、レコードを増やすだけで済む。
+  </div>
+
+  <p>会社の親子関係（アカウント階層）も同じ発想で表現できる——Companiesオブジェクトに、Companies自身を指す<span class="term">自己参照リレーション</span>（「親会社」フィールド）を追加すればよい。標準のリレーションフィールドは<code>Company → People</code>のような他オブジェクトへの接続が基本形だが<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/fields">[4]</a></sup>、同じ仕組みは同一オブジェクト同士にも使える。</p>
+
+  <div class="box make">
+    <span class="label">判断の指針</span>
+    固定された少数の役割（Economic Buyer・Championの2つだけ、等）で業務が回るなら、A2の方式（Opportunityへの個別リレーションフィールド）で十分——シンプルさを優先していい。役割の種類や人数が案件ごとに変わりうるなら、中間オブジェクト＋Roleフィールドの方が拡張性が高い。どちらもA1の原則の応用形でしかない：<strong>単なる属性はフィールドで、独自の関係やライフサイクルを持つ概念はオブジェクトで</strong>。ここでの「独自の関係」とは、まさに「誰が・どの案件で・どんな役割か」という、2つのレコードの組み合わせそのものを指す。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：購買委員会という概念が意味することは何か。また、Economic BuyerとChampionという2つの役割だけでは、なぜ実務上不十分になりうるか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>購買委員会とは、B2Bの購買決定が単一の決裁者ではなく、平均10人前後（調査により9〜19人の幅）の複数のステークホルダーによって行われるという考え方。Economic Buyer（予算）とChampion（現場の推進者）はその中の2役割にすぎず、Technical Evaluator（技術適合性）やProcurement/Legal（契約・リスク）のような、終盤で案件を止める力を持つ役割が他に少なくとも4つある。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② あるOpportunityに5人のステークホルダーがいて、それぞれ異なる役割（Economic Buyer・Technical Evaluator・Champion等）を持つ。この「誰がどの役割か」という関係を、Twentyで最も拡張性高くモデリングする方法はどれか？</p>
+    <button class="quiz-opt" data-key="a">Opportunityに「決裁者1」〜「決裁者5」という5つの個別リレーションフィールドを作る</button>
+    <button class="quiz-opt" data-key="b">PersonとOpportunityの間に中間カスタムオブジェクトを作り、そこにRoleという選択式フィールドを持たせる</button>
+    <button class="quiz-opt" data-key="c">Personのプロフィール欄に、担当した案件と役割をテキストでまとめて書く</button>
+    <button class="quiz-opt" data-key="d">Companiesオブジェクトに役割をカンマ区切りの一つのフィールドとして記録する</button>
+    <p class="quiz-why" hidden>役割は「PersonとOpportunityの関係」に属する情報なので、その関係自体を表す中間オブジェクト（レコード）にRoleという属性を持たせるのが最も拡張性が高い——人数や役割の種類が変わってもフィールド構造を変えずに済む。個別フィールド（a）は役割の数だけフィールドが増え、1人が複数役割を持つケースにも弱い。テキスト（c）やカンマ区切り（d）は集計・分析ができず、A1で見た「定型カテゴリで分類する」という原則に反する。</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    購買委員会の役割整理は<a href="https://www.apollo.io/insights/how-do-i-identify-decision-makers-and-buying-committee-members-within-a-target-account">Apolloのガイド</a>が具体的。アカウント階層の考え方は<a href="https://dealhub.io/glossary/account-hierarchy/">DealHubの用語解説</a>が簡潔。Twentyのリレーション機能の進化は<a href="https://twenty.com/releases">Twentyのリリースノート</a>で追える（動きが速い領域なので日付を確認すること）。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「中間オブジェクトのRoleフィールドと、A2で作ったOpportunityのEconomic Buyer/Championリレーションは、実際には併用してもいい？」「アカウント階層は日本企業の親会社・子会社・事業部という単位とどう対応する？」「購買委員会の6役割は、全ての案件で必ず埋まっている必要がある？」。次のレッスン（A4）では、案件そのものの外側——商談中の活動記録や、見積・契約・請求というERP領域との境界線に進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.apollo.io/insights/how-do-i-identify-decision-makers-and-buying-committee-members-within-a-target-account">How Do You Map a B2B Buying Committee? — Apollo</a><br>
+    [2] <a href="https://dealhub.io/glossary/account-hierarchy/">What is an Account Hierarchy? — DealHub</a><br>
+    [3] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.11.0, Nov 2025／v1.16.0, Jan 2026）<br>
+    [4] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/fields">Fields — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0002-mikomikyaku-to-anken-no-aida.html">← A2</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
