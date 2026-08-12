@@ -63,6 +63,12 @@
   創業者Félix Malfaitへのインタビュー。Salesforceの強さを「柔軟なデータモデル・Apex・フロントエンドカスタマイズ」の3要素に分解し、Twentyがその3要素の再現を狙っていると明言。**使いどころ**：Twentyの設計判断の「なぜ」を説明するとき。
 - [Twenty Releases](https://twenty.com/releases)
   バージョンごとの変更履歴。多対多リレーション（v1.16.0, 2026年1月）や柔軟なリレーション（v1.11.0, 2025年11月）など、データモデル機能の進化を日付付きで追える。**使いどころ**：Twentyの機能について「いつから」を確認するとき（動きが速い領域）。
+- [GitHub — twentyhq/twenty PR #10459](https://github.com/twentyhq/twenty/pull/10459)
+  Lead限定の変換機能を実装した実際のPR。創業者Félix Malfaitが「ワークフローのフォーム機能でもっと抽象的に実現できる」として却下したやり取りそのものが読める。**使いどころ**：プラットフォーム思想が実際の意思決定にどう表れるかを示すとき。
+- [Twenty Docs — Workflows Overview](https://docs.twenty.com/user-guide/workflows/overview)
+  トリガー（レコード作成/更新/削除・スケジュール・手動・Webhook）とアクション（Formアクション含む）の一覧。**使いどころ**：Lead Convert相当の機能をワークフローで組む方法を説明するとき。
+- [GitHub — twentyhq/twenty Issue #14611](https://github.com/twentyhq/twenty/issues/14611)（2025年9月）
+  ワークフローのFormアクションが、レコード更新トリガー後に実行者へ表示されない不具合。**使いどころ**：「抽象化された解決策」の実際の完成度・限界を示すとき。
 
 ## Gaps（今後埋めたい）
 

@@ -69,7 +69,33 @@
 
   <div class="box warn">
     <span class="label">この賭けのコスト — タダではない</span>
-    A1・A2で見てきたTwentyの issue（<a href="https://github.com/twentyhq/twenty/issues/10422">[4]</a>）自体が、この賭けが無傷ではないことの証拠だ。実際に「LeadをOpportunityに変換する機能が欲しい」というユーザーの声が上がっている——「Personの状態の違いとして扱えばよい」という設計は、理屈の上では十分でも、Lead特有の項目（流入経路、獲得キャンペーン等）を大量に持つ組織や、LeadとOpportunityで全く別のレポートを見たいチームには、実務上の摩擦として現れる。興味深いのは<strong>直し方</strong>だ。要望は「Salesforceと同じLeadオブジェクトを追加してほしい」ではなく、「任意のオブジェクト同士を変換する、汎用的な仕組みが欲しい」という形で挙がっている。つまり圧力を受けてもなお、「特定の業務プロセス（Lead→Opportunity）を製品に焼き込む」方向ではなく、「業務プロセスを表現するための、より一般的な材料を足す」方向で解決しようとしている——プラットフォーム思想が、個別要望への対処の仕方にまで一貫している例だ。
+    A1・A2で見てきたTwentyの issue（<a href="https://github.com/twentyhq/twenty/issues/10422">[4]</a>）自体が、この賭けが無傷ではないことの証拠だ。実際に「LeadをOpportunityに変換する機能が欲しい」というユーザーの声が上がっている——「Personの状態の違いとして扱えばよい」という設計は、理屈の上では十分でも、Lead特有の項目（流入経路、獲得キャンペーン等）を大量に持つ組織や、LeadとOpportunityで全く別のレポートを見たいチームには、実務上の摩擦として現れる。
+  </div>
+
+  <h2>実際に何が起きたか — PR #10459とその却下</h2>
+
+  <p>この摩擦は仮説で終わらなかった。あるコントリビューターが実際に、issue #10422を受けてLead変換機能を実装したPR（プルリクエスト、コード変更の提案）を出した——バックエンドの変換サービス、フィールドのマッピングルール、テンプレート管理UIまで含む、かなり本格的な実装だった。<sup class="cite"><a href="https://github.com/twentyhq/twenty/pull/10459">[7]</a></sup></p>
+
+  <p>これを却下したのが、A2で何度も登場した創業者Félix Malfait本人だった。その理由がこの設計思想を裏付けている——</p>
+
+  <div class="box twenty">
+    <span class="label">Malfaitのクローズコメント（原文）</span>
+    "Got it thanks! Sorry I'm pretty sure we'll be able to do that in Twenty in a couple months with the forms feature in workflow that @thomtrp is working on, which is a more abstract way to build this. So I'll close this for now."<sup class="cite"><a href="https://github.com/twentyhq/twenty/pull/10459">[7]</a></sup>
+    <br><br>
+    （訳：ありがとう、でもごめん——ワークフローのフォーム機能（@thomtrpが開発中）を使えば、数ヶ月以内に同じことがもっと抽象的な形で実現できるはずだ。だから一旦これはクローズするね）
+  </div>
+
+  <p>つまり、動くコードが目の前にあっても、それが「Lead限定」の実装である限り却下する——プラットフォーム思想は、実務上のコストを払ってでも一貫させる価値がある、という判断がここに表れている。</p>
+
+  <h2>「もっと抽象的な形」の正体 — ワークフローのフォーム機能</h2>
+
+  <p>Malfaitが予告した「フォーム機能」は実際に存在する。Twentyの<span class="term">ワークフロー</span>は、4種類のトリガー（レコードの作成・更新・削除／スケジュール／手動／Webhook）と、レコード操作・条件分岐・外部API呼び出しなどの多数のアクションを組み合わせて自動化を作る仕組みだ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/workflows/overview">[8]</a></sup> そのアクションの1つが<span class="term">Form（フォーム）</span>で、「実行時にTwentyの画面上でユーザーから入力を受け取る」という役割を持つ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/workflows/overview">[8]</a></sup></p>
+
+  <p>これを組み合わせると、Lead Convertに近い体験を、Lead専用の機能なしで再現できる——たとえば「Personのステータスが『クオリファイ済み』に変わったら（トリガー）→SDR/AEに金額・ステージ・成約予定日などOpportunity特有の項目を入力させ（Formアクション）→その入力を使ってOpportunityレコードを作成しPersonに紐づける（Create Recordアクション）」という3ステップのワークフローを、Lead専用のコードを1行も書かずに組める。Salesforceの変換ボタンが「製品に焼き込まれた1つの機能」なのに対し、これは「トリガー・フォーム・レコード操作という汎用的な材料の組み合わせ」でしかない——Malfaitの言う「more abstract way」の意味がここでわかる。</p>
+
+  <div class="box warn">
+    <span class="label">それでも——この機能自体、まだ荒削り</span>
+    ただし「もっと抽象的な形」が完成度で勝るとは限らない。ワークフローのフォーム機能には、<span class="asof">2025年9月</span>に報告された重大な不具合がある——レコード更新トリガーの後にフォームが出るはずが、実行者の画面に表示されず、ワークフロー実行履歴という一般ユーザーがまず見ない場所にしか現れない。<sup class="cite"><a href="https://github.com/twentyhq/twenty/issues/14611">[9]</a></sup> これは、まさに「SDRがPersonのステータスを変えたら、その場でOpportunity化のフォームが出る」という、Lead Convert的な使い方を直撃する不具合だ。プラットフォーム思想としての一貫性と、実際に今日使って動くかどうかは別の話——この2つを混同しないことが、Twentyのような速いペースで動くOSSを評価するときの基本姿勢になる。
   </div>
 
   <h2>理解を確認する</h2>
@@ -92,12 +118,19 @@
   <div class="recall">
     <p class="recall-q">③ 記憶から答える：Twentyの「platform you can build on, not a product you configure」という立場は、Leadオブジェクトを持たないという判断とどうつながるか。また、この判断が実際に払っているコストは何か、その根拠となる具体的な事実も挙げてください。</p>
     <button class="recall-show">答えを見る</button>
-    <div class="recall-a" hidden>「製品」はSalesforceのように、Lead/Account/Contact/Opportunityという型と、その間の専用変換操作があらかじめ配線されている。「プラットフォーム」はその配線を提供せず、ユーザーが自分の業務に合わせて型を作る前提に立つ——だからLeadという特定の型を持たない。コストの根拠：GitHub issue #10422で、実際にLead→Opportunity変換が欲しいという要望が挙がっている。ただし解決の方向性も「Lead限定の機能」ではなく「任意のオブジェクト間の汎用変換」であり、圧力下でもプラットフォーム思想を貫いている。</div>
+    <div class="recall-a" hidden>「製品」はSalesforceのように、Lead/Account/Contact/Opportunityという型と、その間の専用変換操作があらかじめ配線されている。「プラットフォーム」はその配線を提供せず、ユーザーが自分の業務に合わせて型を作る前提に立つ——だからLeadという特定の型を持たない。コストの根拠：GitHub issue #10422で実際に変換機能が欲しいという要望が挙がり、コントリビューターがLead限定の変換機能をPR #10459として実装までした。だが創業者Malfait本人がこれを却下し、「ワークフローのフォーム機能を使えば、もっと抽象的な形で実現できる」と説明した——動くコードより思想の一貫性を優先する、圧力下での実例。</div>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">④ 記憶から答える：「フォーム」アクションを使ったワークフローで、Lead Convertに近い体験をどう組み立てるか。3つのステップで説明してください。またこの方法の弱点は何ですか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>①トリガー：Personのレコードが更新される（例：ステータスが「クオリファイ済み」になる）②Formアクション：SDR/AEにOpportunity特有の項目（金額・ステージ・成約予定日等）を画面上で入力させる③Create Recordアクション：その入力を使ってOpportunityレコードを作成し、Personに紐づける。弱点：2025年9月時点で報告されている不具合により、レコード更新トリガー後のフォームが実行者の画面にきちんと表示されないことがあり、まさにこの用途を直撃する。</div>
   </div>
 
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    SDR/AEのハンドオフ設計は<a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">Dievioのガイド</a>が実務チェックリストとして具体的。MEDDICが形骸化する理由は<a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Futureman Labsの記事</a>が的確に指摘している。Twentyの設計思想そのものは<a href="https://docs.twenty.com/getting-started/introduction">Twenty Docsの「Why Twenty」</a>と、創業者Félix Malfaitの<a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">TechCrunchインタビュー</a>が一次情報として読みやすい。
+    SDR/AEのハンドオフ設計は<a href="https://dievio.com/blog/sdr-to-ae-handoff-workflows">Dievioのガイド</a>が実務チェックリストとして具体的。MEDDICが形骸化する理由は<a href="https://futuremanlabs.com/blog/track-meddic-in-crm-without-going-stale">Futureman Labsの記事</a>が的確に指摘している。Twentyの設計思想そのものは<a href="https://docs.twenty.com/getting-started/introduction">Twenty Docsの「Why Twenty」</a>と、創業者Félix Malfaitの<a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">TechCrunchインタビュー</a>が一次情報として読みやすい。設計判断の生の議論は<a href="https://github.com/twentyhq/twenty/pull/10459">PR #10459のやり取り</a>そのものが一番具体的——コードと、それを却下する理由が同じ場所にある。
+
   </div>
 
   <div class="box ask">
@@ -112,7 +145,10 @@
     [3] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
     [4] <a href="https://github.com/twentyhq/twenty/issues/10422">Object to Object Conversion (eg Lead to Opportunity) — twentyhq/twenty Issue #10422</a><br>
     [5] <a href="https://docs.twenty.com/getting-started/introduction">Why Twenty — Twenty Documentation</a><br>
-    [6] <a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">Twenty is building an open source alternative to Salesforce — TechCrunch, Nov 2024</a>
+    [6] <a href="https://techcrunch.com/2024/11/18/twenty-is-building-an-open-source-alternative-to-salesforce/">Twenty is building an open source alternative to Salesforce — TechCrunch, Nov 2024</a><br>
+    [7] <a href="https://github.com/twentyhq/twenty/pull/10459">Object to object conversion — twentyhq/twenty PR #10459</a><br>
+    [8] <a href="https://docs.twenty.com/user-guide/workflows/overview">Workflows Overview — Twenty Docs</a><br>
+    [9] <a href="https://github.com/twentyhq/twenty/issues/14611">[Workflow] Form not shown to users after "update record" trigger — twentyhq/twenty Issue #14611</a>
   </p>
 
   <div class="nav">
