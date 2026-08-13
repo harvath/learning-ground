@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0004 | 案件の「外側」</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit A・案件管理の基礎 — レッスン A4（Unit A 最終回）</div>
+  <h1>案件の「外側」— 活動記録とERPとの境界線</h1>
+  <p class="subtitle">A1〜A3で案件（Opportunity）そのものの構造を見てきた。最後に、その周りで発生する活動記録と、案件が受注した先にあるERP領域との境界線を引く。これでUnit Aの背骨が完成する。</p>
+
+  <h2>なぜ「活動」を記録するのか — 先行指標としての価値</h2>
+
+  <p><span class="term">活動（Activity）</span>とは、案件をめぐる一つ一つのやり取り——架電、メール、会議、デモ、提案書の送付——を記録することを指す。これが重要なのは、単なる作業ログではなく、<strong>結果が出る前に予兆を教えてくれる先行指標</strong>だからだ。活動データが最新に保たれていれば、それ自体がフォーキャストの材料になる——ある案件にしばらく活動記録が無ければ赤信号、逆に架電や会議が続いていれば勢いのサインになる。<sup class="cite"><a href="https://www.method.me/blog/sales-activity-tracking/">[1]</a></sup> Unit Bで着地予測（B4）を扱うとき、この「活動の有無」がステージや金額と並ぶ材料の一つになる。</p>
+
+  <p>記録の運用には自動化と手動のバランスが要る。手動でのログは続かない——担当者は結局さぼる——ので、メールやカレンダーのように自動で捕捉できるものはシステム側で自動記録し、それでは拾えないもの（対面での会話の要点、個別の判断など）だけを手動で残す、という分担が実務的だ。<sup class="cite"><a href="https://www.weflow.ai/blog/sales-activity-tracking">[2]</a></sup><sup class="cite"><a href="https://www.method.me/blog/sales-activity-tracking/">[1]</a></sup></p>
+
+  <h2>Twentyでの実装 — Timelineという一箇所への集約</h2>
+
+  <p>Twentyには、この「自動＋手動」の両方を受け止める場所が用意されている。手動側は<span class="term">Tasks</span>（To-Do、期限・担当者・完了状況を持ち、People/Companies/Opportunitiesなどに紐づく）と<span class="term">Notes</span>（会議の要約や文脈情報を残す）という2つの標準オブジェクトだ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">[6]</a></sup></p>
+
+  <p>自動側はメール・カレンダー連携が担う。TwentyはGoogle Workspace・Microsoft 365のメールボックスに直接つなげるほか、<span class="asof">2025年2月（v1.3.0）</span>にIMAP（メール受信）・SMTP（メール送信）・CalDAV（カレンダー同期）のサポートが加わり、主要プロバイダ以外のメール環境からも連携できるようになった。<sup class="cite"><a href="https://twenty.com/releases">[7]</a></sup> 連携されたメール・予定は、関係するレコードに自動で紐づく。</p>
+
+  <div class="box warn">
+    <span class="label">ただし対象は限定される</span>
+    Twenty自身が明記している通り——「Email and calendar sync only works with People, Companies, and Opportunities.」（メール・カレンダー連携が効くのはPeople・Companies・Opportunitiesの3つの標準オブジェクトだけ）<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/overview">[5]</a></sup> A1で見た「この3つのオブジェクトが特別扱いされる」という話が、ここでも具体的な形で効いてくる。案件周りの活動を自動で拾いたいなら、この3オブジェクトを軸にデータモデルを組む必要がある——カスタムオブジェクトをいくら作っても、メール・カレンダー連携の対象には自動では入らない。
+  </div>
+
+  <p>自動記録（メール・カレンダー）と手動記録（Task・Note）は、最終的に<span class="term">Timeline</span>という1本の時系列に合流する——レコードの作成・フィールド変更・受信メール・カレンダーイベントが、案件やPersonのページ上で一つのタイムラインとして見える。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">[6]</a></sup> 「自動化できるものは自動化し、できないものだけ手動で残す」という一般原則が、Twentyでは「メール・カレンダーは自動でTimelineに乗る／Task・Noteは手動で追加する」という、具体的な仕組みとして実装されている。</p>
+
+  <h2>案件の「先」— ERPとの境界線（Quote-to-Cash）</h2>
+
+  <p>案件が受注（Closed Won）になった後、何が起きるか。ここでCRMとERPの責任範囲が入れ替わる。<span class="term">Quote-to-Cash</span>という考え方では、CRMは案件の追跡と見積の組み立てまでを担い、その見積が承認された瞬間に責任がERPへ移る——受注データをもとに注文（オーダー）が作られ、そこから先の業務・財務処理（請求・入金・収益計上）が実行される。<sup class="cite"><a href="https://www.zuora.com/glossary/quote-to-cash/">[3]</a></sup></p>
+
+  <p>ただし、この境界は理屈ほどきれいには引けない。責任範囲が曖昧なまま設計すると、システム同士の機能が重なり合い、同じロジックが2箇所に実装され、意思決定がツールごとに分裂する——CRM側のツールが、本来ERP側の仕事まで肩代わりし始める、という状態に陥りやすい。<sup class="cite"><a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">[4]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">Twentyでこの境界をどう扱うか</span>
+    Twentyの標準オブジェクトに、請求書や入金といったERP的な概念は無い——これはA2で見た「プラットフォームであり製品ではない」という思想通り、Twentyが請求・会計機能そのものを持とうとしていないからだ。技術的には「Invoice」のようなカスタムオブジェクトをTwenty内に作ることも可能だが、それは実質的にERPの機能を丸ごと再実装することに等しく、Quote-to-Cashの原則（CRMは見積までを担う）から外れる。現実的な設計は、<strong>Opportunityがステージ「Closed Won」に変わったことをトリガーに、A2で見たワークフローの外部API呼び出しアクションで、既存のERP・請求システムへデータを渡す</strong>というものだ——A1の「属性かオブジェクトか」に続き、ここでは「Twenty内に作り込むか、外部システムに任せるか」という、もう一段上の設計判断が働いている。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：活動記録が着地予測にとって「先行指標」であるとはどういうことか。また、活動記録の自動化と手動記録は、Twentyではそれぞれ何に対応するか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>活動記録（架電・メール・会議等）は、結果（受注/失注）が出る前にその予兆を示す——最近活動が無い案件は赤信号、活発なら勢いのサイン、という形で着地予測の材料になる。Twentyでは、自動記録はメール・カレンダー連携（People/Companies/Opportunitiesに限定）、手動記録はTask・Noteが担い、両方が最終的にTimelineという1本の時系列に合流する。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② 受注（Closed Won）になった案件のデータを、外部の請求システムに引き渡したい。Quote-to-Cashの責任境界の原則に従うと、Twenty側で本来担うべきでない仕事はどれか？</p>
+    <button class="quiz-opt" data-key="a">Opportunityのステージを Closed Won に更新する</button>
+    <button class="quiz-opt" data-key="b">受注案件のデータをもとに、請求書の発行・入金の消込を自分自身で行う</button>
+    <button class="quiz-opt" data-key="c">Closed Wonへの変更をトリガーに、ワークフローの外部API呼び出しで請求システムへ連携する</button>
+    <button class="quiz-opt" data-key="d">案件に紐づく担当者・金額・成約日を記録する</button>
+    <p class="quiz-why" hidden>Quote-to-Cashの原則では、CRMは案件の追跡と見積の組み立てまでを担い、請求・入金・収益計上はERP側の仕事になる。（b）はまさにこのERP側の仕事をCRMが肩代わりする形で、責任境界を越えてしまっている。（a）（d）はCRM本来の記録、（c）はA2で見たワークフロー機能を使った正しい連携方法——Twenty内に請求機能を作り込むのではなく、外部システムへデータを渡すだけに留めている。</p>
+  </div>
+
+  <div class="box spine">
+    <span class="label">Unit A、完走</span>
+    A1で背骨（リード→クオリフィケーション→案件→ステージ→受注/失注）を引き、A2でクオリフィケーションの実運用とTwentyの設計思想を、A3で案件を取り巻く合議体と組織構造を、そしてA4で活動記録とERPとの境界線を見た。この4回で作った背骨のどの時点のデータも、次のUnit Bで扱う経営指標（セグメント分析・メンバー別効率・失注インパクト・着地予測・季節性/YoY）の材料になる。指標を先に決めて、必要なフィールドを背骨に逆算する——という進め方は、ここまでの4レッスンで繰り返し使ってきた「属性かリレーションか」「Twenty内に作るか外部に任せるか」という判断基準そのものだ。
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    活動記録の考え方は<a href="https://www.method.me/blog/sales-activity-tracking/">Method.meのガイド</a>が読みやすい。Quote-to-Cashの定義は<a href="https://www.zuora.com/glossary/quote-to-cash/">Zuoraの用語解説</a>が簡潔。境界が曖昧なときに何が起きるかは<a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">Clarityの記事</a>が具体的。Twenty側の詳細は<a href="https://twenty.com/releases">リリースノート</a>で日付を確認しながら追うこと。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「メール・カレンダー連携の対象がPeople/Companies/Opportunitiesだけというのは、実務上どんな制約になる？」「見積・契約はTwenty内のカスタムオブジェクトにすべき？それとも完全に外部？」「活動データの『鮮度』を経営指標としてどう扱えばいい？」。次はUnit B——ここまでのA1〜A4で作った背骨から、経営が実際に見たい指標をどう作るかに進む。最初はB1のセグメント分析から。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.method.me/blog/sales-activity-tracking/">Sales Activity Tracking: Ultimate Guide for Sales Teams — Method</a><br>
+    [2] <a href="https://www.weflow.ai/blog/sales-activity-tracking">Sales Activity Tracking: KPIs, Setup, and Best Practices — Weflow</a><br>
+    [3] <a href="https://www.zuora.com/glossary/quote-to-cash/">What Is Quote-to-Cash (Q2C)? — Zuora</a><br>
+    [4] <a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">SAP CPQ Integration Explained: CRM, ERP & Quote-to-Cash Boundaries — Clarity</a><br>
+    [5] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
+    [6] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a><br>
+    [7] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.3.0, Feb 2025）
+  </p>
+
+  <div class="nav">
+    <a href="0003-kessai-no-gougitai.html">← A3</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>

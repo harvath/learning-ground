@@ -16,6 +16,14 @@
   購買委員会の規模（他調査の引用含め9〜19人）と6つの役割（Economic Buyer/Technical Evaluator/End-User Champion/Procurement-Legal/Executive Sponsor/Internal Validator）を整理。**使いどころ**：MEDDICのEconomic Buyer/Championを、より広い合議体の中に位置づけるとき。
 - [DealHub — "What is an Account Hierarchy?"](https://dealhub.io/glossary/account-hierarchy/)
   本社・子会社・部門というアカウント階層の定義と、管理しない場合の実務上の摩擦（テリトリー衝突・重複営業）。**使いどころ**：顧客企業の組織構造をデータモデルに落とすとき。
+- [Method — "Sales Activity Tracking: Ultimate Guide"](https://www.method.me/blog/sales-activity-tracking/)
+  活動記録が着地予測の先行指標になるという考え方と、自動化の重要性。**使いどころ**：活動管理レッスンの土台。
+- [Weflow — "Sales Activity Tracking: KPIs, Setup, and Best Practices"](https://www.weflow.ai/blog/sales-activity-tracking)
+  「手動記録は続かない、自動化がソースで捕捉する」という実務原則。**使いどころ**：自動化と手動記録の分担を説明するとき。
+- [Zuora — "What Is Quote-to-Cash (Q2C)?"](https://www.zuora.com/glossary/quote-to-cash/)
+  CRM（案件・見積）とERP（注文・請求・収益計上）の責任分担の定義。**使いどころ**：CRMとERPの境界線を説明するとき。
+- [Clarity — "SAP CPQ Integration Explained: CRM, ERP & Quote-to-Cash Boundaries"](https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/)
+  境界が曖昧なまま設計すると機能が重複し意思決定が分裂する、という実務上の警告。**使いどころ**：Twenty内に何を作り込むかの判断を説明するとき。
 
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
