@@ -27,6 +27,10 @@
 
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
+- [Factors.ai — "Customer Profiling and Segmentation: The B2B SaaS GTM Guide"](https://www.factors.ai/blog/customer-profiling-and-segmentation)
+  ファーモグラフィックセグメンテーションの主要な軸（業種・企業規模・地域・売上）と、複数軸を組み合わせる考え方。**使いどころ**：セグメント分析レッスンの土台。
+- [SalesIntel — "Firmographic Segmentation: A B2B Marketing Guide"](https://salesintel.io/blog/firmographic-segmentation/)
+  セグメンテーションがICP定義・ABM・テリトリー設計・価格帯設計に直結する理由と、データ品質への依存。**使いどころ**：セグメント分析が「分類趣味」ではなく意思決定に直結する理由を説明するとき。
 - [HubSpot — "The top performance metrics sales pros are tracking"](https://blog.hubspot.com/sales/sales-performance-metrics)
   営業パフォーマンス指標の年次サーベイ。**使いどころ**：メンバー別効率の指標設計、何を追う組織が多いかの相場観。
 - [Sendspark — "Sales Rep Productivity Metrics: Complete Guide"](https://blog.sendspark.com/sales-rep-productivity-metrics)
@@ -77,12 +81,15 @@
   トリガー（レコード作成/更新/削除・スケジュール・手動・Webhook）とアクション（Formアクション含む）の一覧。**使いどころ**：Lead Convert相当の機能をワークフローで組む方法を説明するとき。
 - [GitHub — twentyhq/twenty Issue #14611](https://github.com/twentyhq/twenty/issues/14611)（2025年9月）
   ワークフローのFormアクションが、レコード更新トリガー後に実行者へ表示されない不具合。**使いどころ**：「抽象化された解決策」の実際の完成度・限界を示すとき。
+- [Twenty Docs — Create a Table View with Grouping](https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping)
+  Group By機能の公式How-to。「CompaniesをIndustryでグループ化」という、まさにセグメント分析そのものの例が載っている。表示グループ10〜15個の推奨上限も明記。**使いどころ**：セグメント分析をTwenty上でどう組むか説明するとき。
+- [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)
+  Chart種類（棒・折れ線・円・数値等）、集計（Count/Sum/Average/Min/Max）、Filter・Group Byの組み合わせ方。**使いどころ**：Group Byでは対応しきれない規模のセグメント分析を説明するとき。
 
 ## Gaps（今後埋めたい）
 
 - ZACなど日本製ERP/SFAの一般的な機能範囲についての高品質な一次情報が未特定。Twentyとの比較で「従来型はこう」と言う場面のために、次回以降に探す。
 - 日本のBtoB営業に特化した高信頼コミュニティ（実務者が指標設計を議論する場）は未探索。Wisdom枠として次回以降に探す。
-- Twentyの標準ダッシュボード／レポート機能（ネイティブでどこまでセグメント分析・予測ができるか）の一次ドキュメントは未確認。Unit Cで深掘りする際に調査する。
 
 ## Wisdom（Communities）
 

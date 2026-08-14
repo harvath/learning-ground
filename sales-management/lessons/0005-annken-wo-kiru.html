@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0005 | 案件を「切る」— セグメント分析</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B1（Unit B 開始）</div>
+  <h1>案件を「切る」— セグメント分析</h1>
+  <p class="subtitle">Unit Aで作った背骨（案件・会社・活動）の上に、初めての経営指標を建てる。セグメント分析は、全体の数字をひとかたまりのまま見るのをやめ、意味のある単位に切り分けて、どこに力を入れるべきかを見えるようにする作業だ。</p>
+
+  <h2>何で切るか — ファーモグラフィック（企業属性）セグメンテーション</h2>
+
+  <p>B2Bの世界で最も広く使われる切り口は<span class="term">ファーモグラフィック（Firmographic）セグメンテーション</span>——企業の属性そのものでグループ分けする方法だ。代表的な軸は4つ。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup></p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>軸</th><th>典型的な区切り方</th></tr>
+    <tr><td>業種（Industry）</td><td>製造業／小売／金融／IT... 最もよく使われる軸</td></tr>
+    <tr><td>企業規模</td><td>従業員数で SMB（50人未満）／ミッドマーケット（50〜500人）／エンタープライズ（500人以上）</td></tr>
+    <tr><td>地域</td><td>国・地域単位。テリトリー設計や規制対応に直結</td></tr>
+    <tr><td>売上規模</td><td>年商のレンジ。価格帯設定の材料になる</td></tr>
+  </table>
+  </div>
+
+  <p>これらが重要なのは、単なる分類趣味ではなく、実務の意思決定に直結するからだ——理想的な顧客像（ICP）の定義、狙うべきアカウントの選定、テリトリー設計、価格帯の設計、リソース配分の優先順位付けは、すべてこの軸の上に乗っている。<sup class="cite"><a href="https://salesintel.io/blog/firmographic-segmentation/">[2]</a></sup> 実務では軸を1つだけ使うより、業種で大枠を決めた上で企業規模を掛け合わせる、というように複数の軸を組み合わせることが多い。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">セグメント分析はデータの質に人質を取られている</span>
+    セグメンテーションは、元データが正確・最新・完全でなければ意味を持たない——古いままの従業員数、誤った業種分類、抜けている売上データは、そのままターゲティングを歪める。<sup class="cite"><a href="https://salesintel.io/blog/firmographic-segmentation/">[2]</a></sup> A1で見た「定型カテゴリで分類する」という原則は、ここでも同じ形で効いてくる——セグメント分析の軸になるフィールドこそ、自由記述ではなく選択式で、かつ運用ルール（誰が・いつ更新するか）を決めておく必要がある。
+  </div>
+
+  <h2>Twentyでの実装 — Select fieldとGroup By</h2>
+
+  <p>セグメント分析の軸は、Twenty上では単なる<span class="term">Select field</span>（選択式のカスタムフィールド）でしかない——CompaniesオブジェクトにIndustryという選択式フィールドを1つ足せば、それがそのままセグメンテーションの軸になる。A1の「単なる属性はフィールドで」という判断基準の、最も素直な応用形だ。</p>
+
+  <p>そのフィールドで実際に切って見るには、<span class="term">Group By</span>機能を使う。Twenty自身のドキュメントが挙げている例がそのまま教科書になる——「Companiesに移動し、"By Industry"という新しいViewを作り、Options→Groupを開き、Industryフィールドを選んで保存する。これでCompaniesが業種ごとに整理され、1つのセグメントに集中しやすくなる」。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[3]</a></sup> Group Byの対象になるのはSelect fieldに限られる——ここでも「選択式でなければ集計できない」という制約が形になって現れている。</p>
+
+  <div class="box warn">
+    <span class="label">Table ViewのGroup Byには上限がある</span>
+    Twentyのドキュメントは「パフォーマンスのため、表示するグループは10〜15個程度に抑えることを推奨。それ以上必要ならDashboardを使うこと」と明記している。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[3]</a></sup> 業種を10種類程度の大分類に留めるならTable ViewのGroup Byで十分だが、業種を50種類の細かい分類で見たい、あるいは複数の軸を掛け合わせて集計したい場合は、次に見るDashboardの領分になる。
+  </div>
+
+  <h2>一段深く — Dashboardでのセグメント分析</h2>
+
+  <p>Twentyは<span class="asof">2025年11月（v1.10.0）</span>にDashboards機能をLabsのベータとして追加し、棒・折れ線・円・数値などのチャートで、Count（件数）・Sum（合計）・Average（平均）・Min／Maxといった集計を、任意の数値フィールドに対して行えるようにした。<sup class="cite"><a href="https://twenty.com/releases">[4]</a></sup> チャート側でもFilterとGroup By（選択式フィールド・日付・リレーションで分割）が使える——「業種別の平均案件規模」「流入経路別の受注件数」のような、セグメント分析そのものの図をここで作る。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup> この機能は<span class="asof">2026年7月</span>にAIによるダッシュボード自動生成や、より豊富な表示形式が追加されるなど、まだ動きの速い領域であることも押さえておきたい。<sup class="cite"><a href="https://twenty.com/releases">[4]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">組み立て方のまとめ</span>
+    ①CompaniesかOpportunitiesに、分析したい軸をSelect fieldとして追加する（Industry・企業規模等）②まずTable ViewのGroup Byで概観をつかむ（10〜15グループ程度まで）③件数が多い、あるいは複数軸を掛け合わせたい分析はDashboardのChartに移し、Count/Sum/Averageの集計とFilter・Group Byを組み合わせる。A3で見たアカウント階層（親会社単位）も、セグメンテーションの軸の1つとして同じ仕組みに乗る。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：ファーモグラフィックセグメンテーションの主要な軸を3つ以上挙げてください。また、これがなぜ「分類趣味」ではなく実務の意思決定に直結するのか説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>主な軸：業種・企業規模（従業員数）・地域・売上規模。実務との直結：理想的な顧客像（ICP）の定義、狙うべきアカウントの選定、テリトリー設計、価格帯設計、リソース配分の優先順位付けが、すべてこの軸の上で判断される——分類自体が目的ではなく、意思決定の材料になる。</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② 50種類の業種でCompaniesをセグメント分析したい。TwentyのTable ViewでGroup Byを使うと、ドキュメントが推奨する上限（10〜15グループ）を大きく超えてしまう。最も適切な対応はどれか？</p>
+    <button class="quiz-opt" data-key="a">Industryフィールドを削除し、代わりに自由記述のNoteに業種を書く</button>
+    <button class="quiz-opt" data-key="b">Table ViewのGroup Byをそのまま使い続ける</button>
+    <button class="quiz-opt" data-key="c">DashboardのChartでIndustryによるGroup Byと集計（Count/Sum等）を使う</button>
+    <button class="quiz-opt" data-key="d">Companiesオブジェクトを業種ごとに50個複製する</button>
+    <p class="quiz-why" hidden>Twentyのドキュメントは、表示グループが多くなる場合はTable ViewのGroup ByではなくDashboardを使うよう明記している。（a）は選択式フィールドを自由記述に戻すことになり、A1の「定型カテゴリで分類する」原則に反し集計不能になる。（b）は推奨されるパフォーマンス上限を超える。（d）はオブジェクトそのものを複製するという、およそ意味のない設計。</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    ファーモグラフィックセグメンテーションの基礎は<a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">Factors.aiのガイド</a>が幅広い。実務での使いどころは<a href="https://salesintel.io/blog/firmographic-segmentation/">SalesIntelの記事</a>が具体的。TwentyのGroup Byは<a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">公式How-to</a>、Dashboardsは<a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">公式ドキュメント</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「業種の分類はどのレベルの粒度が実務上ちょうどいい？」「セグメント別の失注理由を見たい場合、B3の内容とどうつながる？」「Dashboardのベータという位置づけは、実務でどこまで信頼していい？」。次のレッスン（B2）ではメンバー別生産性・効率——活動指標とアウトカム指標の違いに進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">Customer Profiling and Segmentation: The B2B SaaS GTM Guide — Factors.ai</a><br>
+    [2] <a href="https://salesintel.io/blog/firmographic-segmentation/">Firmographic Segmentation: A B2B Marketing Guide — SalesIntel</a><br>
+    [3] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">Create a Table View with Grouping — Twenty Docs</a><br>
+    [4] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.10.0, Nov 2025／v2.20.0・v2.24.0, Jul 2026）<br>
+    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0004-annken-no-sotogawa.html">← A4</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
