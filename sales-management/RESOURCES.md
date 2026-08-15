@@ -32,9 +32,15 @@
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
 - [Factors.ai — "Customer Profiling and Segmentation: The B2B SaaS GTM Guide"](https://www.factors.ai/blog/customer-profiling-and-segmentation)
-  ファーモグラフィックセグメンテーションの主要な軸（業種・企業規模・地域・売上）と、複数軸を組み合わせる考え方。**使いどころ**：セグメント分析レッスンの土台。
+  ファーモグラフィックセグメンテーションの土台となる5つの軸（業種・企業規模〈従業員数または売上〉・地域・成長段階・所有形態）。価格帯を層ごとに変える具体例あり。**使いどころ**：セグメント分析レッスンの土台。軸の一覧は正確に5つとして引用すること（4つに削ったり、企業規模を2軸に分けたりしない）。
+- [Vena — "Average Revenue per Employee by Industry: 2026 Benchmarks"](https://www.venasolutions.com/blog/average-revenue-per-employee)
+  従業員一人あたり売上の業種別ベンチマーク（病院約8,700ドル〜エンタメ系ソフトウェア約176万ドル）。**使いどころ**：企業規模を「従業員数」と「売上」の2通りで見る理由を、数字で裏付けるとき。
+- [Tomba — "Company Sizes: SMB vs Mid-Market vs Enterprise"](https://tomba.io/blog/company-sizes)
+  従業員数は公開情報として入手しやすい一方、売上は予算・案件規模を反映するという、2指標の使い分けの実務的な理由。**使いどころ**：企業規模の測り方を説明するとき。
+- [ZoomInfo — "What Is an Ideal Customer Profile? ICP Guide for B2B"](https://pipeline.zoominfo.com/marketing/ideal-customer-profile)
+  ICPの作り方（既存優良顧客のfirmographicデータから抽出）と、ICP適合アカウントのパイプライン到達率が43%高いという実例。**使いどころ**：セグメンテーション軸がICP・リソース配分にどう繋がるかを具体的に説明するとき。
 - [SalesIntel — "Firmographic Segmentation: A B2B Marketing Guide"](https://salesintel.io/blog/firmographic-segmentation/)
-  セグメンテーションがICP定義・ABM・テリトリー設計・価格帯設計に直結する理由と、データ品質への依存。**使いどころ**：セグメント分析が「分類趣味」ではなく意思決定に直結する理由を説明するとき。
+  セグメンテーションがデータ品質に依存するという論点。**使いどころ**：セグメント分析の運用上の注意点を説明するとき。
 - [HubSpot — "The top performance metrics sales pros are tracking"](https://blog.hubspot.com/sales/sales-performance-metrics)
   2026年、1,000人以上の営業担当者を対象にした調査。粗利率55%・YoY成長率53%・クオータ達成率42%・勝率42%など、何が実際にどれだけ追われているかの実数。**使いどころ**：「指標として存在する」と「実際に追われている」の差を示すとき。
 - [Sendspark — "Sales Rep Productivity Metrics: Complete Guide"](https://blog.sendspark.com/sales-rep-productivity-metrics)

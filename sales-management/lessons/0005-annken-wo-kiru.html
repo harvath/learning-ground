@@ -12,19 +12,24 @@
 
   <h2>何で切るか — ファーモグラフィック（企業属性）セグメンテーション</h2>
 
-  <p>B2Bの世界で最も広く使われる切り口は<span class="term">ファーモグラフィック（Firmographic）セグメンテーション</span>——企業の属性そのものでグループ分けする方法だ。代表的な軸は4つ。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup></p>
+  <p>B2Bの世界で最も広く使われる切り口は<span class="term">ファーモグラフィック（Firmographic）セグメンテーション</span>——企業の属性そのものでグループ分けする方法だ。土台となる軸は5つ：業種、企業規模（従業員数<em>または</em>売上）、地域、成長段階、所有形態。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup></p>
 
   <div class="tablewrap">
   <table class="cmp">
     <tr><th>軸</th><th>典型的な区切り方</th></tr>
     <tr><td>業種（Industry）</td><td>製造業／小売／金融／IT... 最もよく使われる軸</td></tr>
-    <tr><td>企業規模</td><td>従業員数で SMB（50人未満）／ミッドマーケット（50〜500人）／エンタープライズ（500人以上）</td></tr>
+    <tr><td>企業規模</td><td>従業員数（SMB 50人未満／ミッドマーケット 50〜500人／エンタープライズ 500人以上）<em>または</em>売上——下で詳述</td></tr>
     <tr><td>地域</td><td>国・地域単位。テリトリー設計や規制対応に直結</td></tr>
-    <tr><td>売上規模</td><td>年商のレンジ。価格帯設定の材料になる</td></tr>
+    <tr><td>成長段階</td><td>スタートアップ／スケールアップ／成熟／統合期。資金調達・採用動向などの「勢い」のシグナルで補強する</td></tr>
+    <tr><td>所有形態</td><td>上場／非上場、PEファンド傘下／創業者経営、フランチャイズ／直営など。意思決定の速さと予算の出所が変わる</td></tr>
   </table>
   </div>
 
-  <p>これらが重要なのは、単なる分類趣味ではなく、実務の意思決定に直結するからだ——理想的な顧客像（ICP）の定義、狙うべきアカウントの選定、テリトリー設計、価格帯の設計、リソース配分の優先順位付けは、すべてこの軸の上に乗っている。<sup class="cite"><a href="https://salesintel.io/blog/firmographic-segmentation/">[2]</a></sup> 実務では軸を1つだけ使うより、業種で大枠を決めた上で企業規模を掛け合わせる、というように複数の軸を組み合わせることが多い。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup></p>
+  <p>「企業規模」は<strong>1つの軸を2通りの方法で測る</strong>——従業員数と売上を別々の軸として扱うのではない。両者は独立した情報を持っている。従業員数は入手しやすい（LinkedIn等で公開されていることが多い）反面、<span class="term">従業員一人あたり売上（Revenue per Employee）</span>が業種によって桁違いに変わるため、組織の複雑さの目安にしかならない——実際のベンチマークでは、業種平均で病院が1人あたり8,700ドル程度なのに対し、エンタメ系ソフトウェアは1人あたり176万ドルに達し、全業種平均の11万ドルという数字自体が業種間の差を覆い隠してしまうほど開きがある。<sup class="cite"><a href="https://www.venasolutions.com/blog/average-revenue-per-employee">[6]</a></sup> つまり従業員40人のソフトウェア企業が、従業員400人の物流会社より売上が大きい、ということが普通に起こる。<sup class="cite"><a href="https://tomba.io/blog/company-sizes">[7]</a></sup> だから多くのチームは、まず入手しやすい従業員数でざっくり分け、予算感を見たいときだけ売上を補助的に使う、という使い分けをする——A3で見た「従業員数が多いほど購買委員会が複雑になりやすい」という話は従業員数側の意味、「予算の大きさ」は売上側の意味で、同じ「企業規模」でも指しているものが違う。</p>
+
+  <p><span class="term">ICP（Ideal Customer Profile／理想的な顧客像）</span>とは、自社にとって最も相性が良く、成約しやすく、長く使い続けてくれる顧客の特徴を、勘ではなくデータから定義したものだ。作り方は単純で、既存の優良顧客のCRMデータ（売上規模・従業員数・業種・所在地・決裁者の役職など）を集め、共通するパターンを抜き出す。<sup class="cite"><a href="https://pipeline.zoominfo.com/marketing/ideal-customer-profile">[8]</a></sup> つまりICPは、ここまでの5つの軸を「自社の場合はこの組み合わせが当たりやすい」という形に絞り込んだものにすぎない。効果は具体的な数字で確認されている——ある企業の事例では、ICPに合致するアカウントはそうでないアカウントに比べてパイプラインに進む確率が43%高く、案件化までの速度も58%速かった。<sup class="cite"><a href="https://pipeline.zoominfo.com/marketing/ideal-customer-profile">[8]</a></sup></p>
+
+  <p>他の使い道も同様に具体的だ。<strong>価格帯設計</strong>では、あるB2B SaaS企業がTAM（獲得可能な市場全体）をSMB（50人未満）・ミッドマーケット（50〜500人）・エンタープライズ（500人以上）の3層に分け、層ごとに価格・オンボーディングの手厚さ・メッセージングを変えている、という例がある。<sup class="cite"><a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">[1]</a></sup> <strong>テリトリー設計</strong>は地域軸が直接の材料になり、<strong>リソース配分</strong>はICPとの適合度スコアを使って、インバウンドの優先順位付けやアウトバウンドの対象リスト作成に使われる。<sup class="cite"><a href="https://pipeline.zoominfo.com/marketing/ideal-customer-profile">[8]</a></sup> どの用途も「軸を眺めて満足する」のではなく、具体的な数字（価格表・担当地域・優先順位のスコア）に落ちて初めて意味を持つ。</p>
 
   <div class="box warn">
     <span class="label">セグメント分析はデータの質に人質を取られている</span>
@@ -56,7 +61,7 @@
   <div class="recall">
     <p class="recall-q">① 記憶から答える：ファーモグラフィックセグメンテーションの主要な軸を3つ以上挙げてください。また、これがなぜ「分類趣味」ではなく実務の意思決定に直結するのか説明してください。</p>
     <button class="recall-show">答えを見る</button>
-    <div class="recall-a" hidden>主な軸：業種・企業規模（従業員数）・地域・売上規模。実務との直結：理想的な顧客像（ICP）の定義、狙うべきアカウントの選定、テリトリー設計、価格帯設計、リソース配分の優先順位付けが、すべてこの軸の上で判断される——分類自体が目的ではなく、意思決定の材料になる。</div>
+    <div class="recall-a" hidden>5つの軸：業種・企業規模（従業員数<em>または</em>売上、2つで1軸）・地域・成長段階・所有形態。実務との直結：既存の優良顧客からICP（理想的な顧客像）を抽出し、ICP適合度でインバウンドの優先順位付けやアウトバウンドの対象選定を行う（実例：適合アカウントはパイプライン到達率が43%高い）。企業規模の階層ごとに価格・オンボーディングを変える、地域軸でテリトリーを切る、といった形で、具体的な数字や表に落ちて初めて意味を持つ。</div>
   </div>
 
   <div class="quiz" data-answer="c">
@@ -68,9 +73,15 @@
     <p class="quiz-why" hidden>Twentyのドキュメントは、表示グループが多くなる場合はTable ViewのGroup ByではなくDashboardを使うよう明記している。（a）は選択式フィールドを自由記述に戻すことになり、A1の「定型カテゴリで分類する」原則に反し集計不能になる。（b）は推奨されるパフォーマンス上限を超える。（d）はオブジェクトそのものを複製するという、およそ意味のない設計。</p>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：企業規模を「従業員数」で見るのと「売上」で見るのとでは、それぞれ何がわかるのか。なぜ両者は入れ替え可能な指標ではないのか、具体例とともに説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>従業員数は組織の複雑さ（決裁関係の階層の多さ、A3の購買委員会規模と関連）の目安になる。売上は予算・案件規模の余力を示す。両者が入れ替え不能なのは、従業員一人あたり売上が業種によって桁違いに変わるため——病院は1人あたり8,700ドル程度、エンタメ系ソフトウェアは1人あたり176万ドル程度で、全業種平均11万ドルという数字自体がこの差を覆い隠す。結果として、従業員40人のソフトウェア企業が従業員400人の物流会社より売上が大きい、ということが普通に起こる。</div>
+  </div>
+
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    ファーモグラフィックセグメンテーションの基礎は<a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">Factors.aiのガイド</a>が幅広い。実務での使いどころは<a href="https://salesintel.io/blog/firmographic-segmentation/">SalesIntelの記事</a>が具体的。TwentyのGroup Byは<a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">公式How-to</a>、Dashboardsは<a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">公式ドキュメント</a>を参照。
+ファーモグラフィックセグメンテーションの基礎は<a href="https://www.factors.ai/blog/customer-profiling-and-segmentation">Factors.aiのガイド</a>が幅広い。企業規模を従業員数と売上の2通りで見る理由は<a href="https://www.venasolutions.com/blog/average-revenue-per-employee">Venaの業種別ベンチマーク</a>が数字で裏付けている。ICPの作り方と効果は<a href="https://pipeline.zoominfo.com/marketing/ideal-customer-profile">ZoomInfoのガイド</a>が具体的。TwentyのGroup Byは<a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">公式How-to</a>、Dashboardsは<a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">公式ドキュメント</a>を参照。
   </div>
 
   <div class="box ask">
@@ -84,7 +95,10 @@
     [2] <a href="https://salesintel.io/blog/firmographic-segmentation/">Firmographic Segmentation: A B2B Marketing Guide — SalesIntel</a><br>
     [3] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">Create a Table View with Grouping — Twenty Docs</a><br>
     [4] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.10.0, Nov 2025／v2.20.0・v2.24.0, Jul 2026）<br>
-    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a>
+    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a><br>
+    [6] <a href="https://www.venasolutions.com/blog/average-revenue-per-employee">Average Revenue per Employee by Industry: 2026 Benchmarks — Vena</a><br>
+    [7] <a href="https://tomba.io/blog/company-sizes">Company Sizes: SMB vs Mid-Market vs Enterprise — Tomba</a><br>
+    [8] <a href="https://pipeline.zoominfo.com/marketing/ideal-customer-profile">What Is an Ideal Customer Profile? ICP Guide for B2B — ZoomInfo</a>
   </p>
 
   <div class="nav">
