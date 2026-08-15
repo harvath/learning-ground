@@ -31,6 +31,10 @@
 
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
+- [TWSales — "How to Define Your Ideal Customer Profile (ICP) as a Startup"](https://twsales.com/founder-led-sales-icp/)
+  データがまだ無い段階でのICP仮説の作り方。仮説に合う見込み客50〜100社に直接アプローチして検証する、という具体的な手法。**使いどころ**：セグメント分析を「売り始める前」の段階から説明するとき。
+- [CRO Expert — "ICP Sharpening: Stop Chasing Deals You Can't Win"](https://cro.expert/blog/icp-sharpening-stop-chasing-wrong-deals)
+  受注・失注（理由付き）・チャーン（12か月以内）を3つ揃えて分析する手法。受注だけで判断する危険性（解約アカウントの65%が「コア」業種に集中していた実例）と、四半期・半期・年次・イベント起点の見直しサイクル。**使いどころ**：セグメント分析を「データが溜まった後」どう反復運用するか説明するとき。
 - [Factors.ai — "Customer Profiling and Segmentation: The B2B SaaS GTM Guide"](https://www.factors.ai/blog/customer-profiling-and-segmentation)
   ファーモグラフィックセグメンテーションの土台となる5つの軸（業種・企業規模〈従業員数または売上〉・地域・成長段階・所有形態）。価格帯を層ごとに変える具体例あり。**使いどころ**：セグメント分析レッスンの土台。軸の一覧は正確に5つとして引用すること（4つに削ったり、企業規模を2軸に分けたりしない）。
 - [Vena — "Average Revenue per Employee by Industry: 2026 Benchmarks"](https://www.venasolutions.com/blog/average-revenue-per-employee)
