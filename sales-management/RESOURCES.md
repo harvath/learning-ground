@@ -24,6 +24,10 @@
   CRM（案件・見積）とERP（注文・請求・収益計上）の責任分担の定義。**使いどころ**：CRMとERPの境界線を説明するとき。
 - [Clarity — "SAP CPQ Integration Explained: CRM, ERP & Quote-to-Cash Boundaries"](https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/)
   境界が曖昧なまま設計すると機能が重複し意思決定が分裂する、という実務上の警告。**使いどころ**：Twenty内に何を作り込むかの判断を説明するとき。
+- [Salesforce — "Revenue Cloud Billing"](https://www.salesforce.com/sales/revenue-cloud-billing/)
+  標準のSales Cloudには請求・入金機能が無く、Revenue Cloud Billingという別売り製品が担うという公式情報。**使いどころ**：TwentyとSalesforceがQuote-to-Cashの境界という点で構造的に同じであることを示すとき。
+- [株式会社オロ — ZAC機能一覧](https://www.oro.com/zac/function/)
+  原価管理・購買管理・経費管理・請求書発行・SFA/CRM（コンタクト管理）が最初から同じ製品内に同居する、統合型ERPとしての構造。**使いどころ**：CRMとERPを分けるTwenty/Salesforceの構造と対比するとき。
 
 ## Knowledge — 経営指標（セグメント分析・生産性・失注・予測・季節性）
 
@@ -32,9 +36,9 @@
 - [SalesIntel — "Firmographic Segmentation: A B2B Marketing Guide"](https://salesintel.io/blog/firmographic-segmentation/)
   セグメンテーションがICP定義・ABM・テリトリー設計・価格帯設計に直結する理由と、データ品質への依存。**使いどころ**：セグメント分析が「分類趣味」ではなく意思決定に直結する理由を説明するとき。
 - [HubSpot — "The top performance metrics sales pros are tracking"](https://blog.hubspot.com/sales/sales-performance-metrics)
-  営業パフォーマンス指標の年次サーベイ。**使いどころ**：メンバー別効率の指標設計、何を追う組織が多いかの相場観。
+  2026年、1,000人以上の営業担当者を対象にした調査。粗利率55%・YoY成長率53%・クオータ達成率42%・勝率42%など、何が実際にどれだけ追われているかの実数。**使いどころ**：「指標として存在する」と「実際に追われている」の差を示すとき。
 - [Sendspark — "Sales Rep Productivity Metrics: Complete Guide"](https://blog.sendspark.com/sales-rep-productivity-metrics)
-  活動指標（コール数・メール数）と成果指標（パイプライン・クオータ達成率）の対比、activity-to-outcome比の考え方。**使いどころ**：メンバー別効率レッスンの土台。
+  アクティビティ指標（入力＝努力の量）とアウトカム指標（出力＝成果）の対比。「架電80件で成約ゼロ＝活動の問題／クオータ達成だが事務作業に10時間＝効率の問題」という診断フレーム。**使いどころ**：メンバー別効率レッスンの土台。
 - [Count.co — "Sales Quota Attainment: Formula & Improvement"](https://count.co/metric/sales-rep-quota-attainment)
   クオータ達成率の計算式（実績÷クオータ×100）。**使いどころ**：達成率系KPIの定義を揃えるとき。
 - [Klue — "The Ultimate 7-Step Guide to Win-Loss Analysis"](https://klue.com/blog/win-loss-analysis-guide)
@@ -88,7 +92,6 @@
 
 ## Gaps（今後埋めたい）
 
-- ZACなど日本製ERP/SFAの一般的な機能範囲についての高品質な一次情報が未特定。Twentyとの比較で「従来型はこう」と言う場面のために、次回以降に探す。
 - 日本のBtoB営業に特化した高信頼コミュニティ（実務者が指標設計を議論する場）は未探索。Wisdom枠として次回以降に探す。
 
 ## Wisdom（Communities）

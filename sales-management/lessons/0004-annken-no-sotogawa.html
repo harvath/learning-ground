@@ -40,6 +40,19 @@
     Twentyの標準オブジェクトに、請求書や入金といったERP的な概念は無い——これはA2で見た「プラットフォームであり製品ではない」という思想通り、Twentyが請求・会計機能そのものを持とうとしていないからだ。技術的には「Invoice」のようなカスタムオブジェクトをTwenty内に作ることも可能だが、それは実質的にERPの機能を丸ごと再実装することに等しく、Quote-to-Cashの原則（CRMは見積までを担う）から外れる。現実的な設計は、<strong>Opportunityがステージ「Closed Won」に変わったことをトリガーに、A2で見たワークフローの外部API呼び出しアクションで、既存のERP・請求システムへデータを渡す</strong>というものだ——A1の「属性かオブジェクトか」に続き、ここでは「Twenty内に作り込むか、外部システムに任せるか」という、もう一段上の設計判断が働いている。
   </div>
 
+  <h2>この境界は普遍的か — SalesforceとZACで確かめる</h2>
+
+  <p>この境界線がTwenty固有の制約なのか、CRMという製品カテゴリ一般の話なのかを確かめておく価値がある。答えは「製品カテゴリによる」——2つの比較対象で結果が分かれる。</p>
+
+  <p>まずSalesforce。標準の<span class="term">Sales Cloud</span>にも、実は請求・入金機能は無い。この機能は<span class="term">Salesforce Billing</span>（現在は<span class="term">Revenue Cloud</span>の一部）という、別売りの追加製品として提供されている。<sup class="cite"><a href="https://www.salesforce.com/sales/revenue-cloud-billing/">[8]</a></sup> つまりTwentyが「CRMは見積までで、その先は外部連携」としているのと、構造的にはまったく同じ設計をSalesforceも取っている——違いは、外部への連携先が別会社の製品（Twentyの場合）か、同じ会社が売っている別製品（SalesforceのRevenue Cloud）かという、商流上の違いでしかない。</p>
+
+  <p>次にZAC。こちらはSalesforceともTwentyとも構造が違う。ZACは「SFA機能が付いたERP」ではなく、<strong>プロジェクト単位の原価管理を中核に据えたERPそのもの</strong>で、営業管理（SFA/CRM相当の「コンタクト管理」）は数ある業務モジュールの1つに過ぎない——原価管理・購買管理・経費管理・請求書発行が、最初から同じ製品の中に同居している。<sup class="cite"><a href="https://www.oro.com/zac/function/">[9]</a></sup> SalesforceやTwentyのように「CRMの外に請求機能がある」のではなく、そもそも同じシステムの中に両方が最初から入っている。</p>
+
+  <div class="box warn">
+    <span class="label">これが移行計画に持つ意味</span>
+    ZACのような統合型ERPからTwentyのような純粋なCRMへ移る、という選択は、単に「CRM Aから CRM Bへの乗り換え」ではない。<strong>今まで1つのシステムが持っていた機能を、意図的に複数のシステムへ分割する</strong>という決断でもある——営業管理はTwentyへ、原価管理・請求・会計は別の手段（Salesforceと同様の追加製品か、既存の会計・ERPシステムとの連携）へ、という具合に。この分割自体はA2で見た「プラットフォームか製品か」という思想の違いの帰結であり、良し悪しの話ではない。ただし、今まで1つのDBの中で完結していた「受注した瞬間に原価も請求も追跡できる」という一体感は、意識的に設計し直さない限り失われる、という点は要件定義の初期段階で明確にしておく価値がある。
+  </div>
+
   <h2>理解を確認する</h2>
 
   <div class="recall">
@@ -57,6 +70,12 @@
     <p class="quiz-why" hidden>Quote-to-Cashの原則では、CRMは案件の追跡と見積の組み立てまでを担い、請求・入金・収益計上はERP側の仕事になる。（b）はまさにこのERP側の仕事をCRMが肩代わりする形で、責任境界を越えてしまっている。（a）（d）はCRM本来の記録、（c）はA2で見たワークフロー機能を使った正しい連携方法——Twenty内に請求機能を作り込むのではなく、外部システムへデータを渡すだけに留めている。</p>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：SalesforceとZACは、CRMとERPの境界線という点でそれぞれTwentyとどう違う（あるいは同じ）か。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>Salesforceは<strong>Twentyと構造的に同じ</strong>——標準のSales Cloudには請求・入金機能が無く、Salesforce Billing（Revenue Cloud）という別売り製品が担う。外部連携先が別会社の製品か自社の別製品かの違いでしかない。ZACは<strong>構造そのものが違う</strong>——「SFA付きERP」ではなく、原価管理を中核に据えたERPの中にSFA/CRM機能が最初から同居している統合型。CRMとERPを分ける発想自体がない。</div>
+  </div>
+
   <div class="box spine">
     <span class="label">Unit A、完走</span>
     A1で背骨（リード→クオリフィケーション→案件→ステージ→受注/失注）を引き、A2でクオリフィケーションの実運用とTwentyの設計思想を、A3で案件を取り巻く合議体と組織構造を、そしてA4で活動記録とERPとの境界線を見た。この4回で作った背骨のどの時点のデータも、次のUnit Bで扱う経営指標（セグメント分析・メンバー別効率・失注インパクト・着地予測・季節性/YoY）の材料になる。指標を先に決めて、必要なフィールドを背骨に逆算する——という進め方は、ここまでの4レッスンで繰り返し使ってきた「属性かリレーションか」「Twenty内に作るか外部に任せるか」という判断基準そのものだ。
@@ -64,7 +83,7 @@
 
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    活動記録の考え方は<a href="https://www.method.me/blog/sales-activity-tracking/">Method.meのガイド</a>が読みやすい。Quote-to-Cashの定義は<a href="https://www.zuora.com/glossary/quote-to-cash/">Zuoraの用語解説</a>が簡潔。境界が曖昧なときに何が起きるかは<a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">Clarityの記事</a>が具体的。Twenty側の詳細は<a href="https://twenty.com/releases">リリースノート</a>で日付を確認しながら追うこと。
+    活動記録の考え方は<a href="https://www.method.me/blog/sales-activity-tracking/">Method.meのガイド</a>が読みやすい。Quote-to-Cashの定義は<a href="https://www.zuora.com/glossary/quote-to-cash/">Zuoraの用語解説</a>が簡潔。境界が曖昧なときに何が起きるかは<a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">Clarityの記事</a>が具体的。Twenty側の詳細は<a href="https://twenty.com/releases">リリースノート</a>で日付を確認しながら追うこと。SalesforceとZACの比較は<a href="https://www.salesforce.com/sales/revenue-cloud-billing/">Salesforce公式のRevenue Cloud Billingページ</a>と<a href="https://www.oro.com/zac/function/">ZACの機能一覧</a>を見比べるのが早い。
   </div>
 
   <div class="box ask">
@@ -80,7 +99,9 @@
     [4] <a href="https://www.clarity.cx/blog/erp-and-sap-cpq-integration-where-boundaries-sit-and-why-they-matter/">SAP CPQ Integration Explained: CRM, ERP & Quote-to-Cash Boundaries — Clarity</a><br>
     [5] <a href="https://docs.twenty.com/user-guide/data-model/overview">Data Model Overview — Twenty Docs</a><br>
     [6] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a><br>
-    [7] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.3.0, Feb 2025）
+    [7] <a href="https://twenty.com/releases">Twenty Releases — What's New in the Open Source CRM</a>（v1.3.0, Feb 2025）<br>
+    [8] <a href="https://www.salesforce.com/sales/revenue-cloud-billing/">Revenue Cloud Billing — Salesforce</a><br>
+    [9] <a href="https://www.oro.com/zac/function/">機能一覧 | クラウド型ERPパッケージ ZAC — 株式会社オロ</a>
   </p>
 
   <div class="nav">

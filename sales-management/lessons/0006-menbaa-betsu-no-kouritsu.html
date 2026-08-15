@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0006 | 誰が「効いて」いるか — メンバー別生産性・効率</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B2</div>
+  <h1>誰が「効いて」いるか — メンバー別生産性・効率</h1>
+  <p class="subtitle">B1では会社を切った。B2では同じ発想を「誰が案件を担当しているか」という軸に向け、活動量と成果のギャップを見えるようにする。</p>
+
+  <h2>アクティビティ指標とアウトカム指標 — 2つを混同しない</h2>
+
+  <p>メンバー別の指標は、性質の違う2種類に分かれる。<span class="term">アクティビティ指標（Activity Metrics）</span>は入力側——架電数、メール数、設定した会議数など、努力の量と規律を測る。<span class="term">アウトカム指標（Outcome Metrics）</span>は出力側——生み出したパイプライン、クオータ達成率、勝率、平均案件規模など、その努力が実際に収益を生んでいるかを測る。片方だけを見ると、実態を見誤る。<sup class="cite"><a href="https://blog.sendspark.com/sales-rep-productivity-metrics">[1]</a></sup></p>
+
+  <p>この2つを重ねて初めて、問題の種類が見分けられるようになる——1日80件架電しても何も成約しないなら、それは<strong>活動の問題</strong>。クオータを達成しているのに事務作業に10時間も溶かしているなら、それは<strong>効率の問題</strong>。同じ「成果が出ていない」でも、原因がまったく違う。<sup class="cite"><a href="https://blog.sendspark.com/sales-rep-productivity-metrics">[1]</a></sup></p>
+
+  <h2>クオータ達成率 — 最も基本的なアウトカム指標</h2>
+
+  <p><span class="term">クオータ達成率</span>は「実績 ÷ 割り当てられたクオータ × 100」というシンプルな式で、80%以上が一般に良好な水準とされる。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup> ただし業界・成長段階で相場は変わる——成熟したSaaS企業では80〜95%、成長初期のSaaS企業では60〜80%が目安とされ、逆に常時95%を超えているならクオータの設定自体が低すぎる可能性を疑うべき、という指摘もある。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">「基本的」でも「全社が追っている」わけではない</span>
+    HubSpotが2026年に1,000人以上の営業担当を対象に行った調査では、クオータ達成率を追っている組織は42%、勝率も42%だった——最も広く追われていた指標は粗利率（55%）とYoY成長率（53%）。<sup class="cite"><a href="https://blog.hubspot.com/sales/sales-performance-metrics">[3]</a></sup> B1で見た「セグメント分析はデータの質に人質を取られている」という話と同じで、指標は「存在する」ことと「実際に追われている」ことの間に大きな差がある。どの指標を運用するかは、測る価値だけでなく、継続して入力・確認できるかで決める必要がある。
+  </div>
+
+  <h2>Twentyでの実装 — Ownerはリレーションなので、勝手が変わる</h2>
+
+  <p>OpportunitiesにはOwner（担当者）フィールドがあり、Workspace内のメンバーに紐づく。B1ではセグメント分析の軸をSelect fieldとして扱ったが、<strong>Ownerは選択式ではなくリレーションフィールド</strong>だ——ここでB1の制約がそのまま効いてくる。Table ViewのGroup ByはSelect fieldにしか対応していないため、Ownerで直接グループ化することはできない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[4]</a></sup> B1で「表示グループが多い、あるいは複数軸を組み合わせたい場合はDashboardへ」と書いたのと同じ理由で、メンバー別の集計は最初からDashboardのChart（Group ByがSelect field・日付・リレーションのいずれにも対応する）に持ち込むのが筋がいい。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">組み立て方</span>
+    アウトカム側は、OpportunitiesをOwnerでGroup Byし、Count（受注件数）とSum（受注金額）を集計するChart。アクティビティ側は、TasksをAssignee（A4で見た担当者フィールド）でGroup Byし、Count（完了件数）を集計する別のChart。この2枚を並べて見比べることで、「架電は多いが受注が少ない」「受注は多いが活動記録がほとんど無い（＝データが実態を反映していない可能性）」といった、活動とアウトカムのズレが見えるようになる。1つのChartで両方を一度に出す機能は現状のドキュメントには明記されていないため、2枚並べるのが現実的な設計になる。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：アクティビティ指標とアウトカム指標の違いを説明し、「架電80件で成約ゼロ」「クオータ達成だが事務作業に10時間」という2つのケースが、それぞれどちらの問題を示しているか答えてください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>アクティビティ指標は努力の量（架電・メール・会議数等）、アウトカム指標は成果（パイプライン・クオータ達成率・勝率等）を測る。「架電80件で成約ゼロ」は<strong>活動の問題</strong>（活動はあるが成果に繋がっていない）。「クオータ達成だが事務作業に10時間」は<strong>効率の問題</strong>（成果は出ているが、そこに至るコストが大きすぎる）。</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② メンバー別の受注件数をTwenty上で見たい。OpportunitiesのOwnerフィールドはリレーションフィールドである。B1で学んだGroup Byの制約を踏まえると、最も適切な方法はどれか？</p>
+    <button class="quiz-opt" data-key="a">Table ViewのGroup ByでOwnerを直接選択する</button>
+    <button class="quiz-opt" data-key="b">OwnerをSelect fieldに作り直してからTable ViewのGroup Byを使う</button>
+    <button class="quiz-opt" data-key="c">DashboardのChartでOwnerによるGroup Byと、件数（Count）の集計を組む</button>
+    <button class="quiz-opt" data-key="d">担当者ごとに別々のOpportunitiesオブジェクトを作る</button>
+    <p class="quiz-why" hidden>Table ViewのGroup ByはSelect fieldのみに対応しており、リレーションフィールドであるOwnerには使えない（a）。DashboardのChartはGroup ByがSelect field・日付・リレーションのいずれにも対応するため、Ownerでの集計はこちらが適切（c）。（b）はOwnerを実際のメンバーレコードへのリンクではなく、名前を手入力する選択肢に変えることになり、メンバー情報の一元管理が崩れる。（d）はオブジェクトそのものを無意味に複製する設計。</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    アクティビティ指標とアウトカム指標の区別は<a href="https://blog.sendspark.com/sales-rep-productivity-metrics">Sendsparkのガイド</a>が実務的。クオータ達成率の式とベンチマークは<a href="https://count.co/metric/sales-rep-quota-attainment">Count.co</a>、実際にどの指標がどれだけ追われているかは<a href="https://blog.hubspot.com/sales/sales-performance-metrics">HubSpotの2026年調査</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「クオータ達成率の分母（クオータ）自体は、どこにどう記録するのが自然？」「活動指標を追いすぎると、担当者の行動をどう歪める？」「2枚のChartを見比べる以外に、活動とアウトカムを1つの数字にまとめる方法はある？」。次のレッスン（B3）では失注分析とそのインパクト——A1で触れた失注理由フィールドの本格運用に進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://blog.sendspark.com/sales-rep-productivity-metrics">Sales Rep Productivity Metrics: Complete Guide — Sendspark</a><br>
+    [2] <a href="https://count.co/metric/sales-rep-quota-attainment">Sales Rep Quota Attainment: Formula & Improvement — Count.co</a><br>
+    [3] <a href="https://blog.hubspot.com/sales/sales-performance-metrics">The top performance metrics sales pros are tracking — HubSpot</a>（2026年調査）<br>
+    [4] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">Create a Table View with Grouping — Twenty Docs</a><br>
+    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0005-annken-wo-kiru.html">← B1</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
