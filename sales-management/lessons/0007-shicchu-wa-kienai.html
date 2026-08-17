@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0007 | 失注は「消えたデータ」ではない</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B3</div>
+  <h1>失注は「消えたデータ」ではない — 失注分析とそのインパクト</h1>
+  <p class="subtitle">A1で失注理由フィールドの必要性に触れた。B3ではそれを本格的に運用する——失注理由がどこまで信用できるか、失注がいくらの機会損失を生んでいるか、そして「失注ですらない、ただ消えた案件」をどう扱うかを見る。</p>
+
+  <h2>失注理由は「症状」であって「原因」ではないことが多い</h2>
+
+  <p>A1で見た通り、営業担当自身が選ぶ失注理由はそのまま鵜呑みにできない——ある調査では、営業担当の6割が自分の失注理由について部分的または完全に誤った認識を持っていた。CRMの選択肢に並ぶ「価格」「機能不足」「競合に負けた」は、多くの場合<strong>症状</strong>であって<strong>原因</strong>ではない。実際の敗因は、もっと手前の営業プロセスにあることが多い——ニーズの掘り下げ不足、要点を外したデモ、<strong>A3で見た合議体の複数メンバーに十分アプローチできていなかったこと</strong>、競合に関する情報不足、案件を前に進める一貫した動き方の欠如。<sup class="cite"><a href="https://forecastio.ai/blog/how-to-conduct-a-root-cause-analysis-of-closed-lost-deals">[1]</a></sup> 「価格が高いと言われた」の裏に「そもそも決裁者に一度も会えていなかった」が隠れている、というのはよくある話だ。</p>
+
+  <p>本当の原因を掘るための実務的な技法が<span class="term">Five Whys（5回のなぜ）</span>——買い手が何か重要なことを口にしたら「なぜ？」と聞き、その答えにまた「なぜ？」と聞く。これを4〜5回繰り返すと、たいてい表面的な理由の奥にある本当の原因にたどり着く。<sup class="cite"><a href="https://klue.com/blog/win-loss-analysis-guide">[2]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">実務上の指針</span>
+    選択式の失注理由フィールドは、あくまで<strong>一次スクリーニング</strong>の材料でしかない。全ての失注をFive Whysレベルで掘り下げるのは非現実的なので、金額の大きい案件——たとえば上位20%（80パーセンタイル）以上の失注——に絞って、買い手への直接インタビューまで踏み込む、という優先順位のつけ方が実務的だ。<sup class="cite"><a href="https://www.imboard.ai/kpis/closed-lost-value">[3]</a></sup> 選択式フィールドの値は「掘るべき案件を絞り込むためのフィルタ」であって、それ自体が結論ではない。
+  </div>
+
+  <h2>受注・失注のほかにもう一つ——「停滞」という第三の終端</h2>
+
+  <p>失注分析には、もう一つ厄介な問題がある。<span class="term">停滞（Stalled Opportunity）</span>——正式に断られたわけではないが、何週間も実質的な進展が無い案件のことだ。<sup class="cite"><a href="https://dealhub.io/glossary/stalled-opportunities/">[4]</a></sup> こうした案件がパイプラインの上位ステージに積み上がると、パイプライン全体が実態より大きく健全に見えてしまう——見た目のボリュームはあるので誰も焦らないが、実際には受注に至る現実的な道筋が無い案件で数字が水増しされている状態だ。<sup class="cite"><a href="https://dealhub.io/glossary/stalled-opportunities/">[4]</a></sup></p>
+
+  <p>停滞のサインは、A4で見た活動記録の欠如そのものだ——決めた期間内に架電・メール・会議のいずれも記録されていない、成約予定日が何度も後ろ倒しになっている、といった状態。<sup class="cite"><a href="https://dealhub.io/glossary/stalled-opportunities/">[4]</a></sup> どこからを「停滞」と見なすかの目安は、そのステージの平均滞留日数の1.5倍程度——ただしB1で見たセグメントによって基準は大きく変わる。SMBなら14〜21日、エンタープライズなら60〜90日は動きが無くても不自然ではない、というのが目安になる。<sup class="cite"><a href="https://dealhub.io/glossary/stalled-opportunities/">[4]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">なぜこれが失注分析の話なのか</span>
+    停滞案件を放置すると、失注理由の集計そのものが歪む。正式にClosed Lostとしてクローズされた案件だけを分析していると、実際には「もう望みが無いのに、誰も正式にクローズしなかった」案件——本当は失注も同然の案件——が集計から丸ごと抜け落ちる。失注分析は、Closed Lostのデータだけを見ていては不十分で、停滞案件をどう扱うか（強制的にクローズする運用ルールを作るか、少なくとも別枠で数えるか）を決めておく必要がある。
+  </div>
+
+  <h2>機会損失額 — 失注理由を集計する</h2>
+
+  <p><span class="term">Closed-Lost Value（機会損失額）</span>は、ある期間にClosed Lostへ遷移した案件の金額を合計したものだ——「Σ（案件の金額）、期間内にClosed Lostへ遷移した案件について」というシンプルな式になる。<sup class="cite"><a href="https://www.imboard.ai/kpis/closed-lost-value">[3]</a></sup> これを失注理由ごとに集計すると、「どの理由が実際にいくらの機会損失を生んでいるか」が見える——単に「価格」という理由が何件あったかではなく、それが金額ベースでどれだけのインパクトを持つかがわかる。</p>
+
+  <p>Twenty上での組み方はB1と同じ発想の繰り返しだ——A1で作った失注理由のSelect fieldを軸に、DashboardのChartでStage=Closed Lostにフィルタし、Sum（金額の合計）をGroup By（失注理由）で集計する。B1のセグメント軸（業種等）と失注理由を掛け合わせれば、「特定のセグメントで特定の理由の失注が集中していないか」まで見える——これはB1で触れた「セグメントごとにチャーンが偏っていないか」という発想の、失注版だ。</p>
+
+  <h2>Twentyでの実装 — 停滞案件を自動検知する</h2>
+
+  <p>停滞案件の検知は、A2で見た<span class="term">ワークフロー</span>で組む。実際の仕組みはこうだ——毎日決まった時刻に実行されるスケジュールトリガーで、「Updated At（最終更新日時）が今日から7日以上前」かつ「ステージがClosed WonでもClosed Lostでもない」案件をSearch Recordsアクションで検索し、担当者ごとにまとめた一覧をメールで管理者に通知する。<sup class="cite"><a href="https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/detect-stale-opportunities.md">[5]</a></sup> しきい値の7日は業種・商談サイクルに応じて調整できる——高速に回る商談なら3日、エンタープライズ向けなら14日といった具合だ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/detect-stale-opportunities.md">[5]</a></sup></p>
+
+  <p>どのステージで滞留が起きやすいかを見るには、別の仕組みを組み合わせる——ステージに入った日時を記録する<span class="term">「Last Entered」</span>型の日付フィールドと、そこから経過日数を計算する<span class="term">「Days in」</span>型の数値フィールドを、ワークフローで自動更新する。Table Viewでこの「Days in」フィールドを降順にソートすれば、最も長く同じステージに留まっている案件が一目でわかり、Kanban Viewでステージごとの平均滞留日数を集計すれば、パイプラインのどこがボトルネックになっているかが見える。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/track-time-in-stage.md">[6]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">組み立て方のまとめ</span>
+    ①A1の失注理由Select fieldを前提に、DashboardでStage=Closed Lostにフィルタし、失注理由ごとにSum（金額）を集計——機会損失額を可視化する。②ワークフローで停滞検知（Updated At起点・日次スケジュール・Stage除外条件）を組み、失注としてすら記録されない「消えた案件」を洗い出す。③「Last Entered」「Days in」フィールドとワークフローでステージ滞留日数を追跡し、Table Viewのソート・Kanbanの平均集計でボトルネックを特定する。①は「終わった案件」を、②③は「終わっていないのに終わったも同然の案件」を扱う——両方揃って初めて失注分析が完成する。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：CRMの失注理由（価格・機能不足・競合負け等）が「症状であって原因ではない」とはどういうことか。A3の内容とどう繋がるか、具体例とともに説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>営業担当の6割は自分の失注理由を正しく認識できていない、という調査があり、CRMに並ぶ選択肢は表面的な理由でしかないことが多い。たとえば「価格が高い」と言われた裏に「A3の合議体（購買委員会）の一部メンバー——特にEconomic BuyerやProcurement——に一度もアプローチできていなかった」という、より根本的な原因が隠れているケースがある。本当の原因を掘るにはFive Whys等の手法で買い手に直接踏み込む必要がある。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② ある案件が3ヶ月以上更新されておらず、ステージは「交渉中」のままになっている。この案件を放置すると、失注分析にどんな問題が起きるか。最も適切な対応はどれか？</p>
+    <button class="quiz-opt" data-key="a">交渉中である以上、健全なパイプラインの一部として扱い続ける</button>
+    <button class="quiz-opt" data-key="b">停滞案件として扱い、ワークフローの自動検知（更新日起点のスケジュールトリガー）で洗い出し、正式なクローズを促す</button>
+    <button class="quiz-opt" data-key="c">失注理由が未入力なので、そもそも分析対象から永久に除外する</button>
+    <button class="quiz-opt" data-key="d">案件金額が大きければ大きいほど、これは良い兆候だと判断する</button>
+    <p class="quiz-why" hidden>3ヶ月更新が無い案件は典型的な停滞案件——正式に失注していないが実質的に望みが薄く、放置するとパイプラインを実態以上に大きく見せ、失注理由の集計からも漏れ続ける。（b）が正しい：Updated Atを起点にしたワークフローで機械的に洗い出し、正式にクローズ（多くの場合Closed Lost）させる運用が必要。（a）は健全というより危険信号を無視すること、（c）は分析漏れを放置すること、（d）は根拠のない楽観。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：Closed-Lost Value（機会損失額）とは何か。Twentyでこれを失注理由ごとに集計するには、どのフィールドとどの機能を組み合わせるか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>Closed-Lost Value（機会損失額）は、ある期間にClosed Lostへ遷移した案件の金額合計（Σ案件金額）。Twentyでは、A1で作った失注理由のSelect fieldを軸に、DashboardのChartでStage=Closed Lostにフィルタし、Sum（金額）をGroup By（失注理由）で集計することで可視化できる——B1で学んだDashboardの組み方そのままの応用。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    失注理由が症状にすぎない理由は<a href="https://forecastio.ai/blog/how-to-conduct-a-root-cause-analysis-of-closed-lost-deals">Forecastioの記事</a>、営業担当の自己申告への懐疑と深掘り手法は<a href="https://klue.com/blog/win-loss-analysis-guide">Klueのガイド</a>が具体的。停滞案件の定義と兆候は<a href="https://dealhub.io/glossary/stalled-opportunities/">DealHubの用語解説</a>、機会損失額の計算式は<a href="https://www.imboard.ai/kpis/closed-lost-value">I'mBoardのKPI解説</a>を参照。Twenty側の停滞検知・滞留日数追跡は、どちらも公式How-toに具体的な手順がある。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「停滞のしきい値（7日・14日等）は、実際どうやって自社に合った数字を決める？」「Five Whysを実際の商談後インタビューでやるとして、どんな質問から始めるのが自然？」「機会損失額をセグメント別に見るとき、B1のDashboard設計とどう組み合わせるのが一番きれい？」。次のレッスン（B4）では着地予測——フォーキャストカテゴリと加重パイプラインに進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://forecastio.ai/blog/how-to-conduct-a-root-cause-analysis-of-closed-lost-deals">Root Cause Analysis of Lost Deals (2025 Guide) — Forecastio</a><br>
+    [2] <a href="https://klue.com/blog/win-loss-analysis-guide">The Ultimate 7-Step Guide to Win-Loss Analysis — Klue</a><br>
+    [3] <a href="https://www.imboard.ai/kpis/closed-lost-value">Deals Lost Value: Definition & Benchmark — I'mBoard</a><br>
+    [4] <a href="https://dealhub.io/glossary/stalled-opportunities/">What are Stalled Opportunities? — DealHub</a><br>
+    [5] <a href="https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/detect-stale-opportunities.md">Detect Stale Opportunities — Twenty Docs</a><br>
+    [6] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/track-time-in-stage.md">Track How Long Opportunities Stay in Each Stage — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0006-menbaa-betsu-no-kouritsu.html">← B2</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>

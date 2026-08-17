@@ -54,9 +54,15 @@
 - [Count.co — "Sales Quota Attainment: Formula & Improvement"](https://count.co/metric/sales-rep-quota-attainment)
   クオータ達成率の計算式（実績÷クオータ×100）。**使いどころ**：達成率系KPIの定義を揃えるとき。
 - [Klue — "The Ultimate 7-Step Guide to Win-Loss Analysis"](https://klue.com/blog/win-loss-analysis-guide)
-  失注（Win-Loss）分析の進め方：バイヤーへの直接インタビュー、クローズ直後の実施、失注理由の定型カテゴリ化。**使いどころ**：失注インパクト分析レッスンの土台、失注理由フィールドの設計。
+  営業担当の6割が自分の失注理由を部分的・完全に誤解しているという調査、CRMのドロップダウン選択への批判、買い手への直接インタビューと「Five Whys」による深掘り手法。**使いどころ**：失注インパクト分析レッスンの土台、営業担当の自己申告を鵜呑みにできない理由を説明するとき。
 - [Product Marketing Alliance — "8 tips for effective win loss analysis"](https://www.productmarketingalliance.com/8-tips-for-effective-win-loss-analysis/)
   失注分析を戦略的インサイトに変える実務Tips。**使いどころ**：失注理由の「使われ方」（製品・営業プロセス・競合）を整理するとき。
+- [Forecastio — "Root Cause Analysis of Lost Deals"](https://forecastio.ai/blog/how-to-conduct-a-root-cause-analysis-of-closed-lost-deals)
+  CRMの表面的な失注理由（価格・機能不足・競合負け）は、ディスカバリー不足・デモの失敗・マルチスレッディング不足等の営業プロセス上の根本原因の「症状」でしかない、という批判的な指摘。**使いどころ**：失注理由フィールドの限界を説明するとき。
+- [DealHub — "What are Stalled Opportunities?"](https://dealhub.io/glossary/stalled-opportunities/)
+  停滞案件の定義・兆候（活動記録の欠如、成約予定日の後ろ倒し）・しきい値の目安（平均滞留日数の1.5倍、セグメント別）。**使いどころ**：失注ですらない「消えた案件」を扱うとき。
+- [I'mBoard — "Deals Lost Value: Definition & Benchmark"](https://www.imboard.ai/kpis/closed-lost-value)
+  Closed-Lost Valueの計算式（Σ案件金額）と、金額上位（80パーセンタイル）に絞って深掘りするという優先順位づけの実務。**使いどころ**：機会損失額の計算方法を説明するとき。
 - [rework.com（旧iSEEit）— "Pipeline Forecast Categories: Commit & Best Case"](https://resources.rework.com/libraries/pipeline-management/forecast-categories)
   フォーキャストカテゴリ（Pipeline/Best Case/Commit/Closed-Won）の定義。**使いどころ**：着地予測レッスンの土台。
 - [rework.com — "Weighted Pipeline: How to Forecast Sales Revenue Accurately"](https://resources.rework.com/libraries/pipeline-management/weighted-pipeline)
@@ -99,6 +105,10 @@
   トリガー（レコード作成/更新/削除・スケジュール・手動・Webhook）とアクション（Formアクション含む）の一覧。**使いどころ**：Lead Convert相当の機能をワークフローで組む方法を説明するとき。
 - [GitHub — twentyhq/twenty Issue #14611](https://github.com/twentyhq/twenty/issues/14611)（2025年9月）
   ワークフローのFormアクションが、レコード更新トリガー後に実行者へ表示されない不具合。**使いどころ**：「抽象化された解決策」の実際の完成度・限界を示すとき。
+- [Twenty Docs — Detect Stale Opportunities](https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/detect-stale-opportunities.md)
+  スケジュールトリガー＋Search Recordsアクションで停滞案件を検知し、担当者別にメール通知するワークフローの具体的な組み方。**使いどころ**：失注分析レッスンで停滞案件の自動検知を説明するとき。
+- [Twenty Docs — Track How Long Opportunities Stay in Each Stage](https://docs.twenty.com/user-guide/views-pipelines/how-tos/track-time-in-stage.md)
+  「Last Entered」日付フィールドと「Days in」数値フィールドでステージ滞留日数を追跡する方法。Table Viewのソート・Kanbanの平均集計での活用。**使いどころ**：パイプラインのボトルネックを特定する方法を説明するとき。
 - [Twenty Docs — Create a Table View with Grouping](https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping)
   Group By機能の公式How-to。「CompaniesをIndustryでグループ化」という、まさにセグメント分析そのものの例が載っている。表示グループ10〜15個の推奨上限も明記。**使いどころ**：セグメント分析をTwenty上でどう組むか説明するとき。
 - [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)
