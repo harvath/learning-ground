@@ -73,6 +73,8 @@
 
 ## Knowledge — Twentyのデータモデル
 
+- [Twenty Docs — Setup (Multi-Workspace Mode)](https://docs.twenty.com/developers/self-host/capabilities/setup)
+  Workspaceが独立したチーム・組織ごとのテナント空間であることの一次情報。**使いどころ**：Owner等「Workspace内のメンバー」という表現が出てきたときの前提知識として。
 - [Twenty Docs — Data Model Overview](https://docs.twenty.com/user-guide/data-model/overview)
   標準オブジェクト（People/Companies/Opportunities/Tasks/Notes）、リレーションの考え方。**使いどころ**：一般的な案件データ構造とTwentyのオブジェクトを対応づけるとき。
 - [Twenty Docs — Objects](https://docs.twenty.com/user-guide/data-model/capabilities/objects)

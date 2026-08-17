@@ -12,13 +12,13 @@
 
   <h2>アクティビティ指標とアウトカム指標 — 2つを混同しない</h2>
 
-  <p>メンバー別の指標は、性質の違う2種類に分かれる。<span class="term">アクティビティ指標（Activity Metrics）</span>は入力側——架電数、メール数、設定した会議数など、努力の量と規律を測る。<span class="term">アウトカム指標（Outcome Metrics）</span>は出力側——生み出したパイプライン、クオータ達成率、勝率、平均案件規模など、その努力が実際に収益を生んでいるかを測る。片方だけを見ると、実態を見誤る。<sup class="cite"><a href="https://blog.sendspark.com/sales-rep-productivity-metrics">[1]</a></sup></p>
+  <p>メンバー別の指標は、性質の違う2種類に分かれる。<span class="term">アクティビティ指標（Activity Metrics）</span>は入力側——架電数、メール数、設定した会議数など、努力の量と規律を測る。<span class="term">アウトカム指標（Outcome Metrics）</span>は出力側——生み出したパイプライン、<span class="term">クオータ</span>（会社が個々の担当者に割り当てる、一定期間内の売上・受注目標。詳しくは次のセクションで）の達成率、勝率、平均案件規模など、その努力が実際に収益を生んでいるかを測る。片方だけを見ると、実態を見誤る。<sup class="cite"><a href="https://blog.sendspark.com/sales-rep-productivity-metrics">[1]</a></sup></p>
 
   <p>この2つを重ねて初めて、問題の種類が見分けられるようになる——1日80件架電しても何も成約しないなら、それは<strong>活動の問題</strong>。クオータを達成しているのに事務作業に10時間も溶かしているなら、それは<strong>効率の問題</strong>。同じ「成果が出ていない」でも、原因がまったく違う。<sup class="cite"><a href="https://blog.sendspark.com/sales-rep-productivity-metrics">[1]</a></sup></p>
 
   <h2>クオータ達成率 — 最も基本的なアウトカム指標</h2>
 
-  <p><span class="term">クオータ達成率</span>は「実績 ÷ 割り当てられたクオータ × 100」というシンプルな式で、80%以上が一般に良好な水準とされる。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup> ただし業界・成長段階で相場は変わる——成熟したSaaS企業では80〜95%、成長初期のSaaS企業では60〜80%が目安とされ、逆に常時95%を超えているならクオータの設定自体が低すぎる可能性を疑うべき、という指摘もある。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup></p>
+  <p>先ほど触れた<span class="term">クオータ</span>を、達成率という形でもう少し詳しく見る。<span class="term">クオータ達成率</span>は「実績 ÷ 割り当てられたクオータ × 100」というシンプルな式で、80%以上が一般に良好な水準とされる。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup> ただし業界・成長段階で相場は変わる——成熟したSaaS企業では80〜95%、成長初期のSaaS企業では60〜80%が目安とされ、逆に常時95%を超えているならクオータの設定自体が低すぎる可能性を疑うべき、という指摘もある。<sup class="cite"><a href="https://count.co/metric/sales-rep-quota-attainment">[2]</a></sup></p>
 
   <div class="box warn">
     <span class="label">「基本的」でも「全社が追っている」わけではない</span>
@@ -27,7 +27,7 @@
 
   <h2>Twentyでの実装 — Ownerはリレーションなので、勝手が変わる</h2>
 
-  <p>OpportunitiesにはOwner（担当者）フィールドがあり、Workspace内のメンバーに紐づく。B1ではセグメント分析の軸をSelect fieldとして扱ったが、<strong>Ownerは選択式ではなくリレーションフィールド</strong>だ——ここでB1の制約がそのまま効いてくる。Table ViewのGroup ByはSelect fieldにしか対応していないため、Ownerで直接グループ化することはできない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[4]</a></sup> B1で「表示グループが多い、あるいは複数軸を組み合わせたい場合はDashboardへ」と書いたのと同じ理由で、メンバー別の集計は最初からDashboardのChart（Group ByがSelect field・日付・リレーションのいずれにも対応する）に持ち込むのが筋がいい。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup></p>
+  <p>OpportunitiesにはOwner（担当者）フィールドがあり、<span class="term">Workspace</span>（自社専用のテナント空間——独立したチーム・組織ごとに別々のWorkspaceを持てる構成になっている。<sup class="cite"><a href="https://docs.twenty.com/developers/self-host/capabilities/setup">[6]</a></sup> A4に出てきた「Google Workspace」とは無関係の、Twenty自身の概念）内のメンバーに紐づく。B1ではセグメント分析の軸をSelect fieldとして扱ったが、<strong>Ownerは選択式ではなくリレーションフィールド</strong>だ——ここでB1の制約がそのまま効いてくる。Table ViewのGroup ByはSelect fieldにしか対応していないため、Ownerで直接グループ化することはできない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[4]</a></sup> B1で「表示グループが多い、あるいは複数軸を組み合わせたい場合はDashboardへ」と書いたのと同じ理由で、メンバー別の集計は最初からDashboardのChart（Group ByがSelect field・日付・リレーションのいずれにも対応する）に持ち込むのが筋がいい。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup></p>
 
   <div class="box twenty">
     <span class="label">組み立て方</span>
@@ -67,7 +67,8 @@
     [2] <a href="https://count.co/metric/sales-rep-quota-attainment">Sales Rep Quota Attainment: Formula & Improvement — Count.co</a><br>
     [3] <a href="https://blog.hubspot.com/sales/sales-performance-metrics">The top performance metrics sales pros are tracking — HubSpot</a>（2026年調査）<br>
     [4] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">Create a Table View with Grouping — Twenty Docs</a><br>
-    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a>
+    [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a><br>
+    [6] <a href="https://docs.twenty.com/developers/self-host/capabilities/setup">Setup (Multi-Workspace Mode) — Twenty Docs</a>
   </p>
 
   <div class="nav">

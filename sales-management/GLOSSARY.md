@@ -35,9 +35,11 @@
 - **ICP（Ideal Customer Profile／理想的な顧客像）** — 既存の優良顧客の firmographic データから抽出した「自社にとって当たりやすい顧客像」。ICP適合アカウントはパイプライン到達率が43%高いという実例がある。インバウンドの優先順位付け・アウトバウンドの対象選定に使う。 (L0005)
 - **Select field / Group By（Twenty）** — セグメンテーションの軸は選択式のカスタムフィールドとして実装し、Table ViewのGroup By（Select fieldのみ対応）で切って見る。表示グループが10〜15を超える場合はDashboardへ。 (L0005)
 - **Dashboards（Twenty）** — 2025年11月（v1.10.0）にLabsベータとして追加。Count/Sum/Average/Min/Maxの集計と、Filter・Group By（選択式・日付・リレーション）を組み合わせたChartを作れる。 (L0005)
+- **クオータ** — 会社が個々の担当者に割り当てる、一定期間内の売上・受注目標（いわゆるノルマ）。 (L0006)
 - **アクティビティ指標／アウトカム指標** — アクティビティ指標は努力の量（架電・メール・会議数等）、アウトカム指標は成果（パイプライン・クオータ達成率・勝率等）。片方だけでは実態を見誤る。 (L0006)
 - **クオータ達成率** — 実績÷割り当てクオータ×100。80%以上が一般的な良好水準の目安だが、業界・成長段階で相場は変わる。 (L0006)
 - **Owner（Twenty）** — Opportunitiesに紐づく担当者のリレーションフィールド。Select fieldではないため、Table ViewのGroup Byでは直接グループ化できず、メンバー別集計はDashboardのChartが必要になる。 (L0006)
+- **Workspace（Twenty）** — 独立したチーム・組織ごとに持てる、自社専用のテナント空間。マルチテナント構成の単位。Google Workspaceとは無関係の、Twenty自身の概念。 (L0006)
 - **Win-Loss分析／失注理由**、**着地予測**、**フォーキャストカテゴリ（Pipeline/Best Case/Commit）**、**加重パイプライン（Weighted Pipeline）**、**季節性**、**YoY比較** — *(Unit B、到達時に定義)*
 
 ## Unit C — Twentyへの実装（未着手）— *到達時に定義*
