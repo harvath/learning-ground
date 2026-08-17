@@ -47,6 +47,8 @@
   セグメンテーションがデータ品質に依存するという論点。**使いどころ**：セグメント分析の運用上の注意点を説明するとき。
 - [HubSpot — "The top performance metrics sales pros are tracking"](https://blog.hubspot.com/sales/sales-performance-metrics)
   2026年、1,000人以上の営業担当者を対象にした調査。粗利率55%・YoY成長率53%・クオータ達成率42%・勝率42%など、何が実際にどれだけ追われているかの実数。**使いどころ**：「指標として存在する」と「実際に追われている」の差を示すとき。
+- [Forecastio — "Sales Capacity Planning: Strategic Guide for 2026"](https://forecastio.ai/blog/sales-capacity-planning)
+  営業担当の実売り時間は全体の約28%（Salesforce調査の引用）。活動の「件数」と「稼働（時間）」が別物である理由。**使いどころ**：Task件数集計が稼働管理の代わりにならない理由を説明するとき。
 - [Sendspark — "Sales Rep Productivity Metrics: Complete Guide"](https://blog.sendspark.com/sales-rep-productivity-metrics)
   アクティビティ指標（入力＝努力の量）とアウトカム指標（出力＝成果）の対比。「架電80件で成約ゼロ＝活動の問題／クオータ達成だが事務作業に10時間＝効率の問題」という診断フレーム。**使いどころ**：メンバー別効率レッスンの土台。
 - [Count.co — "Sales Quota Attainment: Formula & Improvement"](https://count.co/metric/sales-rep-quota-attainment)

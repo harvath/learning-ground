@@ -27,11 +27,16 @@
 
   <h2>Twentyでの実装 — Ownerはリレーションなので、勝手が変わる</h2>
 
-  <p>OpportunitiesにはOwner（担当者）フィールドがあり、<span class="term">Workspace</span>（自社専用のテナント空間——独立したチーム・組織ごとに別々のWorkspaceを持てる構成になっている。<sup class="cite"><a href="https://docs.twenty.com/developers/self-host/capabilities/setup">[6]</a></sup> A4に出てきた「Google Workspace」とは無関係の、Twenty自身の概念）内のメンバーに紐づく。B1ではセグメント分析の軸をSelect fieldとして扱ったが、<strong>Ownerは選択式ではなくリレーションフィールド</strong>だ——ここでB1の制約がそのまま効いてくる。Table ViewのGroup ByはSelect fieldにしか対応していないため、Ownerで直接グループ化することはできない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[4]</a></sup> B1で「表示グループが多い、あるいは複数軸を組み合わせたい場合はDashboardへ」と書いたのと同じ理由で、メンバー別の集計は最初からDashboardのChart（Group ByがSelect field・日付・リレーションのいずれにも対応する）に持ち込むのが筋がいい。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup></p>
+  <p>OpportunitiesにはOwner（担当者）フィールドがあり、<span class="term">Workspace</span>（自社専用のテナント空間——独立したチーム・組織ごとに別々のWorkspaceを持てる構成になっている<sup class="cite"><a href="https://docs.twenty.com/developers/self-host/capabilities/setup">[6]</a></sup>）内のメンバーに紐づく。B1ではセグメント分析の軸をSelect fieldとして扱ったが、<strong>Ownerは選択式ではなくリレーションフィールド</strong>だ——ここでB1の制約がそのまま効いてくる。なおOwnerは1件のOpportunityにつき1人までの単一リレーションで、複数人を並べて設定することはできない（フィールド名がownerV2Id、フィルタが「Owner = Me」という等号比較で表現される点から見て取れる）。案件に複数の内部担当者（AEに加えて技術サポート担当・導入後のカスタマーサクセス担当等）を紐づけたい場合は、A3の合議体とまったく同じ問題——追加のリレーションフィールドか中間オブジェクトが必要になる。Table ViewのGroup ByはSelect fieldにしか対応していないため、Ownerで直接グループ化することはできない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">[4]</a></sup> B1で「表示グループが多い、あるいは複数軸を組み合わせたい場合はDashboardへ」と書いたのと同じ理由で、メンバー別の集計は最初からDashboardのChart（Group ByがSelect field・日付・リレーションのいずれにも対応する）に持ち込むのが筋がいい。<sup class="cite"><a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">[5]</a></sup></p>
 
   <div class="box twenty">
     <span class="label">組み立て方</span>
     アウトカム側は、OpportunitiesをOwnerでGroup Byし、Count（受注件数）とSum（受注金額）を集計するChart。アクティビティ側は、TasksをAssignee（A4で見た担当者フィールド）でGroup Byし、Count（完了件数）を集計する別のChart。この2枚を並べて見比べることで、「架電は多いが受注が少ない」「受注は多いが活動記録がほとんど無い（＝データが実態を反映していない可能性）」といった、活動とアウトカムのズレが見えるようになる。1つのChartで両方を一度に出す機能は現状のドキュメントには明記されていないため、2枚並べるのが現実的な設計になる。
+  </div>
+
+  <div class="box warn">
+    <span class="label">Taskの件数は「稼働管理」にはならない</span>
+    このChartが見せているのは、あくまで活動の<em>件数</em>だ。<strong>稼働管理（誰がどれだけ手一杯か）</strong>とは別物であることに注意したい。営業担当が実際に「売る」ことに使っている時間は全体の約28%しかない、というSalesforceの調査結果がある——残りは事務作業・会議・トレーニングなどに費やされている。<sup class="cite"><a href="https://forecastio.ai/blog/sales-capacity-planning">[7]</a></sup> 同じ「Task 1件」でも、5分の確認作業と3時間かかる提案書作成では意味がまったく違う。TwentyのTaskオブジェクトには、見積工数や実績時間を記録するフィールドが標準では無い——期限・担当者・完了状況しか持たない。稼働の実態を見たいなら時間データが別途必要で、ここでもA4と同じ判断が働く：工数ログ用のカスタムオブジェクトをTwenty内に作り込むか、専用の工数管理・リソース計画ツールと連携するか。Task件数の集計は、あくまで粗い活動シグナルとして扱うべきで、稼働管理の代わりにはならない。
   </div>
 
   <h2>理解を確認する</h2>
@@ -51,9 +56,15 @@
     <p class="quiz-why" hidden>Table ViewのGroup ByはSelect fieldのみに対応しており、リレーションフィールドであるOwnerには使えない（a）。DashboardのChartはGroup ByがSelect field・日付・リレーションのいずれにも対応するため、Ownerでの集計はこちらが適切（c）。（b）はOwnerを実際のメンバーレコードへのリンクではなく、名前を手入力する選択肢に変えることになり、メンバー情報の一元管理が崩れる。（d）はオブジェクトそのものを無意味に複製する設計。</p>
   </div>
 
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：Taskの完了件数を集計するだけでは「稼働管理」ができないのはなぜか。実際に稼働管理をしたい場合、何のデータが追加で必要か。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>Taskは期限・担当者・完了状況しか持たず、見積工数や実績時間のデータが無いため——5分の作業も3時間の作業も「1件」として同じに数えられてしまう（営業担当の実売り時間は全体の約28%しかない、というのが実態）。稼働管理には工数（見積・実績の時間）データが必要で、Twenty内にカスタムオブジェクトとして作り込むか、専用の工数管理・リソース計画ツールと連携する必要がある。</div>
+  </div>
+
   <div class="box primary">
     <span class="label">まず読むもの・一次情報</span>
-    アクティビティ指標とアウトカム指標の区別は<a href="https://blog.sendspark.com/sales-rep-productivity-metrics">Sendsparkのガイド</a>が実務的。クオータ達成率の式とベンチマークは<a href="https://count.co/metric/sales-rep-quota-attainment">Count.co</a>、実際にどの指標がどれだけ追われているかは<a href="https://blog.hubspot.com/sales/sales-performance-metrics">HubSpotの2026年調査</a>を参照。
+    アクティビティ指標とアウトカム指標の区別は<a href="https://blog.sendspark.com/sales-rep-productivity-metrics">Sendsparkのガイド</a>が実務的。クオータ達成率の式とベンチマークは<a href="https://count.co/metric/sales-rep-quota-attainment">Count.co</a>、実際にどの指標がどれだけ追われているかは<a href="https://blog.hubspot.com/sales/sales-performance-metrics">HubSpotの2026年調査</a>を参照。稼働管理と活動件数が別物である理由は<a href="https://forecastio.ai/blog/sales-capacity-planning">Forecastioの解説</a>が数字付きで具体的。
   </div>
 
   <div class="box ask">
@@ -68,7 +79,8 @@
     [3] <a href="https://blog.hubspot.com/sales/sales-performance-metrics">The top performance metrics sales pros are tracking — HubSpot</a>（2026年調査）<br>
     [4] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping">Create a Table View with Grouping — Twenty Docs</a><br>
     [5] <a href="https://docs.twenty.com/getting-started/core-concepts/dashboards">Dashboards — Twenty Docs</a><br>
-    [6] <a href="https://docs.twenty.com/developers/self-host/capabilities/setup">Setup (Multi-Workspace Mode) — Twenty Docs</a>
+    [6] <a href="https://docs.twenty.com/developers/self-host/capabilities/setup">Setup (Multi-Workspace Mode) — Twenty Docs</a><br>
+    [7] <a href="https://forecastio.ai/blog/sales-capacity-planning">Sales Capacity Planning: Strategic Guide for 2026 — Forecastio</a>（28%の出典はSalesforce調査）
   </p>
 
   <div class="nav">
