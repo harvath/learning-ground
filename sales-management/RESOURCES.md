@@ -70,7 +70,13 @@
 - [ORM — "CRM Stage Probability vs Historical Conversion Rates"](https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates)
   ステージ確度は「設定値」ではなく「実測値」であるべき理由、実測の計算式（ステージ入場数を分母にする）、停滞パイプラインが予測を歪める問題。**使いどころ**：着地予測の精度を左右する最重要ポイントを説明するとき。
 - [Cogsy — "Ecommerce Guide to Seasonal Demand Forecasting"](https://cogsy.com/demand-planning/forecasting-seasonal-demand/)
-  季節性の定義（価格・在庫・販促と独立した、暦年で繰り返す需要変動）とYoY比較の基本、移動平均・指数平滑法などの手法。**使いどころ**：季節性/YoYレッスンの土台。
+  季節性の一般的な定義。定量・定性の予測手法の大枠のみで、YoY比較や移動祝日の具体的な手法は扱っていない（直接検証済み、2026-08-19）。**使いどころ**：季節性の導入レベルの参照のみ。
+- [Nutshell — "Understanding 'Seasonality' in Sales"](https://www.nutshell.com/blog/sales-seasonality-definition-and-causes)
+  季節性の見つけ方（3年分のチャート）と、B2B特有の季節要因（期末予算消化、四半期末の追い込み、夏の停滞、顧客の季節性の継承）。**使いどころ**：季節性レッスンの土台。
+- [peasy.nu — "Year-end budget spending patterns in B2B"](https://www.peasy.nu/blog/year-end-budget-spending-patterns-in-b2b)
+  「使い切らないと来年の予算が減らされる」というB2B期末予算消化のメカニズム。ページ内の具体的な統計値（Q4増加率等）は出典が明示されていないため引用しない。**使いどころ**：期末駆け込み需要のメカニズムを説明するとき。
+- [Statistics Canada — "Seasonal adjustment: Concepts and interpretation"](https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm)（2026年）
+  移動祝日効果・カレンダー効果の一次情報。イースターの日付変動（2023年4月9日→2024年3月31日）を使った具体例、季節調整の定義。政府統計機関による高信頼ソース。**使いどころ**：YoY比較が壊れる理由を具体例で説明するとき。
 
 ## Knowledge — 日本語のSFA/KPI実務解説
 
@@ -115,6 +121,8 @@
   Probability・Expected Amountはどちらも標準搭載ではなく、カスタムフィールド＋ワークフロー2本（Stage変更時にProbabilityをセット／Amount変更時にExpected Amountを再計算）で組む具体的手順。**使いどころ**：着地予測をTwentyでどう実装するか説明するとき。
 - [Twenty Docs — Formula Fields](https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/formula-fields)
   ネイティブな数式フィールドは2026年内に追加予定（本記事の時点では未実装）で、現状はワークフローのコードアクションで代替するという注記。**使いどころ**：Expected Amountの計算方法と、今後変わりうる点を示すとき（動きが速い領域）。
+- [Twenty Docs — Chart Settings](https://docs.twenty.com/user-guide/dashboards/capabilities/chart-settings)
+  Dashboard ChartのDate granularity設定（Day/Week/Month/Quarter/Year、およびDay of week/Month of year/Quarter of yearという複数年横断の粒度）。**使いどころ**：季節性・YoY比較をTwenty上でどう組むか説明するとき。
 - [Twenty Docs — Create a Table View with Grouping](https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping)
   Group By機能の公式How-to。「CompaniesをIndustryでグループ化」という、まさにセグメント分析そのものの例が載っている。表示グループ10〜15個の推奨上限も明記。**使いどころ**：セグメント分析をTwenty上でどう組むか説明するとき。
 - [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)

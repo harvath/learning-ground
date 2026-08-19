@@ -1,0 +1,90 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0009 | 季節性とYoY比較</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B5</div>
+  <h1>季節性とYoY比較</h1>
+  <p class="subtitle">B4で今期の着地を予測した。B5ではもう一段長い時間軸に目を向ける——毎年繰り返すパターンをどう見つけ、なぜ「去年の同じ月と比べる」という単純な比較が思わぬところで壊れるのかを見る。</p>
+
+  <h2>季節性を見つける — 3年分のデータを並べる</h2>
+
+  <p><span class="term">季節性（Seasonality）</span>とは、価格や販促とは無関係に、暦年で繰り返される需要の変動のことだ。見つけ方はシンプルで、少なくとも過去3年分の売上データをグラフにし、毎年同じ時期に山と谷が来ていないかを確認する。<sup class="cite"><a href="https://www.nutshell.com/blog/sales-seasonality-definition-and-causes">[1]</a></sup></p>
+
+  <p>B2Bには、消費者向け小売とは違う独自の季節要因がある。<strong>予算の期末消化</strong>——多くの組織では、期内に使い切らなかった予算は翌年に繰り越されず、むしろ「使わなかった＝来年の予算が減らされる」という圧力すら働くため、期末に駆け込みで支出が増える。<sup class="cite"><a href="https://www.peasy.nu/blog/year-end-budget-spending-patterns-in-b2b">[2]</a></sup> ほかにも、<strong>四半期末の追い込み</strong>（歩合制の締め切り効果）、<strong>夏の停滞</strong>（欧州を中心に長期休暇が営業活動を鈍らせる）、そして<strong>顧客の季節性を継承する</strong>ケース——自社の顧客層が季節性の強い業界なら、自社の売上にもその季節性がそのまま乗り移る。<sup class="cite"><a href="https://www.nutshell.com/blog/sales-seasonality-definition-and-causes">[1]</a></sup></p>
+
+  <h2>移動する祝日がYoY比較を壊す</h2>
+
+  <p>季節性が確認できたら、次によくやるのが<span class="term">YoY比較（Year over Year、前年同期比較）</span>——「今年の3月」と「去年の3月」を並べて成長率を見る、という単純な比較だ。ところがこの比較は、暦上の祝日が年によって日付を変える<span class="term">「移動する祝日」効果</span>の前では簡単に崩れる。<sup class="cite"><a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">[3]</a></sup></p>
+
+  <p>実例がわかりやすい——イースター（復活祭）は西方教会の暦で毎年日付が変わる移動祝日で、2023年は4月9日だったが、2024年は3月31日だった。<sup class="cite"><a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">[3]</a></sup> イースター前後は消費・商談活動が動きやすいため、「2024年3月の売上が2023年3月より伸びた」という数字を見ても、それが本当の成長なのか、単にイースターが3月に入り込んだだけなのかを区別できない。統計局はこれを<span class="term">カレンダー効果</span>と呼び、月ごとの曜日構成の違い（ある月は金曜日が5回、別の月は4回、といった違い）も同じカテゴリの歪みとして扱う。<sup class="cite"><a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">[3]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">単純な「今月 vs 去年の同じ月」は避ける</span>
+    移動祝日は特定の地域・宗教暦に限った話ではない——どの地域で事業をしていても、その地域固有の移動祝日（旧正月、断食明けの祝日等）が同じ問題を起こしうる。単純に暦月同士を比べるのではなく、後述するTwentyの「Month of year」のような、複数年をまたいで同じカレンダー位置を束ねる集計方法を使うか、季節調整（seasonal adjustment）という統計的な補正——季節・カレンダー要因を取り除いて土台にある傾向だけを見る手法——を検討する必要がある。<sup class="cite"><a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">[3]</a></sup>
+  </div>
+
+  <h2>Twentyでの実装 — 「Month of year」で束ねる</h2>
+
+  <p>ここまで使ってきたDashboardのChartには、日付フィールドをX軸に選んだときだけ現れる<span class="term">Date granularity（日付の粒度）</span>という設定がある。Day・Week・Month・Quarter・Yearという素直な時系列の粒度に加えて、<strong>Day of week</strong>（曜日ごとに全期間をまとめる）・<strong>Month of year</strong>（1月〜12月ごとに全年をまとめる）・<strong>Quarter of year</strong>（四半期ごとに全年をまとめる）という、複数年を横断して同じカレンダー位置に束ねる粒度が用意されている。<sup class="cite"><a href="https://docs.twenty.com/user-guide/dashboards/capabilities/chart-settings">[4]</a></sup></p>
+
+  <p>季節性を見つけたいなら、OpportunitiesをClose Date（成約日）でGroup Byし、粒度を<strong>Month of year</strong>に設定してSum（受注金額）を集計する——これで「毎年3月はどれくらい強いか」が、年をまたいで1本の棒グラフに束ねられる。単純な前年同月比較（今年の3月 vs 去年の3月）を見たいときは、粒度を<strong>Month</strong>にしてFilterで対象期間を絞り、B3で組んだ停滞検知の仕組みでノイズを除いたClosed Wonの金額だけで比較する——B3・B4で繰り返してきた「きれいなデータだけを見る」という発想が、ここでもそのまま活きる。</p>
+
+  <div class="box twenty">
+    <span class="label">組み立て方のまとめ</span>
+    ①季節性の把握：Close DateでGroup By、粒度をMonth of yearにしてSum集計——年をまたいだ「1月〜12月の型」が見える。②YoY比較：粒度をMonthにし、比較したい期間だけにFilterする。③どちらも、移動祝日の影響が疑わしい月（例：3〜4月）は、単月の増減だけで一喜一憂せず、複数月・複数年の傾向と合わせて読む。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：季節性の見つけ方を説明してください。また、B2B特有の季節要因を2つ以上挙げてください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>少なくとも過去3年分の売上データをグラフにし、毎年同じ時期に山と谷が来ていないか確認する。B2B特有の季節要因：予算の期末消化（使い切らないと来年の予算が減らされる圧力）、四半期末の追い込み（歩合制の締め切り効果）、夏の停滞（欧州の長期休暇等）、顧客の季節性を継承するケース。</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② 2024年3月の受注額が2023年3月より20%多かった。この数字だけを見て「営業が好調になった」と結論づけるのは、なぜ危険か？</p>
+    <button class="quiz-opt" data-key="a">3月は季節性が存在しない月だから、この比較自体が無意味</button>
+    <button class="quiz-opt" data-key="b">受注額という指標自体が信頼できないから</button>
+    <button class="quiz-opt" data-key="c">イースターのような移動祝日が年によって3月と4月を行き来するため、月をまたいだ活動が「3月」にずれ込んだだけの可能性がある</button>
+    <button class="quiz-opt" data-key="d">前年同期比較という手法自体がB2Bには存在しないため</button>
+    <p class="quiz-why" hidden>移動祝日（イースターが好例で、2023年は4月9日、2024年は3月31日）は年によって月をまたいで日付が変わるため、単純な暦月同士の比較が、実際の成長と祝日タイミングのズレを区別できなくする。（a）季節性が無い月という主張は根拠がない、（b）受注額自体は信頼できる指標、（d）前年同期比較は一般的な手法。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：TwentyのDashboardで「毎年3月はどれくらい強いか」を見たいときと、「今年の3月 vs 去年の3月」を単純比較したいときとでは、Date granularityの設定をどう変えるべきか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>「毎年3月の強さ」を見たいなら粒度をMonth of yearにする——複数年の3月を1つのバーに束ねて集計できる。「今年3月 vs 去年3月」を単純比較したいなら粒度をMonthにし、Filterで対象期間を絞る——こちらは年をまたがず、月ごとの時系列として見る形になる。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    季節性の見つけ方とB2B特有の要因は<a href="https://www.nutshell.com/blog/sales-seasonality-definition-and-causes">Nutshellの記事</a>が具体的。期末予算消化のダイナミクスは<a href="https://www.peasy.nu/blog/year-end-budget-spending-patterns-in-b2b">peasy.nuの記事</a>を参照（本文中の統計値は出典が明示されていないため引用していない）。移動祝日・カレンダー効果の一次情報としては<a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">カナダ統計局の解説</a>が最も信頼できる——実際のイースターの日付変動を使った具体例が載っている。TwentyのDate granularityは<a href="https://docs.twenty.com/user-guide/dashboards/capabilities/chart-settings">公式ドキュメント</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「季節調整（seasonal adjustment）は自分たちで計算しないといけない？」「自社の事業に移動祝日の影響がありそうか、どう見当をつける？」「季節性とただの一過性のブームは、どう見分ける？」。次のレッスン（B6）ではここまでのB1〜B5をひとつの経営ダッシュボードにまとめる——Unit Bの最終回。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.nutshell.com/blog/sales-seasonality-definition-and-causes">Understanding 'Seasonality' in Sales — Nutshell</a><br>
+    [2] <a href="https://www.peasy.nu/blog/year-end-budget-spending-patterns-in-b2b">Year-end budget spending patterns in B2B — peasy.nu</a><br>
+    [3] <a href="https://www150.statcan.gc.ca/n1/pub/19-20-0001/192000012026001-eng.htm">Seasonal adjustment: Concepts and interpretation — Statistics Canada</a>（2026年）<br>
+    [4] <a href="https://docs.twenty.com/user-guide/dashboards/capabilities/chart-settings">Chart Settings — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0008-chakuchi-yosoku.html">← B4</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
