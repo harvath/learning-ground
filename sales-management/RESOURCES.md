@@ -64,9 +64,11 @@
 - [I'mBoard — "Deals Lost Value: Definition & Benchmark"](https://www.imboard.ai/kpis/closed-lost-value)
   Closed-Lost Valueの計算式（Σ案件金額）と、金額上位（80パーセンタイル）に絞って深掘りするという優先順位づけの実務。**使いどころ**：機会損失額の計算方法を説明するとき。
 - [rework.com（旧iSEEit）— "Pipeline Forecast Categories: Commit & Best Case"](https://resources.rework.com/libraries/pipeline-management/forecast-categories)
-  フォーキャストカテゴリ（Pipeline/Best Case/Commit/Closed-Won）の定義。**使いどころ**：着地予測レッスンの土台。
+  フォーキャストカテゴリ（Closed/Commit/Best Case/Pipeline/Omitted）の定義、担当者判断とマネージャーレビューの役割分担、ステージとの別軸性。**使いどころ**：着地予測レッスンの土台。
 - [rework.com — "Weighted Pipeline: How to Forecast Sales Revenue Accurately"](https://resources.rework.com/libraries/pipeline-management/weighted-pipeline)
-  ステージ確度（win probability）を使った加重パイプライン予測の仕組みと限界。**使いどころ**：着地予測の計算方法を説明するとき。
+  加重パイプラインの式（金額×確度）と構造的弱点（案件固有の事情を無視、サンドバッギングの温床）。**使いどころ**：着地予測の計算方法と限界を説明するとき。
+- [ORM — "CRM Stage Probability vs Historical Conversion Rates"](https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates)
+  ステージ確度は「設定値」ではなく「実測値」であるべき理由、実測の計算式（ステージ入場数を分母にする）、停滞パイプラインが予測を歪める問題。**使いどころ**：着地予測の精度を左右する最重要ポイントを説明するとき。
 - [Cogsy — "Ecommerce Guide to Seasonal Demand Forecasting"](https://cogsy.com/demand-planning/forecasting-seasonal-demand/)
   季節性の定義（価格・在庫・販促と独立した、暦年で繰り返す需要変動）とYoY比較の基本、移動平均・指数平滑法などの手法。**使いどころ**：季節性/YoYレッスンの土台。
 
@@ -109,6 +111,10 @@
   スケジュールトリガー＋Search Recordsアクションで停滞案件を検知し、担当者別にメール通知するワークフローの具体的な組み方。**使いどころ**：失注分析レッスンで停滞案件の自動検知を説明するとき。
 - [Twenty Docs — Track How Long Opportunities Stay in Each Stage](https://docs.twenty.com/user-guide/views-pipelines/how-tos/track-time-in-stage.md)
   「Last Entered」日付フィールドと「Days in」数値フィールドでステージ滞留日数を追跡する方法。Table Viewのソート・Kanbanの平均集計での活用。**使いどころ**：パイプラインのボトルネックを特定する方法を説明するとき。
+- [Twenty Docs — Show Expected Amount in Your Pipeline](https://docs.twenty.com/user-guide/views-pipelines/how-tos/show-expected-amount-in-pipeline.md)
+  Probability・Expected Amountはどちらも標準搭載ではなく、カスタムフィールド＋ワークフロー2本（Stage変更時にProbabilityをセット／Amount変更時にExpected Amountを再計算）で組む具体的手順。**使いどころ**：着地予測をTwentyでどう実装するか説明するとき。
+- [Twenty Docs — Formula Fields](https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/formula-fields)
+  ネイティブな数式フィールドは2026年内に追加予定（本記事の時点では未実装）で、現状はワークフローのコードアクションで代替するという注記。**使いどころ**：Expected Amountの計算方法と、今後変わりうる点を示すとき（動きが速い領域）。
 - [Twenty Docs — Create a Table View with Grouping](https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping)
   Group By機能の公式How-to。「CompaniesをIndustryでグループ化」という、まさにセグメント分析そのものの例が載っている。表示グループ10〜15個の推奨上限も明記。**使いどころ**：セグメント分析をTwenty上でどう組むか説明するとき。
 - [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)

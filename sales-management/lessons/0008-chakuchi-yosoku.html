@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0008 | 着地予測 — フォーキャストカテゴリと加重パイプライン</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B4</div>
+  <h1>着地予測 — フォーキャストカテゴリと加重パイプライン</h1>
+  <p class="subtitle">今期、実際にいくら着地するのか。B1〜B3で作ったパイプラインのデータを、1つの数字に変える方法を見る。ただし、その数字の信頼性は「確度をどう決めるか」にすべてかかっている。</p>
+
+  <h2>2つの予測手法 — フォーキャストカテゴリと加重パイプライン</h2>
+
+  <p><span class="term">フォーキャストカテゴリ（Forecast Category）</span>は、案件を確度の高さで5段階に分類する手法だ——<strong>Closed</strong>（受注済み、100%）、<strong>Commit</strong>（担当者が自分の信用を賭けられるほど確度が高い、90〜100%）、<strong>Best Case</strong>（現実的に受注しうるが不確実性が残る、50〜90%）、<strong>Pipeline</strong>（初期段階で不確定要素が多い、10〜50%）、<strong>Omitted</strong>（先送り・停滞・失格で今期予測から除外）。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/forecast-categories">[1]</a></sup> この分類は<strong>担当者自身の判断</strong>で行われ、マネージャーがCommitなら確約の記録、Best Caseなら発見事項のメモといった根拠を求めてレビューする。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/forecast-categories">[1]</a></sup></p>
+
+  <p>ここで重要なのは、フォーキャストカテゴリはパイプラインステージとは別軸だということだ。同じ「交渉中」ステージの案件でも、競合の脅威や決裁者の巻き込み状況によって、CommitにもBest Caseにも入りうる——カテゴリはステージが示唆する確度を、案件固有の事情で上書きするものだ。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/forecast-categories">[1]</a></sup></p>
+
+  <p>もう一つの手法が<span class="term">加重パイプライン（Weighted Pipeline）</span>——「加重金額＝案件金額×確度」という機械的な計算だ。20万ドルの案件が30%の確度なら、加重パイプラインへの寄与は6万ドルになる。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/weighted-pipeline">[2]</a></sup> フォーキャストカテゴリが人の判断を軸にするのに対し、加重パイプラインはステージごとの確度を機械的に適用する——両方を併用する組織が多い。</p>
+
+  <h2>確度は「設定」ではなく「実測」であるべき</h2>
+
+  <p>加重パイプラインの精度は、ステージごとの確度をどう決めるかに完全に依存する。多くのCRMは、ステージに紐づく確度の初期値を最初から持っている——だがこれは<strong>誰かが設定画面に打ち込んだ数字</strong>であって、<strong>実際に成約した案件から測定した数字</strong>ではない。導入から何年も経っても、この初期値のまま予測している組織は珍しくない。<sup class="cite"><a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">[3]</a></sup></p>
+
+  <p>実測するための式はこうだ——<strong>あるステージの勝率＝（そのステージに入った後、最終的にClosed Wonになった案件数）÷（そのステージに入った案件の総数）</strong>。過去4〜8四半期分のデータで計算する。<sup class="cite"><a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">[3]</a></sup> ありがちな間違いは、「今そのステージにいる案件数」で計算してしまうこと——これは既にそのステージを通過して先に進んだ案件を数え落とし、勝率を歪める。<sup class="cite"><a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">[3]</a></sup> さらに精度を上げるなら、B1で見たセグメント軸（業種・企業規模等）ごとに確度を分けて計算するとよい——セグメントによって典型的な勝率は変わる。</p>
+
+  <div class="box warn">
+    <span class="label">加重パイプラインには構造的な弱点がある</span>
+    ステージベースの確度は、案件固有の事情（競合状況・予算のタイミング・A3で見たChampionの強さ）を無視し、同じステージの案件を一律に扱ってしまう。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/weighted-pipeline">[2]</a></sup> 手動での上書きは一貫性を崩し、意図的に確度を低く申告する「サンドバッギング」の温床にもなる。<sup class="cite"><a href="https://resources.rework.com/libraries/pipeline-management/weighted-pipeline">[2]</a></sup> そしてB3で見た<strong>停滞案件</strong>がここでも問題になる——12ヶ月以上動きの無い案件がパイプラインの10%以上を占めていても、確度に応じた金額としてカウントされ続け、予測をかさ上げする。<sup class="cite"><a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">[3]</a></sup> B3で組んだ停滞検知は、着地予測の前段フィルタとしても機能する。
+  </div>
+
+  <h2>Twentyでの実装 — Probability・Expected Amount・フォーキャストカテゴリ、すべて自分で作る</h2>
+
+  <p>Twentyの標準Opportunitiesオブジェクトには、Probability（確度）もExpected Amount（加重金額）もフォーキャストカテゴリも、標準搭載されていない。A2で見た「プラットフォームであり製品ではない」という思想の、着地予測版だ——A1の失注理由も、B1〜B3でここまで見てきた指標も、Twentyでは標準機能ではなくカスタムフィールド＋ワークフローの組み合わせとして自分で作る、という同じパターンが繰り返される。</p>
+
+  <p>具体的な組み方は3ステップ。①<strong>Probability</strong>をNumber型のカスタムフィールド（0〜100）として作る。②Stageが変わったときに発火するワークフローで、Probabilityをステージごとの確度（できれば上で見た実測値）に自動セットする。③Expected AmountというCurrency型のカスタムフィールドを作り、別のワークフロー（Stage変更時・Amount変更時のどちらでも発火）のコードアクションで<code>Expected Amount = Amount × Probability ÷ 100</code>を計算して書き込む。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/show-expected-amount-in-pipeline.md">[4]</a></sup> Kanban ViewでExpected AmountをSum集計すれば、ステージ別・全体の加重パイプライン合計がそのまま見える。<sup class="cite"><a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/show-expected-amount-in-pipeline.md">[4]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">Formula Fieldsという今後の変化</span>
+    Twentyは<span class="asof">2026年内に</span>、こうした計算を毎回ワークフローで組まなくても済む、ネイティブな<span class="term">Formula Fields（数式フィールド）</span>機能を追加する予定だと公式ドキュメントで明言している——現時点ではまだ無く、ワークフローのコードアクションで同じことを実現する形になる。<sup class="cite"><a href="https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/formula-fields">[5]</a></sup> 動きの速い領域なので、実際に着手する時期には状況を再確認すること。
+  </div>
+
+  <p>フォーキャストカテゴリ自体も標準には無いので、Select field（Closed/Commit/Best Case/Pipeline/Omitted）として自分で作ることになる——A1で失注理由を作ったのとまったく同じパターンだ。Probabilityがステージ起点で機械的に決まるのに対し、フォーキャストカテゴリは担当者が案件固有の事情で手動更新する、という役割分担も忘れずに設計に反映する。</p>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：フォーキャストカテゴリと加重パイプラインは何が違うか。また、ステージの確度は「設定」ではなく「実測」であるべき理由を説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>フォーキャストカテゴリは担当者の判断で案件を確度別に分類する人間主導の手法（ステージとは別軸で、案件固有の事情により上書きされる）。加重パイプラインは「金額×確度」という機械的な計算。確度は「実測」すべき理由：CRMの初期値は誰かが設定画面に入力した数字で、自社の実際の成約データから測定されたものではなく、実測しなければ予測が体系的に歪む。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② あるステージの勝率を実測したい。このステージには現在12件の案件があるが、過去4四半期でこのステージを通過した案件は50件、うち最終的にClosed Wonになったのは15件だった。正しい勝率の計算はどれか？</p>
+    <button class="quiz-opt" data-key="a">15 ÷ 12（現在の案件数を分母にする）</button>
+    <button class="quiz-opt" data-key="b">15 ÷ 50（そのステージに入った総数を分母にする）</button>
+    <button class="quiz-opt" data-key="c">12 ÷ 50</button>
+    <button class="quiz-opt" data-key="d">現在の12件全てが受注確実として100%とする</button>
+    <p class="quiz-why" hidden>実測すべき勝率は「そのステージに入った案件の総数」を分母にする（b）。「今そのステージにいる案件数」（a）を分母にすると、既にそのステージを通過して先に進んだ案件を数え落とし、勝率を歪めてしまう——ありがちな間違い。（c）（d）は式として意味をなさない。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：B3で組んだ停滞案件の検知が、なぜ着地予測の精度にも直接関わるのか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>停滞案件は正式にClosed Lostになっていないため、パイプライン上は「まだ生きている案件」として確度に応じた金額でカウントされ続ける。実際には受注する見込みが薄いのに加重パイプラインに金額が乗ったままになり、着地予測をかさ上げしてしまう。B3の停滞検知は、着地予測を計算する前にこうした案件を除外・除外候補として洗い出す前段フィルタとして機能する。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    フォーキャストカテゴリの定義は<a href="https://resources.rework.com/libraries/pipeline-management/forecast-categories">rework.comの解説</a>、加重パイプラインの仕組みと弱点は<a href="https://resources.rework.com/libraries/pipeline-management/weighted-pipeline">同じくrework.com</a>が具体的。確度を実測すべき理由と計算式は<a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">ORMの記事</a>が明快。Twenty側の組み方は<a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/show-expected-amount-in-pipeline.md">公式How-to</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「フォーキャストカテゴリとProbability、両方を同じ案件に持たせる意味は？」「実測した確度は、どのくらいの頻度で再計算すべき？」「サンドバッギングを防ぐには、運用ルールとしてどう手を打てばいい？」。次のレッスン（B5）では季節性とYoY比較——暦年で繰り返す需要変動の見つけ方に進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://resources.rework.com/libraries/pipeline-management/forecast-categories">Pipeline Forecast Categories: Commit & Best Case — rework.com</a><br>
+    [2] <a href="https://resources.rework.com/libraries/pipeline-management/weighted-pipeline">Weighted Pipeline: How to Forecast Sales Revenue Accurately — rework.com</a><br>
+    [3] <a href="https://orm-tech.com/blog/crm-stage-probability-vs-historical-conversion-rates">CRM Stage Probability vs Historical Conversion Rates — ORM</a><br>
+    [4] <a href="https://docs.twenty.com/user-guide/views-pipelines/how-tos/show-expected-amount-in-pipeline.md">Show Expected Amount in Your Pipeline — Twenty Docs</a><br>
+    [5] <a href="https://docs.twenty.com/user-guide/workflows/how-tos/crm-automations/formula-fields">Formula Fields — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0007-shicchu-wa-kienai.html">← B3</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
