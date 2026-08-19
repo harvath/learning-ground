@@ -128,6 +128,13 @@
 - [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)
   Chart種類（棒・折れ線・円・数値等）、集計（Count/Sum/Average/Min/Max）、Filter・Group Byの組み合わせ方。**使いどころ**：Group Byでは対応しきれない規模のセグメント分析を説明するとき。
 
+- [Salesscreen — "Sales Reporting Cadence: How to Build One That Drives Action"](https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action)
+  担当者（日次）／マネージャー（週次）／経営層（月次〜四半期）の3層カデンス、先行指標と遅行指標の区別。**使いどころ**：ダッシュボード設計レッスンの中核。
+- [Improvado — "Dashboard Design: Best Practices & How-Tos 2026"](https://improvado.io/blog/dashboard-design-guide)
+  指標を絞る判断軸（行動につながるか・頻繁に必要か）とバニティメトリクスの考え方。具体的な数値（KPI上限数等）は出典不明のため参考程度に。**使いどころ**：ダッシュボードに何を載せ、何を外すか説明するとき。
+- [Twenty Docs — Dashboards Overview](https://docs.twenty.com/user-guide/dashboards/overview)
+  Dashboard／Tab／Widgetの構造、用途別に複数Dashboardを持てる設計、社外共有・エクスポート未対応という現時点の制約。**使いどころ**：Unit B全体をTwenty上でどう組織化するか説明するとき。
+
 ## Gaps（今後埋めたい）
 
 - 日本のBtoB営業に特化した高信頼コミュニティ（実務者が指標設計を議論する場）は未探索。Wisdom枠として次回以降に探す。

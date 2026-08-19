@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0010 | バラバラの指標を、誰のためのダッシュボードにするか</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit B・経営指標 — レッスン B6（Unit B 最終回）</div>
+  <h1>バラバラの指標を、誰のためのダッシュボードにするか</h1>
+  <p class="subtitle">B1〜B5で指標を1つずつ作ってきた。B6ではそれらを「1枚の万能ダッシュボード」にまとめたくなる誘惑に、まず疑いの目を向ける。誰が・何を・どの頻度で見るかを決めずに指標を並べても、結局誰も見ない画面ができるだけだ。</p>
+
+  <h2>「全員のためのダッシュボード」は誰のためにもならない</h2>
+
+  <p>ダッシュボード設計の出発点は、載せたい指標のリストではない。<strong>その画面を見る人が、何の意思決定をするのか</strong>を先に決め、そこから逆算して指標を選ぶ。全員向けに作られたダッシュボードは、たいてい誰にもちょうど良くない。<sup class="cite"><a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">[1]</a></sup></p>
+
+  <p>営業組織には、少なくとも3つの層がある。<strong>担当者（Rep）</strong>は自分の活動と個人のクオータ達成率——今日どの案件を優先すべきかを判断する材料。<strong>マネージャー</strong>はチーム全体の比較とパイプラインの分布——コーチングすべき箇所と、小さな問題が大きくなる前の兆候。<strong>経営層</strong>は、注意を向けるべきごく少数のシグナルと、例外的な数字が出たときだけ深掘りできる経路。<sup class="cite"><a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">[1]</a></sup> 担当者の画面、マネージャーのパターン確認画面、経営層のトレンド画面は、3つの別々の設計であって、1つの画面を3方向に引き伸ばしたものではない。</p>
+
+  <h2>頻度も指標の種類で決まる — 先行指標と遅行指標</h2>
+
+  <p>報告の頻度には3つのテンポがある——担当者は日次、マネージャーは週次、経営層は月次か四半期。<sup class="cite"><a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">[1]</a></sup> B2で見た<span class="term">アクティビティ指標</span>（架電・会議・生まれたパイプライン）のような<span class="term">先行指標</span>は、今日まだ行動を変えられるものなので日次・週次の層に置く。B2のクオータ達成率やB4の着地予測のような<span class="term">遅行指標</span>は、傾向と予測を見るためのものなので経営層のテンポに置く。<sup class="cite"><a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">[1]</a></sup> 「行動できる速さより速い報告は、ただの不安。行動より遅い報告は、ただの歴史でしかない」という言い方がこれをよく捉えている。<sup class="cite"><a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">[1]</a></sup></p>
+
+  <p>この枠組みにB1〜B5を当てはめるとこうなる——B2の担当者別活動件数は<strong>日次・担当者向け</strong>。B2の担当者比較・B3の失注理由の傾向・B4のステージ別着地は<strong>週次・マネージャー向け</strong>。B1のセグメント分析・B4の全体着地予測・B5の季節性は<strong>月次〜四半期・経営層向け</strong>——B1・B5は特に、日々の行動を変えるものではなく、戦略判断のための資料だ。</p>
+
+  <h2>指標を絞る — 「使えるものだけ」を残す</h2>
+
+  <p>1枚のダッシュボードに指標を詰め込みすぎると、人はそれを見なくなる——正確な閾値には議論の余地があるが、人が同時に把握できる要素の数には認知的な上限がある、という考え方自体は広く支持されている。<sup class="cite"><a href="https://improvado.io/blog/dashboard-design-guide">[2]</a></sup> 実務的な絞り込み方は、指標ごとに「行動につながるか」「頻繁に必要か」の2軸で判定し、両方Yesのものだけを主画面に残すこと——常に増え続けるだけの累計件数のような<span class="term">バニティメトリクス（見栄えは良いが行動につながらない指標）</span>は、たとえ集計できても主画面からは外す。<sup class="cite"><a href="https://improvado.io/blog/dashboard-design-guide">[2]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">「集計できる」と「載せるべき」は別</span>
+    B1〜B5で作った指標は全て集計可能だが、全てを1つの画面に並べる必要はない。「主画面には何個までのKPI」というような具体的な数字は、出典が明示されていない記事も多く鵜呑みにできない——それより、「見る人が今すぐ使わない指標は外す」という判断基準の方を持ち帰ってほしい。
+  </div>
+
+  <h2>Twentyでの実装 — 複数のDashboardとその中のTab</h2>
+
+  <p>都合の良いことに、Twentyの<span class="term">Dashboard</span>は最初から1枚に固定されていない——目的別に複数のDashboardを作れる設計になっており、公式ドキュメントが挙げる例自体が「Sales performance」「Team activity」「Pipeline health」「Custom metrics」と、まさに用途別に分かれている。<sup class="cite"><a href="https://docs.twenty.com/user-guide/dashboards/overview">[3]</a></sup> 1つのDashboardの中は<span class="term">Tab</span>で区切り、Tabの中に棒・円・折れ線・集計チャート等の<span class="term">Widget</span>を配置する。<sup class="cite"><a href="https://docs.twenty.com/user-guide/dashboards/overview">[3]</a></sup></p>
+
+  <p>ここまでの構成をそのままDashboardに落とすなら——<strong>担当者用Dashboard</strong>にはOwner=自分でフィルタしたB2のCount/Sumチャート、<strong>マネージャー用Dashboard</strong>にはB2の担当者別比較・B3の失注理由集計・B4のステージ別Expected Amount、<strong>経営層用Dashboard</strong>にはB1のセグメント別集計・B4の全体着地予測・B5のMonth of year季節性チャート、という3枚に分けるのが自然だ。</p>
+
+  <div class="box warn">
+    <span class="label">現時点での制約</span>
+    Twentyは<span class="asof">執筆時点</span>で、Dashboardを社外の人（Twentyのアカウントを持たない相手）と共有したり、エクスポートしたりする機能をまだ持っていない——できるのは、社内メンバーへの共有までだ。<sup class="cite"><a href="https://docs.twenty.com/user-guide/dashboards/overview">[3]</a></sup> 動きの速い領域なので、実際に社外共有が必要になったタイミングで状況を確認すること。
+  </div>
+
+  <div class="box twenty">
+    <span class="label">組み立て方のまとめ</span>
+    ①見る人（担当者／マネージャー／経営層）ごとにDashboardを分ける。②各Dashboard内はTabで区切り、その人が実際に行動を起こせる頻度（日次／週次／月次〜四半期）に合わせて指標を配置する。③B1〜B5で作った個々のチャートは、複製せずそのまま該当するDashboardに配置すればよい——新しく作り直す必要はない。
+  </div>
+
+  <div class="box spine">
+    <span class="label">Unit B、完走</span>
+    B1でセグメント分析、B2でメンバー別効率、B3で失注分析、B4で着地予測、B5で季節性を作り、B6でそれらを「誰が・何を・どの頻度で見るか」という軸で1つに束ねた。Unit Aで作った背骨のデータが、Unit Bで指標に変わり、B6でようやく人に向けて届く形になった。次のUnit Cでは、ここまで断片的に触れてきたTwentyのデータモデル（標準オブジェクト・カスタムオブジェクト・フィールド・リレーション）を、A1よりさらに一段深く体系立てて見ていく。
+  </div>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：なぜ「全員向けの1枚のダッシュボード」ではなく、複数のダッシュボードに分けるべきなのか。3つの層とそれぞれの報告頻度を説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>ダッシュボードは見る人が下す意思決定から逆算して設計すべきで、全員向けに作ると誰にもちょうど良くならない。3層：担当者（日次、先行指標＝活動量）、マネージャー（週次、チーム比較・パターン発見）、経営層（月次〜四半期、遅行指標＝傾向・予測）。行動できる速さと報告の速さを一致させることが目的。</div>
+  </div>
+
+  <div class="quiz" data-answer="d">
+    <p class="quiz-q">② B5で作った「季節性（Month of yearで束ねた受注金額）」のチャートは、どのDashboardに置くのが最も適切か？</p>
+    <button class="quiz-opt" data-key="a">担当者用Dashboard。日々の活動判断に使うべきだから</button>
+    <button class="quiz-opt" data-key="b">マネージャー用Dashboard。週次のチーム比較に使うべきだから</button>
+    <button class="quiz-opt" data-key="c">全てのDashboardに複製して置く。誰にとっても重要な情報だから</button>
+    <button class="quiz-opt" data-key="d">経営層用Dashboard。月次〜四半期のテンポで見る、戦略判断のための遅行指標だから</button>
+    <p class="quiz-why" hidden>季節性は日々の行動を変えるものではなく、予算配分や採用計画のような戦略判断に使う遅行指標であり、経営層の月次〜四半期のテンポに合う（d）。担当者やマネージャーが日次・週次で季節性チャートを見ても、今日の行動には反映しようがない（a・b）。全画面への複製（c）は「使う人だけに絞る」という本レッスンの原則に反する。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：TwentyでDashboardを複数使い分けるとき、1つのDashboardの中身はどう整理するか。また、現時点でDashboardにできないことは何か。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>1つのDashboardの中はTabで区切り、Tabの中に棒・円・折れ線・集計等のChart Widgetを配置する。現時点でできないこと：Dashboardを社外の人（Twentyアカウントを持たない相手）と共有すること、およびエクスポートすること——社内メンバーへの共有までしか対応していない。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    3層構造と頻度のフレームワークは<a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">Salesscreenの記事</a>が明快。指標を絞る考え方（行動につながるか・頻繁に必要か）は<a href="https://improvado.io/blog/dashboard-design-guide">Improvadoの記事</a>を参照（具体的な数値の一部は出典不明のため参考程度に）。TwentyのDashboard/Tab/Widget構造と現時点の制約は<a href="https://docs.twenty.com/user-guide/dashboards/overview">公式ドキュメント</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「マネージャー用と経営層用で指標が重なる場合、どちらのDashboardに置くべき？」「先行指標と遅行指標の境界が曖昧な指標（例：フォーキャストカテゴリ）はどう扱う？」「Twentyで複数Dashboardを運用する場合、命名や整理のコツは？」。次のレッスン（C1）からはUnit C——Twentyのデータモデルを、より体系立てて見ていく。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.salesscreen.com/blog/sales-reporting-cadence-how-to-build-one-that-drives-action">Sales Reporting Cadence: How to Build One That Drives Action — Salesscreen</a><br>
+    [2] <a href="https://improvado.io/blog/dashboard-design-guide">Dashboard Design: Best Practices & How-Tos 2026 — Improvado</a><br>
+    [3] <a href="https://docs.twenty.com/user-guide/dashboards/overview">Dashboards — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0009-kisetsusei-to-yoy-hikaku.html">← B5</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
