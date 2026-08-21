@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0011 | データモデルの心臓部</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit C・Twentyへの実装 — レッスン C1（Unit C 開始）</div>
+  <h1>データモデルの心臓部</h1>
+  <p class="subtitle">Unit A・Bを通して、Twentyの奇妙な挙動——標準機能の少なさ、Group Byの制約、Ownerの単一性、複数Dashboard——に何度も出会ってきた。それらはバラバラの制約ではなく、1つの設計に由来する。C1ではその設計そのものを見る。</p>
+
+  <h2>なぜTwentyはこう動くのか — メタデータが実行時にAPIを生む</h2>
+
+  <p>A2で「プラットフォームであり製品ではない」という思想を紹介したとき、その根拠はTwenty自身の言葉だけだった。ここで、その言葉が指す<strong>技術的な実体</strong>を見る。Twentyのデータモデルは、コードとして書かれていない——<span class="term">メタデータ（metadata）</span>としてデータベースに保存されており、GraphQL API自体がそのメタデータから<strong>実行時に</strong>組み立てられる。<sup class="cite"><a href="https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm">[1]</a></sup></p>
+
+  <p>具体的にはこうだ——CompaniesやOpportunitiesのようなオブジェクト、そこに属するフィールドの定義は、Twenty内部の管理用データベースの中に<strong>データそのもの</strong>として保存されている。ユーザーが管理画面でカスタムオブジェクトを作ると、そのメタデータを読み取ってGraphQLのスキーマ（型・クエリ・フィルタ・並び替え）が自動的に生成される——「UIでカスタムオブジェクトを定義すると、数秒後にはAPI上に対応する検索クエリが現れる」という速さで完結する。<sup class="cite"><a href="https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm">[1]</a></sup> Salesforceのような従来型の製品でカスタムオブジェクトを作る場合と違い、<strong>コードを書いてデプロイする工程が丸ごと存在しない</strong>。</p>
+
+  <div class="box make">
+    <span class="label">なぜこれが「プラットフォーム」の正体なのか</span>
+    A2で見た「Lead専用の機能は作らない、汎用的な部品を足す」という設計判断は、精神論ではなくこの仕組みの直接の帰結だ——Twenty自身の開発チームにとっても、Lead用の特別なコードを書くのと、ユーザーが自分でカスタムオブジェクトを定義するのとでは、後者の方が本質的に軽い。オブジェクト・フィールドがデータとして存在する以上、「新しい概念を追加する」という行為が、開発チームにとってもユーザーにとっても同じ操作（メタデータの追加）になる。この対称性が、Twentyが機能を製品側に焼き込みたがらない理由の技術的な土台だ。
+  </div>
+
+  <p>マルチテナントの仕組みもこの延長線上にある——契約する組織（B2で見た<span class="term">Workspace</span>）ごとに、独立したPostgreSQLの<span class="term">スキーマ</span>（データベース内の名前空間）が割り当てられる。<sup class="cite"><a href="https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm">[1]</a></sup> あるWorkspaceでカスタムオブジェクトを作っても、他のWorkspaceには一切影響しない——スキーマそのものが分離されているからだ。</p>
+
+  <h2>フィールドの全体像 — A1で見た型はごく一部だった</h2>
+
+  <p>A1〜B6では、Select・Number・Currency・Date・Relationといった型を場当たり的に使ってきた。Twentyのフィールド型は、公式ドキュメントに載っているものだけで以下がある。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/fields">[2]</a></sup></p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>型</th><th>格納するもの</th></tr>
+    <tr><td>Text</td><td>1行のテキスト</td></tr>
+    <tr><td>Long Text</td><td>複数行のテキスト</td></tr>
+    <tr><td>Number</td><td>整数・小数</td></tr>
+    <tr><td>Currency</td><td>通貨コード付きの金額</td></tr>
+    <tr><td>Boolean</td><td>真偽値（チェックボックス）</td></tr>
+    <tr><td>Date／Date &amp; Time</td><td>日付のみ／日付＋時刻</td></tr>
+    <tr><td>Select／Multi-Select</td><td>あらかじめ決めた選択肢から単一選択／複数選択</td></tr>
+    <tr><td>Relation</td><td>他オブジェクトのレコードへのリンク</td></tr>
+    <tr><td>Email／Phone</td><td>メールアドレス／電話番号（主＋複数の追加値に対応）</td></tr>
+    <tr><td>Links</td><td>ラベル付きURL（主＋副）</td></tr>
+    <tr><td>Address</td><td>番地・市区町村・都道府県・国・郵便番号の構造化住所</td></tr>
+    <tr><td>Domain</td><td>Webドメイン（Companies向け）</td></tr>
+    <tr><td>Rating</td><td>星評価（1〜5）</td></tr>
+    <tr><td>Array</td><td>テキスト値のリスト</td></tr>
+    <tr><td>JSON</td><td>構造化されたJSONデータ</td></tr>
+  </table>
+  </div>
+
+  <p>この一覧を見ると、B1・B2で出てきた制約が、単発のルールではなく<strong>「Group ByはView（見せ方）によって対応する型が違う」</strong>という一貫した事実から来ているとわかる——Table ViewのGroup ByはSelect field限定（だからB1は「セグメントの軸はSelect fieldに」と言った）。Dashboard ChartのGroup ByはSelect field・日付・Relationに対応する（だからB2はOwnerというRelationフィールドをDashboard側に持ち込んだ）。同じ「Group By」という名前でも、置き場所によって使える型の範囲が違う——これを知らずにTable ViewでOwnerをグループ化しようとすると、そこで初めて壁にぶつかる。A1の「単なる属性はフィールドで」という判断も、この型カタログのどれを選ぶかという話に還元される。</p>
+
+  <h2>リレーションの全体像 — 3つのカーディナリティと接合オブジェクト</h2>
+
+  <p>A3で紹介した<code>Company → People</code>という例は、実は<span class="term">One-to-Many</span>（1つのCompanyに複数のPeople）の一例でしかなかった。Twentyのリレーションには3つのカーディナリティ（対応関係の型）がある——<strong>One-to-Many</strong>（1つのCompanyに複数のPeopleが所属）、<strong>Many-to-One</strong>（複数のPeopleが1つのCompanyに所属、同じ関係を逆から見た形）、<strong>Many-to-Many</strong>（両側が複数対複数で結びつく）。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">[3]</a></sup></p>
+
+  <p>Many-to-Manyの実装は、A3で見た<span class="term">中間オブジェクト（ジャンクションオブジェクト）</span>そのものだ——2つのオブジェクトの間に、関係そのものを表す第三のオブジェクトを挟む。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">[3]</a></sup> Twentyには、この中間オブジェクトをUI上から隠し、あたかも直接繋がっているかのように最終的な関連レコードだけを表示する<span class="term">Junction Relation</span>という機能もある——ただし<span class="asof">執筆時点</span>ではベータ機能で、設定から有効化する必要がある。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">[3]</a></sup> A3で「Role（役割）を中間オブジェクトの属性として持たせる」と設計したときの、まさにその仕組みの正式名称がこれだった。</p>
+
+  <div class="box twenty">
+    <span class="label">リレーションを作る手順</span>
+    Settings → Data Model → 起点となるオブジェクトを選択 → 「+ New field」→ Relationを選択 → 対象オブジェクトを指定 → 起点・対象それぞれのフィールド名とカーディナリティを設定 → 保存。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">[3]</a></sup> 1つ実務上の注意点——複数のオブジェクト型を指す（ポリモーフィックな）Relationは、現時点でCSVのインポート・エクスポートに対応していない。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">[3]</a></sup>
+  </div>
+
+  <h2>カスタムオブジェクトを作る — 実際の手順</h2>
+
+  <p>Settings → Data Model → 「+ New object」→ 単数形・複数形の名前（例：listing／listings）とアイコン、説明文を入力 → 保存。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">[4]</a></sup> これだけでオブジェクトはサイドバーに現れ、即座にレコードを追加できるようになる——冒頭で見た「メタデータを足すだけでAPIが生える」という仕組みが、この操作の裏側で起きていることそのものだ。</p>
+
+  <h2>誰が触れるか — 権限の3層</h2>
+
+  <p>ここまでは「何を作れるか」だった。最後に「誰がそれに触れるか」——Twentyの権限システムは3層で構成される。<sup class="cite"><a href="https://docs.twenty.com/user-guide/permissions-access/overview">[5]</a></sup></p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>層</th><th>制御するもの</th></tr>
+    <tr><td>ロール（Role）</td><td>組織構造に応じたカスタムロールを作り、権限をまとめて割り当てる</td></tr>
+    <tr><td>オブジェクト権限</td><td>あるオブジェクトのレコードを閲覧・編集・削除できるかどうか</td></tr>
+    <tr><td>フィールド権限</td><td>オブジェクト権限の上に重ねる、より細かい制御——特定のフィールド（機密情報等）だけ閲覧・編集を制限する</td></tr>
+  </table>
+  </div>
+
+  <p>これはB6のダッシュボード3層設計（担当者／マネージャー／経営層）とも噛み合う——B6で「誰が何を見るべきか」を情報設計として決めたなら、権限システムはそれを実際にアクセス制御として強制する層になる。A3の合議体のうち機密度が高い情報（Procurement/Legalが握る契約条件・ベンダーリスクの詳細等）を、フィールド権限で担当者以外に見せない、といった設計もここで可能になる。</p>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：Twentyでカスタムオブジェクトを作るとき、コードのデプロイが不要なのはなぜか。この仕組みが、A2で見た「プラットフォームであり製品ではない」という思想とどう繋がるか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>Twentyのオブジェクト・フィールド定義はコードではなくメタデータとしてデータベースに保存されており、GraphQL APIはそのメタデータから実行時に生成される。ユーザーがUIでカスタムオブジェクトを定義すると、対応するAPIクエリが数秒で使えるようになる——コードを書いてデプロイする工程が存在しない。これにより「新しい概念を追加する」操作が、開発チームにとってもユーザーにとっても同じ（メタデータの追加）になり、Twentyが特定の業務プロセス専用の機能を製品に焼き込みたがらない、という設計判断の技術的な土台になっている。</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② あるOpportunityに複数の社内担当者（AE・技術サポート・カスタマーサクセス）を紐づけ、それぞれの役割も記録したい。B2・A3で扱ったこの問題を、C1で学んだ用語で正確に言い直すとどれか？</p>
+    <button class="quiz-opt" data-key="a">One-to-Manyのリレーションを1本作ればよい</button>
+    <button class="quiz-opt" data-key="b">Relation型ではなくMulti-Select型のフィールドを使えばよい</button>
+    <button class="quiz-opt" data-key="c">OpportunityとPersonの間にMany-to-Manyのリレーションを組み、中間オブジェクト（Junction Relationで隠すことも可）にRoleという属性を持たせる</button>
+    <button class="quiz-opt" data-key="d">Ownerフィールドを複数用意して、担当者ごとに別のOwnerフィールドとして扱う</button>
+    <p class="quiz-why" hidden>「1つの案件に複数の人、それぞれに役割」という構造は、両側が複数対複数になりうるMany-to-Manyの関係で、Roleという情報は関係そのものに属する属性——A3で見た中間オブジェクトのパターンに正確に一致する（c）。One-to-Many（a）は片側しか複数になれない。Multi-Select（b）は選択肢の列挙であって、関連レコードへのリンクではない。Ownerフィールドの複製（d）は場当たり的で、役割の種類が増えるたびにフィールドを増やす羽目になる。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：Twentyの権限システムの3層を挙げ、それぞれ何を制御するか説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>①ロール：組織構造に応じたカスタムロールを作り、権限をまとめて割り当てる②オブジェクト権限：あるオブジェクトのレコードを閲覧・編集・削除できるかどうか③フィールド権限：オブジェクト権限の上に重ねる、より細かい制御——特定のフィールドだけ閲覧・編集を制限する。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    メタデータ駆動のアーキテクチャは<a href="https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm">codeline.coの技術レビュー</a>が最も具体的（独立した技術者によるコードベース分析）。フィールド型の全体像は<a href="https://docs.twenty.com/user-guide/data-model/capabilities/fields">公式ドキュメント</a>、リレーションの詳細は<a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">公式ドキュメント</a>、権限システムは<a href="https://docs.twenty.com/user-guide/permissions-access/overview">公式ドキュメント</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「メタデータ駆動という設計は、パフォーマンス面でのトレードオフはある？」「Junction Relationがまだベータという状態は、実務でどこまで信頼していい？」「フィールド権限は具体的にどんな機密情報に使うのが典型的？」。次のレッスン（C2）では、B1〜B5で作った指標をTwenty上に実際に落とし込む設計演習に進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm">Twenty: Building a CRM where the data model is runtime, not code — codeline.co</a><br>
+    [2] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/fields">Fields — Twenty Docs</a><br>
+    [3] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields">Relation Fields — Twenty Docs</a><br>
+    [4] <a href="https://docs.twenty.com/user-guide/data-model/capabilities/objects">Objects — Twenty Docs</a><br>
+    [5] <a href="https://docs.twenty.com/user-guide/permissions-access/overview">Permissions &amp; Access — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0010-dare-no-tame-no-dashboard.html">← B6</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>

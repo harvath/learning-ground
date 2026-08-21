@@ -123,6 +123,12 @@
   ネイティブな数式フィールドは2026年内に追加予定（本記事の時点では未実装）で、現状はワークフローのコードアクションで代替するという注記。**使いどころ**：Expected Amountの計算方法と、今後変わりうる点を示すとき（動きが速い領域）。
 - [Twenty Docs — Chart Settings](https://docs.twenty.com/user-guide/dashboards/capabilities/chart-settings)
   Dashboard ChartのDate granularity設定（Day/Week/Month/Quarter/Year、およびDay of week/Month of year/Quarter of yearという複数年横断の粒度）。**使いどころ**：季節性・YoY比較をTwenty上でどう組むか説明するとき。
+- [codeline.co — "Twenty: Building a CRM where the data model is runtime, not code"](https://www.codeline.co/thoughts/repo-review/2024/twenty-open-source-crm)
+  独立した技術者によるTwentyのコードベース分析。メタデータ駆動アーキテクチャ（オブジェクト定義がfieldMetadataテーブルにデータとして保存され、GraphQLスキーマが実行時に生成される仕組み）とworkspace-as-schemaのマルチテナンシーを、具体的なコードパスまで踏み込んで説明。**使いどころ**：「プラットフォームであり製品ではない」の技術的根拠を説明するとき。
+- [Twenty Docs — Relation Fields](https://docs.twenty.com/user-guide/data-model/capabilities/relation-fields)
+  リレーションの3カーディナリティ（One-to-Many/Many-to-One/Many-to-Many）とJunction Relation機能（中間オブジェクトをUIから隠す、執筆時点でベータ）の公式ドキュメント。**使いどころ**：A3の中間オブジェクトパターンを正式な用語で説明するとき。
+- [Twenty Docs — Permissions & Access Overview](https://docs.twenty.com/user-guide/permissions-access/overview)
+  ロール／オブジェクト権限／フィールド権限の3層構造。**使いどころ**：B6のダッシュボード3層設計を、実際のアクセス制御に落とし込むとき。
 - [Twenty Docs — Create a Table View with Grouping](https://docs.twenty.com/user-guide/views-pipelines/how-tos/create-a-table-view-with-grouping)
   Group By機能の公式How-to。「CompaniesをIndustryでグループ化」という、まさにセグメント分析そのものの例が載っている。表示グループ10〜15個の推奨上限も明記。**使いどころ**：セグメント分析をTwenty上でどう組むか説明するとき。
 - [Twenty Docs — Dashboards](https://docs.twenty.com/getting-started/core-concepts/dashboards)
