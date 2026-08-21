@@ -61,6 +61,8 @@
 - **フィールド型の全カタログ** — Text/Long Text/Number/Currency/Boolean/Date/Date & Time/Select/Multi-Select/Relation/Email/Phone/Links/Address/Domain/Rating/Array/JSON。Group Byが対応する型の範囲は、Table View（Select限定）とDashboard Chart（Select・日付・Relation）で異なる。 (L0011)
 - **リレーションの3カーディナリティ** — One-to-Many／Many-to-One（同じ関係を逆から見た形）／Many-to-Many（中間オブジェクト＝ジャンクションオブジェクトで実装）。Junction Relationは中間オブジェクトをUI上から隠す機能（執筆時点でベータ）。 (L0011)
 - **権限の3層（Twenty）** — ロール（組織構造に応じたカスタムロール）／オブジェクト権限（レコードの閲覧・編集・削除）／フィールド権限（特定フィールドの閲覧・編集を制限、オブジェクト権限の上に重なる）。 (L0011)
+- **サンドボックス** — 本番データに影響を与えず設定変更を試せる隔離された検証環境。Salesforce等の従来型CRMには一般的だが、Twentyには執筆時点で専用の検証環境が無い——変更は即座に本番（ワークスペース）に反映される。 (L0012)
+- **CSVインポートの制約（Twenty）** — フィールドは事前作成が必須（CSVはレコードのみ作成）。関連レコードはid／メール／ドメイン等の一意な識別子でリンク。インポート順序はCompanies→People→Opportunities→リレーションを持つカスタムオブジェクト（「多」側が「一」側を参照するため）。CSVは1ファイル10,000件・エクスポート20,000件が上限、50,000件超はAPI推奨。 (L0012)
 - **ワークフロー／オートメーション** — *(Unit C、到達時に定義)*
 
 ---

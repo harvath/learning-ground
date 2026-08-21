@@ -140,6 +140,10 @@
   指標を絞る判断軸（行動につながるか・頻繁に必要か）とバニティメトリクスの考え方。具体的な数値（KPI上限数等）は出典不明のため参考程度に。**使いどころ**：ダッシュボードに何を載せ、何を外すか説明するとき。
 - [Twenty Docs — Dashboards Overview](https://docs.twenty.com/user-guide/dashboards/overview)
   Dashboard／Tab／Widgetの構造、用途別に複数Dashboardを持てる設計、社外共有・エクスポート未対応という現時点の制約。**使いどころ**：Unit B全体をTwenty上でどう組織化するか説明するとき。
+- [Zoho — "Sandbox Testing Environment"](https://www.zoho.com/crm/developer/sandbox.html)
+  一般的なCRMのサンドボックス（検証環境）の機能説明。Twentyには同等の機能が無いことを示す対比として使用。**使いどころ**：Twentyで設計変更が即座に本番に反映されることの重みを説明するとき。
+- [Twenty Docs — Data Migration: CSV Import Basics](https://docs.twenty.com/user-guide/data-migration/overview)
+  CSVインポートの制約（フィールド事前作成必須、識別子によるリンク、インポート順序、サイズ上限10,000/20,000件、50,000件超はAPI推奨）。**使いどころ**：既存システムからのデータ移行を設計するとき。
 
 ## Gaps（今後埋めたい）
 

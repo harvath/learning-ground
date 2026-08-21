@@ -1,0 +1,109 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0012 | 設計してから触る — B1〜B6をTwentyに実装する</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit C・Twentyへの実装 — レッスン C2</div>
+  <h1>設計してから触る — B1〜B6をTwentyに実装する</h1>
+  <p class="subtitle">C1で見た「メタデータを足せば数秒でAPIが生える」という速さには、裏がある——本番環境と切り離された練習用の場所が無い。触った瞬間、それは本番の変更になる。だからこそ、触る前に全体を紙の上で設計し切る。</p>
+
+  <h2>Twentyには「練習用の場所」が無い</h2>
+
+  <p>Salesforce・Zoho・HubSpotのような従来型のCRMには、たいてい<span class="term">サンドボックス</span>（本番データに影響を与えずに設定変更を試せる、隔離された検証環境）がある。<sup class="cite"><a href="https://www.zoho.com/crm/developer/sandbox.html">[1]</a></sup> Twentyには、この記事の執筆時点で、そうした専用の検証環境は用意されていない——公式ドキュメント・コミュニティのどちらを探しても、サンドボックス機能への言及は見当たらなかった。あるのはワークスペースそのものだけだ。</p>
+
+  <div class="box warn">
+    <span class="label">C1の「速さ」が、ここでは諸刃の剣になる</span>
+    C1で見た「UIでオブジェクトを定義すると数秒後にはAPIが使える」という仕組みは、検証環境が無い状態では<strong>「試しに作ってみた変更が、即座に本番の一部になる」</strong>という意味でもある。フィールドを間違った型で作ってしまった、削除したら他の設定が壊れた、というやり直しのコストは、サンドボックスがある製品より確実に高い。だからこそ、この章のように<strong>触る前に全体の設計図を作り切る</strong>ことの価値が、他のCRMより一段高い。
+  </div>
+
+  <h2>B1〜B6の要件を1枚の設計図にする</h2>
+
+  <p>ここまでの各レッスンで、断片的にフィールド・オブジェクトを作ってきた。実際の構築では、これらを1枚の表にまとめてから着手するのが安全だ。</p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>由来</th><th>作るもの</th><th>種類</th><th>対象オブジェクト</th></tr>
+    <tr><td>A1</td><td>失注理由</td><td>Select field</td><td>Opportunities</td></tr>
+    <tr><td>A3</td><td>Deal Stakeholder</td><td>カスタムオブジェクト（中間）</td><td>Person・Opportunityの間</td></tr>
+    <tr><td>A3</td><td>Role</td><td>Select field</td><td>Deal Stakeholder</td></tr>
+    <tr><td>A3</td><td>親会社</td><td>自己参照リレーション</td><td>Companies</td></tr>
+    <tr><td>B1</td><td>Industry・企業規模等</td><td>Select field</td><td>Companies</td></tr>
+    <tr><td>B2</td><td>工数ログ</td><td>カスタムオブジェクト（任意）</td><td>Opportunity・担当者に紐づく</td></tr>
+    <tr><td>B3</td><td>Last Entered／Days in</td><td>Date field／Number field</td><td>Opportunities</td></tr>
+    <tr><td>B3</td><td>停滞検知</td><td>ワークフロー（スケジュール）</td><td>Opportunities</td></tr>
+    <tr><td>B4</td><td>Probability</td><td>Number field（0〜100）</td><td>Opportunities</td></tr>
+    <tr><td>B4</td><td>Expected Amount</td><td>Currency field</td><td>Opportunities</td></tr>
+    <tr><td>B4</td><td>フォーキャストカテゴリ</td><td>Select field</td><td>Opportunities</td></tr>
+    <tr><td>B4</td><td>確度自動セット／Expected Amount計算</td><td>ワークフロー×2</td><td>Opportunities</td></tr>
+    <tr><td>B6</td><td>担当者／マネージャー／経営層用</td><td>Dashboard×3（Tab・Widget含む）</td><td>—</td></tr>
+  </table>
+  </div>
+
+  <p>この表を眺めると、C1で見た型カタログの使い分けが、実際の設計判断としてどう積み重なっているかが見える——Select fieldが最も多く登場するのは偶然ではなく、B1で見た「Group Byが対応する型の狭さ」ゆえに、集計したいものは自然とSelect fieldに寄っていく。</p>
+
+  <h2>作る順番には理由がある</h2>
+
+  <p>この表を上から順に作ればよいわけではない。<strong>後段の作業（フィールド・ワークフロー）が前提とするものを、先に作る</strong>という依存関係がある。たとえばB4のワークフロー②（Stage変更時にProbabilityを自動セット）は、Probabilityフィールド自体が存在しなければ書きようがない。B3の停滞検知ワークフローは、Stageの値が定まっていなければ「Closed Won/Lostを除外する」という条件が組めない。実務的な順序はこうなる——①Opportunities・Companiesの基本フィールド（A1・B1）②リレーション・中間オブジェクト（A3）③日付・数値系の補助フィールド（B3のLast Entered/Days in、B4のProbability/Expected Amount）④それらを自動更新するワークフロー（B3・B4）⑤最後にDashboard（B6）——Dashboardは他の全てのフィールドが埋まって初めて見るべきものが揃う。</p>
+
+  <h2>既存データを持ち込む場合 — CSVインポートの制約</h2>
+
+  <p>移行プロジェクトでは、新しいフィールドを作るだけでなく、既存システムのデータを流し込む場面が必ず来る。Twentyの<span class="term">CSVインポート</span>には、知っておくべき制約がいくつかある。<sup class="cite"><a href="https://docs.twenty.com/user-guide/data-migration/overview">[2]</a></sup></p>
+
+  <div class="box twenty">
+    <span class="label">CSVインポートの実務ルール</span>
+    ①<strong>フィールドは先に作っておく必要がある</strong>——CSVのアップロードはレコードを作るだけで、フィールド自体は自動生成されない。上の設計図を先に本番に反映してからでないと、インポートは失敗する。②<strong>関連レコードのリンクは一意な識別子で行う</strong>——Personなら`id`かメールアドレス、Companiesならドメインで紐づける。③<strong>インポート順序がある</strong>——「多」側が「一」側を参照する構造上、Companies→People（companyIdで紐づけ）→Opportunities→リレーションを持つカスタムオブジェクト、という順で入れないと参照エラーになる。これはA3で見た「Companyが1つに対してPeopleが複数」という関係の裏返しでもある。④<strong>サイズの上限</strong>——CSVは1ファイルあたり10,000件、エクスポートは20,000件が上限。50,000件を超える規模なら、CSVではなくAPI経由での投入が推奨される。
+  </div>
+
+  <p>この4つのルールのうち、③のインポート順序は、この章の前半で見た「作る順番」の話と対称的だ——<strong>フィールド・オブジェクトを作る順番</strong>は「依存する側を後に」、<strong>データを流し込む順番</strong>も「参照される側を先に」。どちらも、Twentyのリレーションが「一方が他方を指す」という一方向の構造を持つことに由来する、同じ原則の2つの現れだ。</p>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：Twentyにサンドボックス（検証環境）が無いことは、C1で見た「メタデータが実行時にAPIを生む」という速さと、どう関係するか。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>メタデータの変更が即座にAPI・本番環境に反映される速さは、検証環境が無い状態では「試しに作った変更がそのまま本番の一部になる」という意味になる。他のCRM（サンドボックスあり）よりやり直しのコストが高いため、実際に触る前に紙の上で設計を完成させておくことの価値が一段高くなる。</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② B4の「Stage変更時にProbabilityを自動セットするワークフロー」を実装しようとしたら、そのワークフローの設定画面でProbabilityフィールドが選択肢に出てこなかった。原因として最も妥当なものはどれか？</p>
+    <button class="quiz-opt" data-key="a">ワークフロー機能自体がまだTwentyに存在しないから</button>
+    <button class="quiz-opt" data-key="b">Probabilityというカスタムフィールド自体をまだ作成していないから</button>
+    <button class="quiz-opt" data-key="c">Stageフィールドが標準搭載されていないから</button>
+    <button class="quiz-opt" data-key="d">Opportunitiesオブジェクトを削除してしまったから</button>
+    <p class="quiz-why" hidden>この章で見た依存関係の通り、ワークフローが参照するフィールド（Probability）は先に存在していなければならない。作る順番を守らず、フィールドより先にワークフローを組もうとすると、まさにこの状態になる（b）。ワークフロー機能自体はA2から存在し（a）、Stageは標準フィールド（c）、Opportunitiesは標準オブジェクトで削除もしていない（d）という前提での話。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：既存の営業管理システムからPeople・Companies・Opportunitiesのデータを移行したい。CSVインポートの正しい順序とその理由を説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>Companies→People（companyIdで紐づけ）→Opportunities、という順序。Twentyのリレーションは「多」側が「一」側を参照する一方向の構造を持つため、参照される側（Companies）が先に存在していないと、参照する側（People）をインポートしたときにリンク先が見つからずエラーになる。</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    サンドボックス環境が一般的なCRMでどう機能するかは<a href="https://www.zoho.com/crm/developer/sandbox.html">Zoho CRMの解説</a>を参照（Twentyには同等の機能が無いことの対比として）。TwentyのCSVインポートの制約は<a href="https://docs.twenty.com/user-guide/data-migration/overview">公式ドキュメント</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    曖昧な点は遠慮なく聞いてほしい。よくある良い質問の例：「サンドボックスが無い前提で、実務上どうやってリスクを減らす？（例：まず1人のテストユーザーで試す等）」「50,000件を超えるデータのAPI移行は、実際どんな作業になる？」「この設計図（表）は、実際の要件ヒアリングの前と後、どちらのタイミングで作るべき？」。次のレッスン（C3）では要件ヒアリングの進め方——このコースで得た語彙を、実際の対話でどう使うかに進む。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://www.zoho.com/crm/developer/sandbox.html">Zoho CRM | Sandbox Testing Environment — Zoho</a><br>
+    [2] <a href="https://docs.twenty.com/user-guide/data-migration/overview">Data Migration - CSV Import Basics — Twenty Docs</a>
+  </p>
+
+  <div class="nav">
+    <a href="0011-deeta-moderu-no-shinzou.html">← C1</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ →</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
