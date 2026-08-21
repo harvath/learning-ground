@@ -144,6 +144,10 @@
   一般的なCRMのサンドボックス（検証環境）の機能説明。Twentyには同等の機能が無いことを示す対比として使用。**使いどころ**：Twentyで設計変更が即座に本番に反映されることの重みを説明するとき。
 - [Twenty Docs — Data Migration: CSV Import Basics](https://docs.twenty.com/user-guide/data-migration/overview)
   CSVインポートの制約（フィールド事前作成必須、識別子によるリンク、インポート順序、サイズ上限10,000/20,000件、50,000件超はAPI推奨）。**使いどころ**：既存システムからのデータ移行を設計するとき。
+- [UXtweak — "What Is the Mom Test?"](https://blog.uxtweak.com/the-mom-test/)
+  顧客インタビュー手法「The Mom Test」の3原則（相手の生活を聞く／過去の事実を聞く／話すより聞く）の要約。原著はRob Fitzpatrick『The Mom Test』。**使いどころ**：要件ヒアリングレッスンの中核。
+- [SeattleDataGuy's Newsletter — "Stop Shipping Dashboards That Don't Get Used"](https://seattledataguy.substack.com/p/stop-shipping-dashboards-that-dont)
+  「それを見て何を決めるか」という問いでダッシュボード要望を検証する考え方。バニティメトリクスとの対比。**使いどころ**：B6のダッシュボード設計原則を、実際のヒアリングの一言に変換するとき。
 
 ## Gaps（今後埋めたい）
 

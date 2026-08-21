@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>レッスン0013 | 聞き方の作法 — 要件ヒアリングにこのコースの語彙を使う</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">Unit C・Twentyへの実装 — レッスン C3（コース最終回）</div>
+  <h1>聞き方の作法 — 要件ヒアリングにこのコースの語彙を使う</h1>
+  <p class="subtitle">A1〜C2で、営業管理という領域の語彙とTwentyの実装パターンを積み上げてきた。最後のレッスンでは、それを実際の会話でどう使うか——何をどう聞けば、曖昧な希望が具体的な設計要件に変わるのかを見る。</p>
+
+  <h2>「意見」ではなく「過去の事実」を聞く</h2>
+
+  <p>要件ヒアリングで最もよくある失敗は、相手の<strong>意見</strong>や<strong>未来の仮定</strong>を聞いてしまうことだ。「こんな機能があったら使いますか？」「このダッシュボードは良さそうですか？」——こうした質問には、ほぼ確実に前向きな返事が返ってくる。だが、その返事は実際の行動を何も予測しない。人は自分の未来の行動を正確に予測できないし、相手の提案に礼儀正しく同意したくなる心理も働く。</p>
+
+  <p><span class="term">The Mom Test</span>と呼ばれる、顧客インタビューの手法から生まれた3つの原則が、そのままこのヒアリングにも使える。<sup class="cite"><a href="https://blog.uxtweak.com/the-mom-test/">[1]</a></sup></p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>原則</th><th>避ける質問</th><th>代わりに聞く質問</th></tr>
+    <tr><td>①相手の生活・業務について聞く（自分の案について聞かない）</td><td>「こういう機能があったら便利だと思いますか？」</td><td>「普段、案件の状況をどうやって把握していますか？」</td></tr>
+    <tr><td>②過去の具体的な事実を聞く（意見や仮定ではなく）</td><td>「毎週このレポートを見ますか？」</td><td>「先週、案件の状況を最後に確認したのはいつ・何のためでしたか？」</td></tr>
+    <tr><td>③話すより聞く</td><td>沈黙をこちらの説明で埋める</td><td>相手が言い淀んだ間（ま）を待ち、「それで？」と続きを促す</td></tr>
+  </table>
+  </div>
+
+  <p>①が特に効く場面がある——自分（あるいはTwenty）の機能を先に説明してしまうと、相手はその案への反応をし始め、自分の本当の業務実態を話さなくなる。<sup class="cite"><a href="https://blog.uxtweak.com/the-mom-test/">[1]</a></sup> B1〜C2で身につけた語彙（セグメント分析・フォーキャストカテゴリ等）を先に持ち出したくなる誘惑は強いが、まずは相手の言葉で業務を語ってもらうのが先だ。</p>
+
+  <h2>「ダッシュボードが欲しい」の裏にある本当の要求</h2>
+
+  <p>B6で見た「全員向けの1枚のダッシュボード」の失敗は、たいてい要件ヒアリングの段階で既に始まっている。「営業の状況が見えるダッシュボードが欲しい」という要望をそのまま受け取ると、B6で警告した通りのものができあがる。ここで効く一言が「<strong>それを見て、何を決めますか？</strong>」——この質問に対して「データを見たい」としか返ってこないなら、それはまだ要件になっていない。<sup class="cite"><a href="https://seattledataguy.substack.com/p/stop-shipping-dashboards-that-dont">[2]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">「決定」に紐づかない指標は、使われない</span>
+    「毎週見ているページビュー数」のような、文脈のない数字は<span class="term">バニティメトリクス</span>（B6）になりがちだ。「このチャネル経由の顧客獲得コストが先月からどう動いたか」「このセグメントの解約率が閾値を超えたか」のように、<strong>見た結果、何をするかが決まっている</strong>指標だけが実際に開かれ続ける。<sup class="cite"><a href="https://seattledataguy.substack.com/p/stop-shipping-dashboards-that-dont">[2]</a></sup> ヒアリングの場では、要望が挙がるたびに「それを見て、何を決めますか？　誰が、どのくらいの頻度で？」と問い返す——この一言が、B6の3層設計（担当者／マネージャー／経営層、日次／週次／月次）に必要な情報をそのまま引き出す。
+  </div>
+
+  <h2>このコースの語彙を「翻訳レイヤー」として使う</h2>
+
+  <p>ヒアリングで相手が語るのは、いつも曖昧な業務の言葉だ。A1〜C2で積み上げてきた語彙は、それを具体的な設計要件に変換するための道具になる。相手の発言をそのまま鵜呑みにせず、一段掘り下げる——という姿勢は、B3のFive Whysと同じ発想だ。</p>
+
+  <div class="tablewrap">
+  <table class="cmp">
+    <tr><th>相手の言葉（曖昧）</th><th>掘り下げる質問</th><th>行き着く先（このコースの語彙）</th></tr>
+    <tr><td>「営業の状況を見える化したい」</td><td>「それを見て、何を決めますか？　誰が？」</td><td>B6：3層ダッシュボード設計</td></tr>
+    <tr><td>「なぜ負けたか知りたい」</td><td>「今、失注した理由はどこかに記録されていますか？　誰が書きますか？」</td><td>A1・B3：失注理由Select field、Five Whys</td></tr>
+    <tr><td>「今期あといくら売れるか知りたい」</td><td>「今の見込み金額は、誰の勘に基づいていますか？　過去の実績と照らして合っていましたか？」</td><td>B4：確度の実測、フォーキャストカテゴリ</td></tr>
+    <tr><td>「担当者ごとの成績を比べたい」</td><td>「架電数のような動きの量と、受注のような成果、どちらで比べたいですか？」</td><td>B2：アクティビティ指標／アウトカム指標</td></tr>
+    <tr><td>「案件に関わる人が複数いて、誰が誰だか分からなくなる」</td><td>「1つの案件に、社内外それぞれ何人くらい関わりますか？　役割は毎回同じですか？」</td><td>A3：合議体、中間オブジェクト</td></tr>
+  </table>
+  </div>
+
+  <p>右端の列に何が来るかは、聞く前から決め打ちしてはいけない——「担当者ごとの成績を比べたい」という同じ言葉でも、掘り下げた結果「クオータ達成率だけでいい」という単純な話になることもあれば、B2で見た「稼働管理まで踏み込みたい」という、まったく別のカスタムオブジェクトが要る話になることもある。語彙は答えを先回りするためではなく、<strong>正しい質問を選ぶため</strong>に使う。</p>
+
+  <h2>理解を確認する</h2>
+
+  <div class="recall">
+    <p class="recall-q">① 記憶から答える：The Mom Testの3原則を挙げてください。また、「このダッシュボードは便利だと思いますか？」という質問がなぜ良くないか説明してください。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>3原則：①相手の生活・業務について聞き、自分の案については聞かない②過去の具体的な事実を聞き、意見や未来の仮定を聞かない③話すより聞く。「便利だと思いますか」が良くない理由：これは相手の意見・未来の仮定を尋ねる質問で、相手は礼儀的に同意しやすく、実際の行動を何も予測しない。</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② クライアントが「営業チーム全体が見られるダッシュボードが欲しい」と言った。B6の内容を踏まえ、次に聞くべき質問として最も適切なものはどれか？</p>
+    <button class="quiz-opt" data-key="a">「Twentyのダッシュボード機能はTab・Widgetで構成されていますが、それでいいですか？」</button>
+    <button class="quiz-opt" data-key="b">「何個までのKPIを載せたいですか？」</button>
+    <button class="quiz-opt" data-key="c">「それを見て、誰が、どんな頻度で、何を決めますか？」</button>
+    <button class="quiz-opt" data-key="d">「毎日見たいですか、それとも週に一度でいいですか？」とだけ聞き、答えが出たらすぐ設計に入る</button>
+    <p class="quiz-why" hidden>「誰が・どの頻度で・何を決めるか」を先に確認することで、B6の3層設計（担当者/マネージャー/経営層、日次/週次/月次）に落とし込む材料が揃う（c）。（a）はTwentyの機能を先に説明してしまい、The Mom Testの原則①に反する。（b）は具体的な数字を先に聞いてしまい、まだ意思決定の内容が定まっていない段階では答えようがない質問。（d）は頻度だけを聞いて「何を決めるか」を確認せずに設計へ進んでおり、誰向けかも決まらないまま次に進む拙速さがある。</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">③ 記憶から答える：「担当者ごとの成績を比べたい」という要望を掘り下げるとき、B2のどんな区別が関係してくるか。また、その先に「稼働管理」の話が出てきた場合、B2で学んだ制約は何か。</p>
+    <button class="recall-show">答えを見る</button>
+    <div class="recall-a" hidden>アクティビティ指標（架電数等、努力の量）とアウトカム指標（受注件数・クオータ達成率等、成果）のどちらを比べたいのかを確認する必要がある。「稼働管理」まで踏み込みたい場合、TwentyのTaskオブジェクトには見積工数・実績時間のフィールドが標準で無いため、活動の「件数」を集計するだけでは稼働管理にはならず、工数ログ用のカスタムオブジェクトを別途作るか、専用ツールと連携する必要がある。</div>
+  </div>
+
+  <div class="box spine">
+    <span class="label">コース、完走</span>
+    Unit Aで案件データの背骨（リード→クオリフィケーション→案件→ステージ→受注/失注）を引き、Unit Bでその背骨から経営が求める5つの指標（セグメント分析・メンバー別効率・失注インパクト・着地予測・季節性/YoY）を作って誰に届けるかまで設計し、Unit Cでそれらを実際にTwentyのデータモデル・構築手順・ヒアリングの言葉に変換した。ここまでの13レッスンを通して、「営業管理システムは何を管理すべきか」という当初のミッションに対する答えが、A1の一本の背骨からC3の一問一答まで、途切れず繋がった形になっている。次に実際の要件ヒアリングに臨むときは、このコースマップ自体を、聞くべきことのチェックリストとして使ってほしい。
+  </div>
+
+  <div class="box primary">
+    <span class="label">まず読むもの・一次情報</span>
+    The Mom Testの原則は<a href="https://blog.uxtweak.com/the-mom-test/">UXtweakの要約</a>が簡潔（原著はRob Fitzpatrick『The Mom Test』）。ダッシュボード要件を「決定」から逆算する考え方は<a href="https://seattledataguy.substack.com/p/stop-shipping-dashboards-that-dont">SeattleDataGuyの記事</a>を参照。
+  </div>
+
+  <div class="box ask">
+    <span class="label">先生に質問する</span>
+    このコースはここで一区切りだが、曖昧な点や、実際のヒアリングで出てきた疑問があれば、いつでも聞いてほしい。よくある良い質問の例：「クライアントが本当に欲しいものと、技術的に作りやすいものが食い違ったら、どちらを優先すべき？」「ヒアリングの内容を、C2で作った設計図の表にどう落とし込むのが効率的？」「このコースで扱わなかった指標が出てきたら、どうやって同じ考え方で設計すればいい？」。
+  </div>
+
+  <p class="sources">
+    出典：<br>
+    [1] <a href="https://blog.uxtweak.com/the-mom-test/">What Is the Mom Test? How to Talk to Customers and Avoid Bias — UXtweak</a><br>
+    [2] <a href="https://seattledataguy.substack.com/p/stop-shipping-dashboards-that-dont">Stop Shipping Dashboards That Don't Get Used — SeattleDataGuy's Newsletter</a>
+  </p>
+
+  <div class="nav">
+    <a href="0012-sekkei-enshu.html">← C2</a>
+    <a href="../index.html">コース目次</a>
+    <a href="../reference/course-map.html">コースマップ</a>
+  </div>
+
+  <p class="teacher">わからないことがあれば、いつでも先生（私）に聞いてください。</p>
+
+</div>
