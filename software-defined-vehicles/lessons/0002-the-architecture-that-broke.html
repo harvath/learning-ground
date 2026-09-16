@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0002 | The Architecture That Broke</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · FOUNDATIONS — LESSON 0002</div>
+  <h1>How cars ended up with 150 onboard computers — and why that stopped working</h1>
+  <p class="subtitle">A1 ended with Bosch's threshold for a "true" SDV: an ECU count consolidated down to one or two central computers. This lesson explains where that scary-sounding 100+ number actually came from, and why it eventually broke under its own weight.</p>
+
+  <h2>The wiring problem, before CAN bus</h2>
+
+  <p>An ECU, recall from A1, is a small onboard computer dedicated to one job. The trouble starts the moment a car has more than a couple of them: if the engine's ECU needs to tell the transmission's ECU something, and both need to talk to a dashboard display, the crude solution is a dedicated wire between every pair that needs to communicate. That doesn't scale — add a few more ECUs and the number of required wires explodes.</p>
+
+  <p>Bosch engineer Uwe Kiencke started solving exactly this problem in 1983, because, as Bosch's own account puts it, none of the existing network protocols of the time could meet automotive engineers' requirements.<sup class="cite"><a href="#s1">[1]</a></sup> The result, introduced at the SAE Congress in Detroit in February 1986, was <span class="term">CAN bus (Controller Area Network)</span> — a shared communication standard that lets many onboard computers send short messages over one common set of wires, instead of requiring a dedicated wire between every pair of devices that need to talk. Mercedes-Benz put it into production first, in its upper-class passenger cars from 1991; it became an international standard, ISO 11898, in November 1993.<sup class="cite"><a href="#s1">[1]</a></sup></p>
+
+  <h2>CAN bus worked. The number of ECUs didn't stop growing.</h2>
+
+  <p>BMW's 1995 7 Series ran five ECUs networked together over the new CAN standard<sup class="cite"><a href="#s1">[1]</a></sup> — a lot, for the time. Three decades of "add a feature, add an ECU for it" later, some modern vehicles carry <strong>up to 150 separate ECUs</strong>: one for each power window, each mirror, each seat-memory setting, each airbag zone, each camera, plus the bigger ones running infotainment and driver assistance.<sup class="cite"><a href="#s2">[2]</a></sup></p>
+
+  <p>CAN bus itself didn't fail — it did exactly what it was designed to do for over three decades, and it's still in cars today. What it was never designed to solve is what happens once a vehicle has 150 largely independent computers, each running its own software from its own supplier, each needing a fix on its own schedule.</p>
+
+  <h2>Three ways that stopped working</h2>
+
+  <p><strong>The wiring kept growing anyway.</strong> A shared bus solves how ECUs talk to <em>each other</em>, but each ECU still needs its own dedicated wiring to its own sensors and actuators, plus power and ground. More ECUs still means more total wiring, regardless of how efficiently they communicate once connected.</p>
+
+  <p><strong>One feature, one supplier, one physical part.</strong> Each ECU typically runs proprietary hardware and software from one specific Tier-1 supplier. A feature that lives entirely inside one ECU can usually only be changed by physically touching that module — there's no software-only path to it if the fix requires different hardware or a different supplier's code.</p>
+
+  <p><strong>No way to fix it remotely.</strong> With dozens of suppliers each controlling their own ECU's software independently, there was no single, coordinated mechanism to push a fix to all of them at once. A bug found after the car shipped typically meant a dealer visit — or waiting for the next model year.</p>
+
+  <h2>The stress test: the 2021 chip shortage</h2>
+
+  <p>This is where the architecture's weakness stopped being theoretical. On September 23, 2021, AlixPartners forecast that the global semiconductor shortage would cost the auto industry <strong>$210 billion in lost revenue</strong> and <strong>7.7 million units of lost vehicle production</strong> for the year — a forecast that had itself been revised sharply upward from AlixPartners' own May 2021 estimate of $110 billion and 3.9 million units, as the crisis kept deepening faster than expected.<sup class="cite"><a href="#s3">[3]</a></sup><sup class="cite"><a href="#s4">[4]</a></sup></p>
+
+  <p>A vehicle sourcing 150 separate chips from dozens of separate suppliers has 150 separate points where a single missing component can halt the whole assembly line — you can't ship a car missing the $2 chip for a seat-memory module any more than the one for the engine controller. Automotive-industry commentary at the time argued this is exactly what the shortage exposed, and pointed to some manufacturers responding by simplifying their electronics architecture and standardizing ECUs across models to reduce the number of distinct parts they depended on.<sup class="cite"><a href="#s5">[5]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">handle with care</span>
+    You'll see it claimed everywhere that a car's wiring harness is "the second- or third-most expensive, and one of the heaviest, single components in the vehicle." It's repeated so often it reads as settled fact — but it doesn't trace back to one clean, citable study, at least not one this course has been able to pin down. Treat it as widely-believed industry lore, not a number to repeat with confidence in front of a client. Recognizing the difference is the same habit A1 asked you to build around the "Tesla coined the term in 2012" story.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① CAN bus solved one problem and left another one standing. In your own words: what did it solve, and what kept growing into a real bottleneck anyway?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>CAN bus solved the point-to-point wiring explosion — many ECUs could now share one common set of wires instead of needing a dedicated wire between every pair. What it didn't solve was the growing ECU count itself: each new ECU still needed its own wiring to its own sensors, and — more importantly — each one ran its own supplier's proprietary hardware and software, so fixing or upgrading a feature usually meant physically touching a specific module rather than pushing a remote update.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Why did the 2021 chip shortage hit the auto industry specifically hard because of ECU-sprawl architecture — not just because chips were scarce in general?</p>
+    <button class="quiz-opt" data-key="a">Cars need chips to run their infotainment screens</button>
+    <button class="quiz-opt" data-key="b">A single vehicle sourced 150+ separate chips from dozens of suppliers, so one missing component anywhere could halt the entire assembly line</button>
+    <button class="quiz-opt" data-key="c">Chip factories are mostly located in one country</button>
+    <p class="quiz-why" hidden>The shortage wasn't just "not enough chips" in the abstract — a heavily ECU-sprawled vehicle has far more individual points of supply-chain fragility than one built around a small number of centralized, powerful computers. That's the direct architectural lesson the industry drew from 2021, and it's the same lesson behind Bosch's ECU-consolidation threshold from A1.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    CAN in Automation's <a href="https://www.can-cia.org/can-knowledge/history-of-can-technology">History of CAN technology</a> is the primary account this lesson draws from, straight from the industry association behind the standard — worth a skim for the full cast of Bosch engineers involved and the technical detail this lesson simplified.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "How many ECUs does this client's current platform actually run?" is a concrete, useful question to have in your back pocket. Next up, A3 covers the company that answered the ECU-sprawl problem first and loudest — Tesla — and why its 2012 bet on centralized compute became the reference point everyone else in this course gets measured against.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://www.can-cia.org/can-knowledge/history-of-can-technology">History of CAN technology — CAN in Automation (CiA)</a></span><br>
+    <span id="s2">[2] <a href="https://en.wikipedia.org/wiki/Electronic_control_unit">Electronic control unit — Wikipedia</a></span><br>
+    <span id="s3">[3] <a href="https://www.alixpartners.com/newsroom/press-release-shortages-related-to-semiconductors-to-cost-the-auto-industry-210-billion-in-revenues-this-year-says-new-alixpartners-forecast/">Semiconductor shortage to cost the auto industry $210 billion in revenues in 2021 — AlixPartners press release, Sept 23, 2021</a></span><br>
+    <span id="s4">[4] <a href="https://www.cnbc.com/2021/09/23/chip-shortage-expected-to-cost-auto-industry-210-billion-in-2021.html">Chip shortage expected to cost auto industry $210 billion in 2021 — CNBC, Sept 23, 2021</a></span><br>
+    <span id="s5">[5] <a href="https://www.autonews.com/commentary/solution-auto-industry-chip-crisis-new-software-architectures/">Mitigate chip shortage with new software architectures — Automotive News (commentary)</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0001-what-software-defined-actually-means.html">← A1 Definitions</a>
+    <a href="../reference/course-map.html">Course map</a>
+    <a href="../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

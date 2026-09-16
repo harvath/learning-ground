@@ -39,6 +39,12 @@ This topic moves fast — program cancellations, restructurings, and valuations 
   **Use for**: explaining why Adaptive Platform (2017, POSIX-based, dynamic) had to exist alongside Classic (static, real-time) — the direct technical bridge to SDV.
 - [Automotive News — Mitigate chip shortage with new software architectures](https://www.autonews.com/commentary/solution-auto-industry-chip-crisis-new-software-architectures/)
   **Use for**: the 2021 chip shortage as an architecture stress test — commentary/opinion piece, cite as informed perspective, not hard data.
+- [Wikipedia — Electronic control unit](https://en.wikipedia.org/wiki/Electronic_control_unit)
+  Source of the "up to 150 ECUs in modern vehicles" figure used in A2. **Use for**: a citable (if secondary) anchor for ECU-count claims — cross-check against a primary OEM/supplier source if precision matters.
+- [AlixPartners — press release, Sept 23, 2021](https://www.alixpartners.com/newsroom/press-release-shortages-related-to-semiconductors-to-cost-the-auto-industry-210-billion-in-revenues-this-year-says-new-alixpartners-forecast/)
+  Primary source for the 2021 chip-shortage forecast: $210B revenue lost / 7.7M units of production lost, revised up sharply from a May 2021 estimate of $110B / 3.9M units. **Use for**: the hard numbers behind the chip-shortage-as-architecture-stress-test narrative in A2.
+- [CNBC — Chip shortage expected to cost auto industry $210 billion in 2021](https://www.cnbc.com/2021/09/23/chip-shortage-expected-to-cost-auto-industry-210-billion-in-2021.html)
+  Secondary, wider-distribution confirmation of the same AlixPartners figures, same date.
 
 ## Knowledge — Business models & economics
 
