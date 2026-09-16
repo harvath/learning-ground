@@ -242,6 +242,10 @@ ol.steps .sub { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.2rem; }
 .syl-body .t { font-weight: 700; color: #fff; }
 .syl-body .q { display: block; font-size: 0.85rem; color: var(--accent); margin-top: 0.25rem; }
 
+a.syl-item { color: inherit; cursor: pointer; transition: background 0.15s; }
+a.syl-item:hover { background: var(--paper-2); }
+div.syl-item { opacity: 0.62; }
+
 /* ---- nav ---- */
 .nav {
   display: flex; flex-wrap: wrap; gap: 0.8rem;
