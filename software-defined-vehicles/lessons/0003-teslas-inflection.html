@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0003 | Tesla's Inflection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · FOUNDATIONS — LESSON 0003</div>
+  <h1>The company everyone else in this course gets measured against</h1>
+  <p class="subtitle">A2 showed why 150 separate ECUs became a liability. Tesla's answer, starting in 2012, was to skip most of that sprawl entirely — and update what remained wirelessly, the same way a phone updates itself. That single choice created a legal collision nobody had faced before, and turned vehicle software into a real, audited revenue line for the first time.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>Tesla didn't try to manage ECU sprawl more cleverly. From the Model S onward, it mostly skipped it: instead of roughly 150 small, single-purpose computers (A2), Tesla built the car around a much smaller number of powerful, centralized computers, and pushed software updates to them wirelessly — an <span class="term">OTA (over-the-air) update</span>, as A1 introduced it — instead of requiring a trip to a dealership.</p>
+
+  <h2>The first OTA update, late 2012</h2>
+
+  <p>Tesla shipped version 1.9.11 to more than 100 Model S owners in late 2012 — the first wireless software update deployed to a consumer vehicle at scale. It was mandatory: owners got a notification on the car's 17-inch touchscreen and scheduled a time for it to install. The update did two very ordinary-sounding but telling things: it activated Supercharger network access on owners' cars roughly two months before the first Supercharger stations actually opened, and it recalibrated the car's rated range to a new EPA testing standard.<sup class="cite"><a href="#s1">[1]</a></sup> Neither of those requires a wrench. On almost any other car built that year, both would have meant a service appointment.</p>
+
+  <h2>Why Tesla could do this, and almost nobody else could yet</h2>
+
+  <p>This is A2's bottlenecks running in reverse. Two of the three problems that made ECU sprawl unworkable — features locked inside one supplier's physical module, and no unified way to push a fix — mostly don't apply when a feature lives in software running on a small number of computers Tesla itself builds and controls. There's one thing to update instead of dozens of separately-sourced ones.<sup class="cite"><a href="#s6">[6]</a></sup></p>
+
+  <h2>Software becomes a line on the balance sheet</h2>
+
+  <p>Tesla's own accounting made this concrete years before "software revenue" was an industry talking point. In its Q3 2019 quarterly filing with the SEC, Tesla's deferred revenue balance — money already collected from customers for things not yet fully delivered, including Supercharger access, connectivity, and Autopilot/FSD features — had grown to just over $1.05 billion, up from $630 million at the end of 2018.<sup class="cite"><a href="#s4">[4]</a></sup></p>
+
+  <p>The mechanic behind that number got spelled out plainly on Tesla's Q3 2019 earnings call. CFO Zach Kirkhorn told investors: "with the release of Smart Summon in the US, we were able to recognize $30 million of deferred revenue." Smart Summon — a feature that lets the car pull itself out of a parking spot — shipped as an OTA update; the moment it reached customers, a slice of that balance-sheet liability converted directly into recognized revenue. Kirkhorn noted roughly $500–600 million more sat on the balance sheet at the time as unrecognized revenue tied to Full Self-Driving, waiting for the underlying features to actually ship.<sup class="cite"><a href="#s5">[5]</a></sup> A5 covers where this went next — full subscription pricing, and where it backfired.</p>
+
+  <h2>The collision with recall law</h2>
+
+  <p>On August 13, 2021, NHTSA (the US National Highway Traffic Safety Administration) opened a formal investigation after identifying 11 crashes since 2018 in which Teslas running Autopilot or Traffic-Aware Cruise Control struck vehicles at scenes where first responders had set up flashing lights, flares, an illuminated arrow board, or cones.<sup class="cite"><a href="#s2">[2]</a></sup> Tesla's response included an OTA update meant to improve how Autopilot recognizes and reacts to exactly those scenes. In October 2021, NHTSA investigators publicly pressed Tesla on why it hadn't filed that update as a formal recall — telling the company that federal law requires a recall any time an over-the-internet update fixes a safety defect, regardless of how the fix is delivered.<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <p>This was new legal territory. Recall law was built around a world where "fixing" a car meant a physical visit. Tesla's OTA update could reach its whole fleet in days, at close to zero marginal cost per vehicle — but it took a regulator publicly asking "why isn't this a recall?" to establish that speed and convenience don't exempt a safety fix from the same rules as a bolt or a bracket.</p>
+
+  <div class="box warn">
+    <span class="label">handle with care</span>
+    NHTSA's position here isn't the end of the story. Vehicle-software safety regulation is one of the fastest-moving areas in this whole course — B6 covers where the regulatory picture stands more broadly. Treat the legal principle established in 2021 (a safety fix delivered by OTA can still legally require a recall) as durable; treat any specific agency's current posture as dated to its own moment, not settled forever.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① In one sentence: what was Tesla's architectural answer to the ECU-sprawl problem from A2?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Instead of roughly 150 small dedicated computers, Tesla consolidated most vehicle functions onto a small number of powerful central computers, which made it possible to update most of the car's behavior with a single wireless (OTA) software push instead of touching dozens of separately-sourced supplier modules.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② What did the Smart Summon example actually demonstrate, financially?</p>
+    <button class="quiz-opt" data-key="a">Tesla lost money on software features</button>
+    <button class="quiz-opt" data-key="b">Money collected upfront for a not-yet-available feature became real, recognized revenue only once the feature was delivered via an OTA update</button>
+    <button class="quiz-opt" data-key="c">The SEC fined Tesla for its accounting practices</button>
+    <p class="quiz-why" hidden>Deferred revenue is money already in hand that a company can't yet count as earned, because it hasn't delivered what it was paid for. Smart Summon's OTA release let Tesla recognize $30 million of it in a single quarter — a direct, auditable link between "we pushed a software update" and "we booked revenue."</p>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">③ Why did NHTSA's October 2021 question to Tesla matter beyond that one incident?</p>
+    <button class="quiz-opt" data-key="a">It proved Autopilot's software had a bug</button>
+    <button class="quiz-opt" data-key="b">It established that a safety-related OTA update can legally require the same recall process as a physical fix, regardless of delivery method</button>
+    <button class="quiz-opt" data-key="c">It forced Tesla to stop issuing OTA updates entirely</button>
+    <p class="quiz-why" hidden>Recall law wasn't written with wireless software fixes in mind. This episode is the moment that gap became public and consequential — establishing that "we fixed it instantly and for free, over the air" doesn't exempt an automaker from the same recall obligations as a physical part swap.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Tesla's own <a href="https://www.fool.com/earnings/call-transcripts/2019/10/24/tesla-inc-tsla-q3-2019-earnings-call-transcript.aspx">Q3 2019 earnings call transcript</a> is worth reading directly — hearing a CFO explain, in his own words, how an OTA-delivered feature converts into recognized revenue is a clearer picture than any summary, this lesson included.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "Did this OEM build centralized compute in from the start, or retrofit it onto an existing platform?" is worth asking about anyone you hear compared to Tesla — it's usually the second, and A4 is about exactly how that retrofit actually happens.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://recharged.com/articles/tesla-model-s-software-update-history/">Tesla Model S Software Update History (2012–2026 Guide) — Recharged.com</a></span><br>
+    <span id="s2">[2] <a href="https://autotechinsight.spglobal.com/news/5262111/us-government-opens-investigation-into-tesla-autopilot-crashes-with-emergency-vehicles">US government opens investigation into Tesla Autopilot crashes with emergency vehicles — S&amp;P Global Mobility, Aug 2021</a></span><br>
+    <span id="s3">[3] <a href="https://www.marketbeat.com/articles/us-asks-tesla-why-it-didnt-recall-autopilot-driving-system-2021-10-13/">US asks Tesla why it didn't recall Autopilot driving system — MarketBeat (wire report), Oct 13, 2021</a></span><br>
+    <span id="s4">[4] <a href="https://www.sec.gov/Archives/edgar/data/1318605/000156459019038256/tsla-10q_20190930.htm">Tesla, Inc. Form 10-Q, quarter ended Sept 30, 2019 — SEC EDGAR</a></span><br>
+    <span id="s5">[5] <a href="https://www.fool.com/earnings/call-transcripts/2019/10/24/tesla-inc-tsla-q3-2019-earnings-call-transcript.aspx">Tesla, Inc. (TSLA) Q3 2019 Earnings Call Transcript — The Motley Fool</a></span><br>
+    <span id="s6">[6] <a href="https://cleantechnica.com/2021/12/30/does-teslas-centralized-computer-architecture-require-fewer-chips/">Does Tesla's Centralized Computer Architecture Require Fewer Chips? — CleanTechnica/InsideEVs, Dec 30, 2021</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0002-the-architecture-that-broke.html">← A2 The Architecture That Broke</a>
+    <a href="../reference/course-map.html">Course map</a>
+    <a href="0004-domain-to-zonal.html">A4 Domain to Zonal →</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="../assets/lesson.css">
+<title>Lesson 0004 | Domain to Zonal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/quiz.js"></script>
+<script src="../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">UNIT A · FOUNDATIONS — LESSON 0004</div>
+  <h1>Zonal architecture: how the rest of the industry actually rearchitected</h1>
+  <p class="subtitle">Tesla could centralize because it started from a blank sheet in 2012. Everyone else is retrofitting decades of existing platforms. This lesson covers what that retrofit actually looks like, with real before/after numbers from two OEMs — plus the software standard built to run on top of it.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>Between A2's ~150-computers-per-feature sprawl and A3's Tesla-style centralization sits a middle path most of the industry is actually taking: <span class="term">zonal architecture</span> — a handful of computers, each responsible for everything happening in one physical zone of the car (front, rear, center, roof), feeding into one or a few central "brain" computers. It's usually a multi-year retrofit rather than a clean-sheet redesign, because most legacy automakers are migrating away from decades of <span class="term">domain-based architecture</span> — ECUs grouped loosely by function (powertrain, infotainment, body, chassis) — rather than starting from nothing the way Tesla did.</p>
+
+  <h2>Case study: Rivian, 17 computers down to 7 in about two years</h2>
+
+  <p>Rivian's first-generation R1T and R1S ran 17 separate ECUs. The second generation, unveiled in 2024, runs 7. Five of those seven still get their own dedicated computer — infotainment, autonomy, vehicle access, drive units, and battery management — because those jobs genuinely need dedicated, guaranteed performance. Everything else in the vehicle, though, is now handled by just three shared zonal computers instead of a separate one per function. The migration removed 1.6 miles of wiring and 44 pounds of weight.<sup class="cite"><a href="#s1">[1]</a></sup><sup class="cite"><a href="#s2">[2]</a></sup></p>
+
+  <p>Rivian's SVP of Electrical Hardware, Vidya Rajagopalan, credited three things for pulling this off in roughly two years: being based in Silicon Valley, prioritizing vertical integration (building more of the stack in-house rather than depending on outside suppliers for each piece), and keeping hardware and software teams working in close collaboration rather than as separate organizations.<sup class="cite"><a href="#s1">[1]</a></sup></p>
+
+  <h2>Case study: BMW's Neue Klasse, four "Superbrains"</h2>
+
+  <p>BMW announced its Neue Klasse platform on March 11, 2025: four central computers — informally, "Superbrains" — covering infotainment, automated driving, driving dynamics, and basic vehicle functions, delivering more than 20 times the compute of BMW's current generation. The wiring needed to connect it all dropped by 600 meters and 30% of its weight, organized around physical zones (front end, center, rear, roof) instead of a separate wire run per feature. The software running across that hardware: more than 1,000 separate software modules, around 40GB of code, and over 500 million lines in total.<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <h2>The software layer underneath: AUTOSAR's two platforms</h2>
+
+  <p><span class="term">AUTOSAR (AUTomotive Open System ARchitecture)</span> is an open industry standard for how vehicle software talks to vehicle hardware, founded in July 2003 by BMW, Bosch, Continental, Mercedes-Benz, Siemens VDO, and Volkswagen — explicitly so that no single supplier's proprietary software format would lock out every other supplier, a direct response to the feature-per-supplier coupling problem from A2.<sup class="cite"><a href="#s4">[4]</a></sup></p>
+
+  <p>What's now called <strong>AUTOSAR Classic</strong> is the original standard: built for small, real-time, safety-critical jobs like engine or brake control, running on tightly predictable software that's essentially finished before the car ships. That's exactly right for a brake controller. It's the wrong shape for what a zonal "Superbrain" needs to run — automated-driving stacks, connectivity, in-car apps — software that needs to update frequently and discover other services while the car is already on the road. <strong>AUTOSAR Adaptive Platform</strong>, first released March 31, 2017, was built for exactly that.<sup class="cite"><a href="#s5">[5]</a></sup> The two are designed to coexist on the same vehicle — Classic for the safety-critical real-time jobs, Adaptive for everything zonal computing needs to be flexible about — which is the direct technical bridge between "why 150 ECUs stopped working" (A2) and how a modern Superbrain actually runs its software.</p>
+
+  <div class="box warn">
+    <span class="label">handle with care</span>
+    Sandy Munro's independent teardown of Tesla's own Model Y in 2020 found its wiring harness "pretty much the same" as the Model 3's — despite Tesla's own patents and public statements implying a much bigger reduction. Munro, who'd expected far less wiring, said plainly he was "kind of disappointed."<sup class="cite"><a href="#s6">[6]</a></sup> The lesson isn't specific to Tesla: any OEM's own announced wiring or weight numbers for a new architecture are marketing claims until an independent teardown confirms them. Treat BMW's and Rivian's figures above the same way — real, credible, but not independently re-verified in this lesson.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① In one sentence: what's the core idea of zonal architecture, and how is it different from what A2 described?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>Instead of one dedicated computer per feature (A2's ~150-ECU sprawl), zonal architecture groups computing by physical location in the car — a handful of "zone" computers, each handling everything nearby, feeding into one or a few central brain computers — arriving at something closer to Tesla's centralization (A3), but usually through a gradual retrofit rather than a clean-sheet design.</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② Rivian's Gen 2 architecture keeps five functions on their own dedicated ECU rather than folding them into the three shared zonal computers. Which of these is <em>not</em> one of those five?</p>
+    <button class="quiz-opt" data-key="a">Battery management</button>
+    <button class="quiz-opt" data-key="b">Infotainment</button>
+    <button class="quiz-opt" data-key="c">Power windows</button>
+    <p class="quiz-why" hidden>The five dedicated functions are infotainment, autonomy, vehicle access, drive units, and battery management — each needs guaranteed, dedicated performance. Power windows is exactly the kind of lower-stakes function now handled by one of the three shared zonal computers instead of its own ECU.</p>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">③ Which AUTOSAR platform is built to run the kind of flexible, frequently-updated software a zonal "Superbrain" needs (automated driving, connectivity, apps)?</p>
+    <button class="quiz-opt" data-key="a">AUTOSAR Classic</button>
+    <button class="quiz-opt" data-key="b">AUTOSAR Adaptive Platform</button>
+    <p class="quiz-why" hidden>Classic remains the standard for small, safety-critical, real-time jobs like brake or engine control — predictable software that's essentially finished before the car ships. Adaptive Platform (first released 2017) was built for dynamic, frequently-updated workloads instead, and the two run side by side on the same modern vehicle.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    BMW Group's own <a href="https://www.press.bmwgroup.com/global/article/detail/T0448372EN/four-superbrains-for-the-neue-klasse">"Four Superbrains for the Neue Klasse"</a> press release is worth reading in full — it's one of the most detailed public disclosures any OEM has given of what a real zonal migration actually involves, numbers included.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    "Is this architecture actually shipping, or still a press-release promise?" is worth asking about any OEM's zonal claims — B2 covers where several of these programs (including ones far less smooth than BMW's or Rivian's) actually stand today. Next up, A5 covers the business case for going through all this rearchitecting in the first place — and where that pitch has already backfired.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://insideevs.com/news/761865/rivian-zonal-architecture-development/">How Rivian Developed Its Zonal Architecture In Just Two Years — InsideEVs</a></span><br>
+    <span id="s2">[2] <a href="https://www.popsci.com/technology/rivian-zonal-electrical-architecture/">How Rivian reduced electrical wiring by 1.6 miles and 44 pounds — Popular Science</a></span><br>
+    <span id="s3">[3] <a href="https://www.press.bmwgroup.com/global/article/detail/T0448372EN/four-superbrains-for-the-neue-klasse">Four "Superbrains" for the Neue Klasse — BMW Group, Mar 11, 2025</a></span><br>
+    <span id="s4">[4] <a href="https://www.autosar.org/about/history">History of AUTOSAR — autosar.org</a></span><br>
+    <span id="s5">[5] <a href="https://www.vector.com/us/en/know-how/autosar/">AUTOSAR Classic and Adaptive — Vector</a></span><br>
+    <span id="s6">[6] <a href="https://insideevs.com/news/409405/tesla-model-y-wiring-no-revolution/">Tesla Model Y Wiring Is Not Revolutionary, According To Sandy Munro — InsideEVs</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0003-teslas-inflection.html">← A3 Tesla's Inflection</a>
+    <a href="../reference/course-map.html">Course map</a>
+    <a href="../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
