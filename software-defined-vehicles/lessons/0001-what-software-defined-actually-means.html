@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="../assets/lesson.css">
-<title>Lesson 0001 | What "Software-Defined Vehicle" Actually Means</title>
+<title>Lesson 0001 | What "Software-Defined Vehicle" Means</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../assets/quiz.js"></script>
 <script src="../assets/recall.js"></script>
@@ -7,48 +7,71 @@
 <div class="wrap">
 
   <div class="kicker">UNIT A · FOUNDATIONS — LESSON 0001</div>
-  <h1>Three definitions, one phrase — pick the wrong one and you'll misjudge every SDV claim you hear</h1>
-  <p class="subtitle">"Software-defined vehicle" gets used by automakers, consultants, and journalists as if it means one settled thing. It doesn't. Before you can place any company's claim into context, you need to know which definition they're implicitly using — because "is this an SDV?" gets a different answer depending on which one you pick.</p>
+  <h1>What a software-defined vehicle actually is — starting with the simple version</h1>
+  <p class="subtitle">Every credible source agrees, roughly, on what a software-defined vehicle does. They disagree — sometimes sharply — on how you'd prove a given car actually is one. This lesson gives you the working definition first, then the fine print.</p>
 
-  <h2>Three definitions, compared</h2>
+  <h2>The 30-second definition</h2>
+
+  <p>A <strong>software-defined vehicle (SDV)</strong> is a car where most of what makes it better over time — new features, performance changes, sometimes even safety fixes — arrives through a software update sent wirelessly over the internet, the same way your phone updates itself. That delivery method has a name: an <span class="term">OTA (over-the-air) update</span>. It's the opposite of the old model, where getting anything new meant a trip to a dealership and a physical part swap.</p>
+
+  <p>That's the working definition this whole course builds on. It's also, deliberately, a loose one — and the rest of this lesson is about why pinning it down more precisely turns out to be surprisingly contested. Automakers, analysts, and suppliers each draw the line in a different place, and knowing <em>whose</em> line someone is using is often more useful in a real conversation than memorizing any single definition.</p>
+
+  <h2>Two ways to draw the line: a switch, or a dial</h2>
+
+  <p>Every definition below agrees on the outcome — cars get better via software. They split on how you'd <em>test</em> whether a given vehicle qualifies. Three sources treat it like a light switch: a car either has it or it doesn't. One source treats it like a dial: almost every modern car is somewhere along it.</p>
+
+  <h3>Camp 1 — the switch: either you have it, or you don't</h3>
+
+  <p>McKinsey's version: a car needs a <span class="term">centralized E/E (electrical/electronic) architecture</span> — meaning its computing is consolidated into a small number of powerful computers rather than spread across dozens of separate ones — plus OTA updates, plus hardware and software that get built and released on separate timelines from each other.<sup class="cite"><a href="#s2">[2]</a></sup> Gartner analyst Mike Ramsey puts the same idea more simply: new capability has to arrive via a software update, not by swapping a physical part.<sup class="cite"><a href="#s1">[1]</a></sup> Bosch's Stefan Buerkle gives the sharpest, most measurable version of all: he points to the count of <span class="term">ECUs (electronic control units)</span> — the small, dedicated onboard computers that each handle one job, like a window motor or an anti-lock brake sensor — and says a real SDV has consolidated that count from a traditional 100-plus down to one or two central computers.<sup class="cite"><a href="#s1">[1]</a></sup></p>
 
   <div class="tablewrap">
     <table class="cmp">
-      <tr><th>Source</th><th>Nature</th><th>Where it draws the line</th></tr>
-      <tr><td>McKinsey</td><td>Step-change / binary</td><td>Centralized E/E architecture, OTA updates, and hardware/software developed on decoupled timelines<sup class="cite"><a href="#s2">[2]</a></sup></td></tr>
-      <tr><td>Gartner (Mike Ramsey)</td><td>Binary, capability-based</td><td>Feature upgrades happen via software, not by swapping physical parts<sup class="cite"><a href="#s1">[1]</a></sup></td></tr>
-      <tr><td>PwC</td><td>Six-level maturity model (0–5)</td><td>"Full SDV" is Level 4: zonal architecture, standardized APIs, cloud-based development, frequent OTA. Level 5 adds a third-party app ecosystem<sup class="cite"><a href="#s3">[3]</a></sup></td></tr>
-      <tr><td>Bosch (Stefan Buerkle)</td><td>Hard technical threshold</td><td>ECU count consolidated down to one or two central computers, from a prior 100+<sup class="cite"><a href="#s1">[1]</a></sup></td></tr>
+      <tr><th>Source</th><th>The binary signal it looks for</th></tr>
+      <tr><td>McKinsey</td><td>Centralized E/E architecture + OTA updates + decoupled hardware/software timelines</td></tr>
+      <tr><td>Gartner (Mike Ramsey)</td><td>New capability arrives via software update, not a physical part swap</td></tr>
+      <tr><td>Bosch (Stefan Buerkle)</td><td>ECU count consolidated from 100+ down to one or two central computers</td></tr>
     </table>
   </div>
 
-  <p>McKinsey and Gartner both treat "software-defined" as a step change: a vehicle either has the decoupled, centralized architecture or it doesn't. PwC treats it as a <strong>continuum</strong> — almost every modern car already sits somewhere on a ladder explicitly modeled on SAE's autonomous-driving levels, climbing from Level 0 (mechanically controlled) toward Level 5 (a fully cloud-connected software-defined ecosystem).<sup class="cite"><a href="#s3">[3]</a></sup> That difference isn't academic: if a client asks "are we SDV-ready?", McKinsey's framework might answer "no, not yet," while PwC's answers "you're already partway there." Neither is wrong — they're different ladders, and you need to know which one is being climbed before the answer means anything.</p>
+  <h3>Camp 2 — the dial: a ladder, not a light switch</h3>
 
-  <h2>Where the term came from — and why nobody quite owns it</h2>
+  <p>PwC's framework rejects the yes/no premise entirely. It defines six levels, 0 through 5, explicitly modeled on the SAE's well-known 0–5 scale for self-driving capability.<sup class="cite"><a href="#s3">[3]</a></sup> Level 0 is a mostly mechanical car with almost no electronics; the middle levels describe a car with a growing number of ECUs and the first OTA-updatable infotainment or driver-assistance features; <strong>Level 4 — "Full SDV"</strong> — is where PwC's definition lines up with the switch camp's threshold: zonal architecture (more on this in A4), standardized software interfaces, cloud-based development, and frequent OTA updates. Level 5 goes further still, folding the car into a broader cloud-connected ecosystem with third-party apps, closer to a smartphone than a traditional vehicle.</p>
 
-  <p>The common story is that Tesla coined "software-defined vehicle" around 2012, borrowing the phrase from "software-defined radio" as it centralized vehicle functions in the Model S. That story is repeated widely — but it traces back to secondary and tertiary write-ups, not to a primary document. TechCrunch's January 2024 explainer, a considerably higher-trust source, says the opposite directly: <strong>no single company or person is credited with popularizing the term</strong>, which instead gained traction gradually through the mid-to-late 2010s as multiple analysts converged on similar language.<sup class="cite"><a href="#s1">[1]</a></sup></p>
-
-  <p>What <em>is</em> solidly documented, and worth keeping separate from the coinage question: Tesla shipped its first over-the-air software update — version 1.9.11, to more than 100 Model S owners — in late 2012.<sup class="cite"><a href="#s5">[5]</a></sup> That's a real, dated fact. "And that's the moment the term was coined" is folk history layered on top of it, and it doesn't survive a primary-source check. Treat it as contested rather than settled — a habit worth carrying through the rest of this course, since several other widely repeated SDV facts turn out to have the same problem.</p>
+  <p>The practical difference matters. Ask "is this car SDV?" under McKinsey's or Bosch's framework, and a car built on last decade's architecture is simply <strong>not</strong> SDV. Ask the same question under PwC's ladder, and that same car is already partway there — "Level 2, heading toward Level 3" — which is a very different message to deliver to a client.</p>
 
   <div class="box warn">
     <span class="label">handle with care</span>
-    When someone tells you a vehicle is or isn't "SDV," ask which of the four framings above they're using. A car that's "not SDV" under Bosch's ECU-consolidation threshold might already be "Level 3: Partial SDV" under PwC's ladder. This isn't pedantry — in a client conversation, conflating the two can make you sound like you're contradicting a source that was actually using a different yardstick entirely.
+    When someone tells you a vehicle is or isn't "SDV," ask which framework they're using. A car that's "not SDV" under Bosch's ECU-consolidation threshold might already be "Level 3" under PwC's ladder — both statements can be true at once. In a client conversation, conflating the two can make you sound like you're contradicting a source that was actually using a different yardstick.
   </div>
+
+  <h2>Where the term itself came from — and why nobody quite owns it</h2>
+
+  <p>The common story is that Tesla coined "software-defined vehicle" around 2012, borrowing the phrase from "software-defined radio" as it centralized vehicle functions in the Model S. That story is repeated widely — but it traces back to secondary and tertiary write-ups, not to a primary document. TechCrunch's January 2024 explainer, a considerably higher-trust source, says the opposite directly: <strong>no single company or person is credited with popularizing the term</strong>, which instead gained traction gradually through the mid-to-late 2010s as multiple analysts converged on similar language.<sup class="cite"><a href="#s1">[1]</a></sup></p>
+
+  <p>What <em>is</em> solidly documented, and worth keeping separate from the coinage question: Tesla shipped its first OTA software update — version 1.9.11, to more than 100 Model S owners — in late 2012.<sup class="cite"><a href="#s5">[5]</a></sup> That's a real, dated fact. "And that's the moment the term was coined" is folk history layered on top of it, and it doesn't survive a primary-source check. Treat it as contested rather than settled — a habit worth carrying through the rest of this course, since several other widely repeated SDV facts turn out to have the same problem.</p>
 
   <h2>Check it sticks</h2>
 
   <div class="recall">
-    <p class="recall-q">① Name the four framings for defining SDV covered in this lesson, and in one phrase each, how each one draws the line.</p>
+    <p class="recall-q">① In plain language, what's this course's working definition of an SDV — and what does "OTA" stand for?</p>
     <button class="recall-show">Reveal answer</button>
-    <div class="recall-a" hidden>McKinsey (binary — centralized architecture + OTA + decoupled hardware/software development timelines). Gartner/Mike Ramsey (binary — capability upgrades via software, not physical parts). PwC (six-level, 0–5 maturity continuum; "Full SDV" sits at Level 4). Bosch/Stefan Buerkle (hard technical threshold — ECU count consolidated to one or two central computers).</div>
+    <div class="recall-a" hidden>An SDV is a car where most improvements over time arrive through a software update delivered wirelessly, rather than requiring a dealership visit or a new physical part. OTA stands for "over-the-air" — the term for delivering that update wirelessly, the same idea as how a phone updates itself.</div>
   </div>
 
   <div class="quiz" data-answer="b">
-    <p class="quiz-q">② Which of these treats "software-defined" as a continuum rather than a yes/no state?</p>
+    <p class="quiz-q">② Which framework treats "software-defined" as a continuum rather than a yes/no state?</p>
     <button class="quiz-opt" data-key="a">McKinsey's framework</button>
     <button class="quiz-opt" data-key="b">PwC's six-level maturity model</button>
     <button class="quiz-opt" data-key="c">Bosch's ECU-consolidation threshold</button>
-    <p class="quiz-why" hidden>PwC's Level 0–5 ladder, modeled explicitly on SAE's autonomous-driving levels, places almost every modern vehicle somewhere on a continuum toward "Full SDV" — unlike McKinsey's and Bosch's more binary, threshold-based framings.</p>
+    <p class="quiz-why" hidden>PwC's Level 0–5 ladder places almost every modern vehicle somewhere on a continuum toward "Full SDV" (Level 4) — unlike McKinsey's and Bosch's binary, threshold-based framings, which are both flavors of the "switch" camp.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ "This car's onboard computer count dropped from 100+ down to just one or two" is the specific technical signal used by which source?</p>
+    <button class="quiz-opt" data-key="a">Bosch (Stefan Buerkle)</button>
+    <button class="quiz-opt" data-key="b">PwC</button>
+    <button class="quiz-opt" data-key="c">Gartner (Mike Ramsey)</button>
+    <p class="quiz-why" hidden>Bosch's framing is the sharpest and most measurable of the "switch" camp: it points directly at ECU count — the number of dedicated onboard computers — consolidating from 100+ down to one or two central ones. A2 picks this up in detail: why cars ended up with 100+ ECUs in the first place, and why that stopped working.</p>
   </div>
 
   <div class="box primary">
@@ -58,7 +81,7 @@
 
   <div class="box ask">
     <span class="label">ask the teacher</span>
-    "Which definition would this client's own marketing be using?" is a good habit to bring into any SDV conversation. Next up, A2 covers the architecture problem — CAN bus and ECU sprawl — that all four definitions above are ultimately reacting to.
+    "Which definition would this client's own marketing be using?" is a good habit to bring into any SDV conversation. Next up, A2 covers the architecture problem — CAN bus and ECU sprawl — that every "switch camp" definition above is ultimately reacting to.
   </div>
 
   <p class="sources">
