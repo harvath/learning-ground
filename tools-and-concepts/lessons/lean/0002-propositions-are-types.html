@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 2 | Propositions Are Types</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 2 OF 7</div>
+  <h1>The idea underneath: propositions are types</h1>
+  <p class="subtitle">How a compiler can check a proof — and why you only have to trust a very small part of it. This is the one concept lesson in the set; everything else is story.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>You already trust a type checker to verify small claims. When a function is declared to return an <code>Int</code> and the code compiles, the compiler has <em>proved</em> a little theorem: "this code always produces an integer." Lean's idea is to make the type system expressive enough that a type can state <em>any</em> precise claim — "<code>double n</code> equals <code>2 * n</code>", "there is no largest prime". Then:</p>
+
+  <p><strong>A statement is a type. A proof of the statement is a value of that type. Checking a proof is type-checking.</strong></p>
+
+  <p>That's it. Lean has no separate "proof checker" bolted onto a language. The proof checker <em>is</em> the type checker.</p>
+
+  <h2>Climbing up to it</h2>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="n-title">Nat</div>
+      <div class="n-note">A plain type. Its values: 0, 1, 2, …</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">List Nat</div>
+      <div class="n-note">A type built from another type — generics, as in most languages.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Vector Nat 3</div>
+      <div class="n-note">"Lists of naturals of length exactly 3." A type that mentions a <em>value</em> (the 3). This is a <span class="term">dependent type</span> — a type that depends on a value — and most mainstream languages can't express it. Passing a length-2 vector here is a compile error.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2 + 2 = 4</div>
+      <div class="n-note">Once types can mention values, this is a type too. Its values are the proofs that 2 + 2 is 4. Likewise <code>2 + 2 = 5</code> is a perfectly legal type — it just has no values, so you can never construct one.</div>
+    </div>
+  </div>
+
+  <p>A <span class="term">proposition</span> is just a statement that might be true or false. In Lean, a true proposition is a type you can produce a value of; a false one is a type that's empty. "Proving a theorem" means "writing an expression that has that type".</p>
+
+  <h2>Proofs really are programs</h2>
+
+<pre class="code"><span class="c">-- "If p and q are both true, then q and p are both true."</span>
+<span class="k">theorem</span> and_swap (p q : Prop) (h : p ∧ q) : q ∧ p :=
+  ⟨h.2, h.1⟩</pre>
+  <p class="caption"><code>∧</code> means "and". <code>Prop</code> is the type of propositions. <code>⟨a, b⟩</code> builds a pair.</p>
+
+  <p>Look at what the proof is. A proof of "p and q" is a <em>pair</em>: a proof of p together with a proof of q. So <code>and_swap</code> is a function that takes a pair <code>h</code> and returns the pair with its two components swapped. It's the same code you'd write to swap a tuple — and because it type-checks, the logical claim is proved.</p>
+
+  <p>The dictionary extends to all of logic:</p>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>In logic</th><th>In programming</th></tr>
+      <tr><td>A proposition</td><td>A type</td></tr>
+      <tr><td>A proof</td><td>A value (a program) of that type</td></tr>
+      <tr><td>"p and q"</td><td>A pair of a p and a q</td></tr>
+      <tr><td>"p implies q"</td><td>A function from p to q</td></tr>
+      <tr><td>"for every n, P(n)"</td><td>A function that takes n and returns a proof of P(n)</td></tr>
+      <tr><td>Checking a proof</td><td>Type-checking the program</td></tr>
+    </table>
+  </div>
+
+  <p>This correspondence wasn't invented for Lean. It's known as the <span class="term">Curry–Howard correspondence</span> — observed by the logician Haskell Curry in 1934 and extended by William Howard in 1969 — and is often summarized as "propositions as types, proofs as programs".<sup class="cite"><a href="#s1">[1]</a></sup> The particular type system Lean uses is a version of the "Calculus of Constructions", one member of the family called dependent type theory.<sup class="cite"><a href="#s2">[2]</a></sup> You don't need either name to use the idea; you do need them to read anything else about Lean.</p>
+
+  <h2>Where tactics fit</h2>
+
+  <p>Writing proofs directly as expressions works for <code>and_swap</code> and becomes unbearable for real mathematics. That's what the tactics from lesson 1 are for. A <code>by</code> block is a small script that <em>generates</em> the proof expression for you: <code>omega</code> ran an arithmetic procedure and emitted a (large, unreadable) expression of the right type. You never see it. But it exists, and it gets type-checked like everything else.</p>
+
+  <h2>Why this makes Lean trustworthy: the kernel</h2>
+
+  <p>Here is the design consequence that matters most for the rest of this set. Lean is a big system — parser, tactics, automation, editor integration — and big systems have bugs. But no matter how a proof was produced, by hand, by a tactic, by a buggy tactic, by an AI, the end product is always the same kind of thing: a proof expression. And that expression is re-checked by one small component, the <span class="term">kernel</span>: in the documentation's words, "a small, robust implementation of a type checker for the core type theory."<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <div class="box primary">
+    <span class="label">the trust model</span>
+    Everything outside the kernel is <strong>untrusted</strong>. A tactic with a bug can fail to find a proof, or produce a broken one — and the kernel will reject it. To believe a Lean theorem you don't need to trust the person, the tactics, or the tool that wrote the proof. You need to trust the kernel, and the statement of the theorem.
+  </div>
+
+  <p>If you know cryptography or complexity theory, you've seen this shape: finding a solution is hard and can be done by anyone, however unreliable; <em>verifying</em> a solution is easy and is done by a small trusted checker. Verifying a signature doesn't require trusting whoever handed it to you.</p>
+
+  <p>The principle is older than Lean. It's called the <span class="term">de Bruijn criterion</span>, after N.G. de Bruijn, whose Automath project (begun 1967) first made a point of it: a proof assistant should produce a proof object checkable by a program simple enough that "a skeptic user could easily write him/herself."<sup class="cite"><a href="#s4">[4]</a></sup> People have done exactly that for Lean — there are independent re-implementations of its kernel, in Rust and in Lean itself, so one checker's bug is unlikely to be shared by the others.<sup class="cite"><a href="#s3">[3]</a></sup> (Lesson 7 looks at what happened when that assumption was tested.)</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Complete the three-part slogan: "A statement is a ___. A proof is a ___. Checking a proof is ___."</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>A statement is a <strong>type</strong>. A proof is a <strong>value (program) of that type</strong>. Checking a proof is <strong>type-checking</strong>. A false statement is a type with no values, which is why no proof of it can be written.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Under propositions-as-types, a proof of "p implies q" is…</p>
+    <button class="quiz-opt" data-key="a">A pair containing a proof of p and a proof of q</button>
+    <button class="quiz-opt" data-key="b">A function that turns any proof of p into a proof of q</button>
+    <button class="quiz-opt" data-key="c">A boolean that evaluates to true</button>
+    <p class="quiz-why" hidden>Implication is a function type. The pair is "p <em>and</em> q". And proofs aren't booleans computed at runtime — they're values whose mere existence, confirmed by the type checker, establishes the claim.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ A widely used tactic turns out to have a serious bug. What's the worst that can happen to theorems already proved with it?</p>
+    <button class="quiz-opt" data-key="a">Some of them may be false without anyone knowing</button>
+    <button class="quiz-opt" data-key="b">All of them must be re-proved by hand</button>
+    <button class="quiz-opt" data-key="c">Nothing — the tactic's output was independently checked by the kernel, so a bad proof would have been rejected</button>
+    <p class="quiz-why" hidden>Tactics are outside the trusted core. A buggy tactic can fail, or produce garbage that the kernel refuses; it can't make the kernel accept a false statement. Only a bug in the kernel itself could do that — which is why the kernel is kept small.</p>
+  </div>
+
+  <div class="recall">
+    <p class="recall-q">④ In your own words: what is the de Bruijn criterion, and why does it matter if an AI is writing the proofs?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>A proof assistant should output proofs that a small, simple, independent program can check — so trust rests on that small checker, not on the big system. It matters for AI because the proof's author no longer needs to be trusted at all: however the proof was generated, it either passes the kernel or it doesn't. (This is the heart of lesson 6.)</div>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Philip Wadler's <a href="https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf">"Propositions as Types"</a> is a short, funny, readable account of the Curry–Howard idea and its history. For the Lean version with exercises, the free book <a href="https://lean-lang.org/theorem_proving_in_lean4/">Theorem Proving in Lean 4</a>.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    This lesson moves fast. If "a type with no values" or "a function that returns a proof" hasn't clicked, say so and I'll work more examples — it's the one idea in this set worth getting completely solid.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf">Propositions as Types — Philip Wadler, 2014 (later in Communications of the ACM)</a></span><br>
+    <span id="s2">[2] <a href="https://lean-lang.org/theorem_proving_in_lean4/dependent_type_theory.html">Dependent Type Theory — Theorem Proving in Lean 4</a></span><br>
+    <span id="s3">[3] <a href="https://lean-lang.org/doc/reference/latest/Elaboration-and-Compilation/">Elaboration and Compilation — The Lean Language Reference</a></span><br>
+    <span id="s4">[4] <a href="https://www.cs.ru.nl/~herman/PUBS/proofassistants.pdf">Proof Assistants: history, ideas and future — Herman Geuvers, Sadhana, 2009</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0001-what-lean-is.html">← 1 What Lean is</a>
+    <a href="0003-fifty-years-before-lean.html">3 Fifty years before Lean →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

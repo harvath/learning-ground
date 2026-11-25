@@ -16,6 +16,8 @@ Served via GitHub Pages: https://harvath.github.io/learning-ground/
 - `ai-economy/` — the current AI industry: players, money, tooling, what's dated
 - `data-engineering-for-ai/` — storing, describing, governing, and serving org data to agents
 - `sales-management/` — sales management domain knowledge mapped onto Twenty CRM's data model
+- `software-defined-vehicles/` — SDV history, players, and current state
+- `tools-and-concepts/` — umbrella course: one short set of lessons per tool or concept (first set: Lean)
 
 ## Structure
 

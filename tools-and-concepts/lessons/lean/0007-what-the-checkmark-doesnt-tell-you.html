@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 7 | What the Checkmark Doesn't Tell You</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 7 OF 7</div>
+  <h1>What the checkmark doesn't tell you</h1>
+  <p class="subtitle">"…and the proof is checked in Lean" is becoming a stock phrase in announcements. This lesson is the discount you should apply when you read it — four specific limits, each with a real 2026 incident behind it.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>When Lean accepts a proof, exactly one thing has been established: <strong>the formal statement, as written in Lean, follows from Lean's axioms — assuming the kernel is implemented correctly</strong>. Every word of that sentence hides a way for the headline to be wrong. The statement might not say what the press release says. The kernel might have a bug. And even when both are fine, "verified" is not the same as "understood" or "useful".</p>
+
+  <h2>Limit 1: the statement is on you</h2>
+
+  <p>Lean checks that a proof matches its theorem statement. It cannot check that the theorem statement matches what a human <em>meant</em>. That translation — from an idea in English to a formal statement — is unverifiable by construction, and it's where the errors now collect. For software, this is the familiar gap between "the code meets the spec" and "the spec is what we wanted".</p>
+
+  <p>This isn't hypothetical. In November 2026 Kevin Buzzard looked through a large release of AI-written math papers that came with Lean proofs, and reported that about 38 of the 290 Lean files did "not even state, let alone prove, the main theorem of the paper." His summary: a Lean proof "does not mean that any corresponding pdf also contains a correct proof!"<sup class="cite"><a href="#s1">[1]</a></sup> A separate academic paper the month before documented a claimed Lean-verified result about the Navier–Stokes equations where "the formalised Lean proof does not correspond to" the natural-language proof it was supposed to certify.<sup class="cite"><a href="#s2">[2]</a></sup></p>
+
+  <p>De Moura's own framing: "The formal statement is the trust anchor", and reading it carefully is "the human contract that no amount of automation can eliminate."<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">the practical habit</span>
+    When you see "verified in Lean", ask one question first: <em>what exactly is the statement that was proved, and who checked that it means what the headline says?</em> The good announcements answer it. The Fermat result in lesson 6 did — an independent tool confirmed that the statement proved was character-for-character the standard community statement of the theorem, not one the AI wrote for itself.<sup class="cite"><a href="#s4">[4]</a></sup>
+  </div>
+
+  <h2>Limit 2: the kernel is small, not perfect</h2>
+
+  <p>Lesson 2's argument was that you only have to trust a small kernel. Small is not the same as bug-free, and 2026 tested this in public.</p>
+
+  <p>In late July 2026, someone published an AI-assisted "disproof" of a famous open conjecture that Lean accepted. It was not a breakthrough; it was an exploit. A bug in how the kernel handled one obscure kind of type definition let it accept a proof of <code>False</code> — and from <code>False</code>, anything can be proved. The Lean team pushed a fix one hour after the bug report. Their postmortem is careful about what kind of failure it was: "This is an implementation bug, not a hole in Lean's meta-theory" — the logic is fine, the code implementing it had a mistake. Uncomfortably, the main independent re-checker had, at the time, an unrelated bug of its own that let the same proof through.<sup class="cite"><a href="#s5">[5]</a></sup></p>
+
+  <p>Weeks later an AI model, pointed at the kernel deliberately, found four more soundness bugs.<sup class="cite"><a href="#s6">[6]</a></sup> All were fixed. The response is also worth knowing: in October 2026 Lean began shipping with a second kernel that is itself written in Lean and proved correct — implemented and proved by an AI under human supervision.<sup class="cite"><a href="#s7">[7]</a></sup></p>
+
+  <p>Two things to take from this. First, the honest claim was never "Lean cannot be wrong"; it's "the thing that can be wrong is small enough to audit, re-implement, and attack" — and that process visibly works. Second, there's a difference between honest users and adversaries. None of these bugs was something you trip over by accident; they required deliberately constructed input. As AI systems are rewarded for getting proofs accepted, "deliberately constructed input" becomes a normal thing to worry about.</p>
+
+  <h2>Limit 3: verified is not the same as good</h2>
+
+  <p>A proof the kernel accepts can still be bad engineering. The Lean community's reaction to early AI-written formalizations was blunt — one reviewer's comment on a 25,000-line AI proof was "my goodness this is ugly work", and another found it never once defined a reusable structure.<sup class="cite"><a href="#s8">[8]</a></sup> The AI Fermat proof is 13 million lines — several times the size of all of mathlib — and Anthropic itself calls it "likely much longer than necessary".<sup class="cite"><a href="#s4">[4]</a></sup></p>
+
+  <p>That matters because the value of mathlib (lesson 4) is that it's a <em>library</em>: curated, general, reusable. A giant one-off proof that nothing else can build on is correct and inert. Mathlib now requires contributors to disclose AI use, and its reviewers may close low-quality machine-written submissions without comment.<sup class="cite"><a href="#s9">[9]</a></sup> You've seen this movie in software: generated code that passes the tests and that nobody wants to maintain.</p>
+
+  <h2>Limit 4: verified is not the same as understood</h2>
+
+  <p>Mathematicians don't prove theorems only to know they're true; they do it to understand why. A machine-checked proof nobody has read delivers the first without the second. As mathematician Thomas Bloom said of one AI-produced solution: "But no human has read it, and no human is going to read it."<sup class="cite"><a href="#s10">[10]</a></sup> And Melanie Wood, on a batch of AI-generated results: "there is not human understanding of them at the point of release, and now the work begins".<sup class="cite"><a href="#s11">[11]</a></sup></p>
+
+  <p>The scale of results deserves the same sobriety. The DeepMind agent in lesson 6 resolved 9 of 353 open problems it attempted — about 2.5%.<sup class="cite"><a href="#s12">[12]</a></sup> Some "solved" open problems turned out to have been solved decades ago and forgotten.<sup class="cite"><a href="#s10">[10]</a></sup> Real progress, far from "AI has solved mathematics".</p>
+
+  <h2>Putting the whole set together</h2>
+
+  <p>You can now give the complete account. Lean is a programming language whose type checker is strict enough to check proofs (lessons 1–2). Tools like it existed for decades but stayed niche (3). Lean 4 combined a real programming language, one unified math library, and good tooling (4); mathematicians showed it worked on live research and enabled collaboration without trust (5); then AI arrived needing exactly that — a way to be useful without being trusted (6). And the guarantee is precise and narrow: the stated theorem follows from the axioms, nothing more (7).</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① A startup announces: "Our AI proved the X conjecture — verified in Lean." List the questions you'd ask before believing the headline.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>(1) What is the exact formal statement, and has someone independent confirmed it really says "the X conjecture" — not a weaker, different, or accidentally trivial statement? (2) Was it checked with a current Lean version, ideally with an independent checker too, and does it avoid extra axioms and <code>sorry</code>? (3) Is this new mathematics or a formalization of a known proof? (4) Has any human read and understood it — is it something others can build on?</div>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">② The July 2026 kernel bug let Lean accept a proof of <code>False</code>. Which description is accurate?</p>
+    <button class="quiz-opt" data-key="a">Lean's underlying logic was found to be inconsistent</button>
+    <button class="quiz-opt" data-key="b">Mathlib contained a false theorem</button>
+    <button class="quiz-opt" data-key="c">The code implementing the kernel had a mistake; the logic it implements was fine, and the fix shipped within an hour of the report</button>
+    <p class="quiz-why" hidden>An implementation bug, not a flaw in the theory — the same distinction as a bug in a compiler versus a flaw in the language spec. It could only be triggered by deliberately constructed input, which is why ordinary proofs weren't affected, and why adversarial (including AI-generated) proofs are the case to watch.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ Which of these can Lean <em>not</em> check, even in principle?</p>
+    <button class="quiz-opt" data-key="a">That the formal theorem statement means what the humans intended</button>
+    <button class="quiz-opt" data-key="b">That every step of a 13-million-line proof is valid</button>
+    <button class="quiz-opt" data-key="c">That a proof doesn't quietly rely on an unproved placeholder</button>
+    <p class="quiz-why" hidden>Size is no obstacle, and placeholders (<code>sorry</code>) and extra axioms are tracked and reported. But intent lives in human heads; the step from "what we meant" to "what we wrote down" is outside the system. That step is where to spend your scepticism.</p>
+  </div>
+
+  <div class="box primary">
+    <span class="label">read next, primary source</span>
+    Buzzard's <a href="https://xenaproject.wordpress.com/2026/11/12/and-the-proof-is-checked-in-lean/">"…and the proof is checked in Lean"</a> is the best single piece on Limit 1, from the person who did more than anyone to bring mathematicians to Lean. De Moura's <a href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576">kernel postmortem</a> is a model of how to write about your own system's failure.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    That's the end of the Lean set as planned. Natural follow-ups, if you want them: a hands-on lesson (install Lean, write and prove a few things yourself), or a closer look at verifying ordinary software rather than mathematics. Or name the next tool or concept and we start a new set.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://xenaproject.wordpress.com/2026/11/12/and-the-proof-is-checked-in-lean/">…and the proof is checked in Lean — Kevin Buzzard, Xena Project blog, Nov 12, 2026</a></span><br>
+    <span id="s2">[2] <a href="https://arxiv.org/abs/2610.08144">Navier-Stokes lost in translation: Why Lean verification of AI autoformalisation does not guarantee correct natural language proofs — Bastounis, Circelli, Hansen, arXiv 2610.08144, Oct 6, 2026</a></span><br>
+    <span id="s3">[3] <a href="https://leodemoura.github.io/blog/2026-2-18-proof-assistants-in-the-age-of-ai">Proof assistants in the age of AI — Leonardo de Moura, Feb 18, 2026</a></span><br>
+    <span id="s4">[4] <a href="https://www.anthropic.com/research/formalizing-fermats-last-theorem">Formalizing Fermat's Last Theorem — Anthropic, Sep 4, 2026</a></span><br>
+    <span id="s5">[5] <a href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576">Postmortem for kernel soundness bug #14576 — Leonardo de Moura, Aug 1, 2026</a></span><br>
+    <span id="s6">[6] <a href="https://leodemoura.github.io/blog/2026-8-24-postmortem-for-the-kernel-soundness-bug-hunt">Postmortem for the kernel soundness bug hunt — Leonardo de Moura, Aug 24, 2026</a></span><br>
+    <span id="s7">[7] <a href="https://leodemoura.github.io/blog/2026-10-15-lean-now-ships-with-verified-kernels">Lean now ships with verified kernels — Leonardo de Moura, Oct 15, 2026</a></span><br>
+    <span id="s8">[8] <a href="https://leanprover-community.github.io/archive/stream/219941-Machine-Learning-for-Theorem-Proving/topic/Math.2C.20Inc.2C.20and.20Gauss.20discussion.html">Math, Inc. and Gauss discussion — Lean Zulip archive, Sep 2025</a></span><br>
+    <span id="s9">[9] <a href="https://leanprover-community.github.io/contribute/">How to contribute to mathlib — Lean community</a></span><br>
+    <span id="s10">[10] <a href="https://www.quantamagazine.org/how-ai-tore-through-a-mathematical-community-20260803/">How AI Tore Through a Mathematical Community — Quanta Magazine, Aug 3, 2026</a></span><br>
+    <span id="s11">[11] <a href="https://techcrunch.com/2026/10/08/openais-math-solutions-arent-meeting-the-fields-standards-yet/">OpenAI's math solutions aren't meeting the field's standards yet — TechCrunch, Oct 8, 2026</a></span><br>
+    <span id="s12">[12] <a href="https://arxiv.org/abs/2605.22763">Advancing Mathematics Research with AI-Driven Formal Proof Search — Google DeepMind, arXiv 2605.22763, May 21, 2026</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0006-the-ai-collision.html">← 6 The AI collision</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

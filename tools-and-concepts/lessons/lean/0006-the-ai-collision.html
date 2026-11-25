@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 6 | The AI Collision</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 6 OF 7</div>
+  <h1>The AI collision</h1>
+  <p class="subtitle">This is the lesson that answers "why is everyone suddenly talking about Lean?" Short version: language models are good at producing proofs and bad at being trusted. Lean is the opposite.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>A large language model can write a plausible-looking proof — or plausible-looking code — in seconds. The problem is "plausible-looking": the model can <span class="term">hallucinate</span>, meaning produce confident output that is simply wrong, and a subtly wrong proof is worthless. Checking it by hand is slow, expert work. Lean removes that bottleneck. If the model writes its proof <em>in Lean</em>, the kernel (lesson 2) either accepts it or rejects it, and nobody has to read it to know which. An untrusted, tireless generator paired with a cheap, strict checker turns out to be an extremely productive combination — and from 2024 on, a lot of money and attention followed.</p>
+
+  <p>It's the same idea as the end of lesson 5 — you don't have to trust the contributor, because the checker verifies the work — with the contributor swapped for a machine.</p>
+
+  <h2>Why the pairing works</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th></th><th>Language model</th><th>Lean</th></tr>
+      <tr><td>Coming up with a proof</td><td>Fast, creative, tireless</td><td>Can't — it only checks</td></tr>
+      <tr><td>Being right</td><td>No guarantee at all</td><td>Guaranteed, relative to a small kernel</td></tr>
+      <tr><td>When it fails</td><td>Fails silently — wrong answers look like right ones</td><td>Fails loudly — a precise error at a precise line</td></tr>
+    </table>
+  </div>
+
+  <p>The third row matters as much as the second. A rejected proof comes back with a specific error message, which the model can read and try again. That makes a loop: generate, check, read the error, repair, repeat — thousands of times, unattended, with no human in the loop until the checker says yes. Any engineer who has watched a coding agent iterate against a test suite knows this loop; the difference is that a passing proof means "correct for all inputs", not "correct for the cases someone thought to test".</p>
+
+  <p>In the words of Leonardo de Moura, Lean's creator: "The piece of Lean you actually have to trust is tiny."<sup class="cite"><a href="#s1">[1]</a></sup></p>
+
+  <h2>What happened, in order</h2>
+
+  <div class="chain">
+    <div class="chain-node main">
+      <div class="n-title">July 2024 — AlphaProof, silver-medal level</div>
+      <div class="n-note">Google DeepMind's system scores 28 of 42 on that year's International Mathematical Olympiad (IMO), the hardest high-school math competition — one point short of gold. It works in Lean: humans translated the problems into Lean by hand, and the system searched for proofs the kernel would accept, taking up to three days on a problem.<sup class="cite"><a href="#s2">[2]</a></sup> This is the moment the wider AI world noticed Lean.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">July 2025 — IMO gold, two different ways</div>
+      <div class="n-note">Four systems reach gold-medal level, each solving 5 of 6 problems. OpenAI's and Google's (Gemini Deep Think) wrote proofs in plain English, graded by humans.<sup class="cite"><a href="#s3">[3]</a></sup><sup class="cite"><a href="#s4">[4]</a></sup> Harmonic's "Aristotle" and ByteDance's "Seed-Prover" wrote proofs in Lean — proofs that, as Harmonic put it, "did not require human checking since they were formally verified".<sup class="cite"><a href="#s5">[5]</a></sup><sup class="cite"><a href="#s6">[6]</a></sup> Worth noticing: Lean wasn't <em>required</em> to solve the problems. What it removed was the need for graders.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">Feb–Mar 2026 — an AI finishes sphere packing</div>
+      <div class="n-note">The human project from lesson 5 had been running for two years. Math, Inc.'s system "Gauss" proved the remaining results for the 8-dimensional case in five days, then formalized the 24-dimensional case in two weeks.<sup class="cite"><a href="#s7">[7]</a></sup><sup class="cite"><a href="#s8">[8]</a></sup></div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">May 2026 — open problems start to fall</div>
+      <div class="n-note">A DeepMind agent resolves 9 of 353 open Erdős problems (a famous collection of unsolved questions) and 44 of 492 open conjectures from an integer-sequence database, all Lean-verified, at a reported cost of a few hundred dollars per problem.<sup class="cite"><a href="#s9">[9]</a></sup> A small percentage — but these are new results, not exam questions with known answers.</div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">September 4, 2026 — Fermat's Last Theorem, in 11 days</div>
+      <div class="n-note">Anthropic announces what it calls "the first end-to-end, computer-checked proof" of Fermat's Last Theorem: 13 million lines of Lean, produced by a group of AI agents "in 11 days, working largely autonomously".<sup class="cite"><a href="#s10">[10]</a></sup> This is the theorem Kevin Buzzard's five-year human project (lesson 5) was funded to formalize. Buzzard's post the same day is titled "FLT: Anthropic has beaten me to it". He downloaded it and checked it himself — "it checks out" — and added, dryly: "I was given £1M to run my project over 5 years; Anthropic took only 11 days but I do wonder if they spent more money…"<sup class="cite"><a href="#s11">[11]</a></sup></div>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">read this result correctly</span>
+    The FLT formalization contains no new mathematics, and both sides say so. Anthropic: "what's novel here is the <em>verification</em>".<sup class="cite"><a href="#s10">[10]</a></sup> Buzzard: mathematically it "tells us essentially nothing" — it follows a proof humans wrote in the 1990s.<sup class="cite"><a href="#s11">[11]</a></sup> What it shows is how cheap <em>formalizing known mathematics</em> has become. Lesson 7 is entirely about reading results like this without over- or under-reacting.
+  </div>
+
+  <h2>The money</h2>
+
+  <p>A group of startups now exists whose whole product is "AI that proves things in Lean". Harmonic raised $120M at a $1.45B valuation in November 2025.<sup class="cite"><a href="#s12">[12]</a></sup> <span class="asof">as of Nov 2026</span> Math, Inc. (Gauss) and Axiom are in the same space. This is a large part of why Lean shows up in tech news rather than only in math departments.</p>
+
+  <h2>Why a software engineer should care</h2>
+
+  <p>Everything above is about mathematics. But recall from lesson 1 that Lean is also a programming language, and that "this function is correct" is a theorem like any other. The same loop applies to code — and code is where AI generation is already outrunning human review.</p>
+
+  <p>Martin Kleppmann (author of <em>Designing Data-Intensive Applications</em>) made the prediction in December 2025: "AI will bring formal verification, which for decades has been a bit of a fringe pursuit, into the software engineering mainstream."<sup class="cite"><a href="#s13">[13]</a></sup> His reasoning has two halves. Verification was always too expensive because proofs took scarce experts months — AI makes writing the proofs cheap. And AI-written code makes verification more <em>wanted</em>: "I'd much rather have the AI prove to me that the code it has generated is correct" than review it line by line.<sup class="cite"><a href="#s13">[13]</a></sup></p>
+
+  <p>De Moura makes the same argument more bluntly: "It will get worse, and it will get worse fast, unless verification scales with generation."<sup class="cite"><a href="#s14">[14]</a></sup> (He is Lean's architect, so read that as advocacy — but it's advocacy with deployments behind it.) Amazon's Cedar, the language behind AWS authorization policies, keeps a Lean model of its core with proofs about it, and "no new Cedar version is released unless its model, proofs, and differential tests are current."<sup class="cite"><a href="#s15">[15]</a></sup> And the math-AI companies are following the money toward software: during autumn 2026 Harmonic announced verification for C, Verilog, and Rust.<sup class="cite"><a href="#s16">[16]</a></sup></p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Explain to a colleague, in two or three sentences, why LLMs and Lean fit together.</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>An LLM can generate proofs (or code) quickly but can't be trusted — it may be confidently wrong, and checking by hand is slow. Lean can't generate anything but checks mechanically, and rejects with a precise error. Put together you get a loop — generate, check, repair — that runs unattended and only stops on output that is actually verified, so nobody has to trust the model.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② At IMO 2025, some gold-level AI systems answered in plain English and some in Lean. What did the Lean-based ones gain?</p>
+    <button class="quiz-opt" data-key="a">They solved more problems</button>
+    <button class="quiz-opt" data-key="b">Their answers didn't need human graders — the kernel had already checked them</button>
+    <button class="quiz-opt" data-key="c">They were faster</button>
+    <p class="quiz-why" hidden>All four solved the same 5 of 6. The natural-language systems needed expert humans to grade the proofs; the Lean ones arrived already verified. Lean's contribution isn't raw problem-solving power — it's removing the trust step.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ What is the right one-line reading of the September 2026 Fermat's Last Theorem result?</p>
+    <button class="quiz-opt" data-key="a">AI formalized a known human proof at a speed and scale no human team could match — new verification, not new mathematics</button>
+    <button class="quiz-opt" data-key="b">AI discovered a new proof of Fermat's Last Theorem</button>
+    <button class="quiz-opt" data-key="c">AI showed the 1990s proof had errors</button>
+    <p class="quiz-why" hidden>The agents followed a published 1990s exposition of the existing proof. The news is the cost collapse: a five-year, £1M human formalization target was reached in 11 days. Both Anthropic and Buzzard are explicit that no new mathematics came out of it.</p>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Want to go deeper on any single event here — how AlphaProof actually searches, what the FLT agent setup looked like, or how Cedar's "verification-guided development" works day to day? Each could be its own lesson; say the word.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://leodemoura.github.io/blog/2026-3-16-who-watches-the-provers">Who watches the provers? — Leonardo de Moura, Mar 16, 2026</a></span><br>
+    <span id="s2">[2] <a href="https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/">AI achieves silver-medal standard solving International Mathematical Olympiad problems — Google DeepMind, Jul 25, 2024</a></span><br>
+    <span id="s3">[3] <a href="https://simonwillison.net/2025/Jul/19/openai-gold-medal-math-olympiad/">OpenAI's gold medal performance on the International Math Olympiad — Simon Willison, Jul 19, 2025</a></span><br>
+    <span id="s4">[4] <a href="https://deepmind.google/discover/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/">Advanced version of Gemini with Deep Think officially achieves gold-medal standard at the IMO — Google DeepMind, Jul 21, 2025</a></span><br>
+    <span id="s5">[5] <a href="https://harmonic.fun/news/imo-ios">Aristotle achieves gold-medal-level performance at the IMO — Harmonic, Jul 28, 2025</a></span><br>
+    <span id="s6">[6] <a href="https://arxiv.org/abs/2507.23726">Seed-Prover — ByteDance Seed, arXiv 2507.23726, Jul 31, 2025</a></span><br>
+    <span id="s7">[7] <a href="https://www.math.inc/sphere-packing">Sphere packing — Math, Inc.</a></span><br>
+    <span id="s8">[8] <a href="https://spectrum.ieee.org/ai-proof-verification">AI proof verification — IEEE Spectrum, Mar 2, 2026</a></span><br>
+    <span id="s9">[9] <a href="https://arxiv.org/abs/2605.22763">Advancing Mathematics Research with AI-Driven Formal Proof Search — Google DeepMind, arXiv 2605.22763, May 21, 2026</a></span><br>
+    <span id="s10">[10] <a href="https://www.anthropic.com/research/formalizing-fermats-last-theorem">Formalizing Fermat's Last Theorem — Anthropic, Sep 4, 2026</a></span><br>
+    <span id="s11">[11] <a href="https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/">FLT: Anthropic has beaten me to it — Kevin Buzzard, Xena Project blog, Sep 4, 2026</a></span><br>
+    <span id="s12">[12] <a href="https://harmonic.fun/news/series-c/">Harmonic Series C announcement — Nov 25, 2025</a></span><br>
+    <span id="s13">[13] <a href="https://martin.kleppmann.com/2025/12/08/ai-formal-verification.html">Prediction: AI will make formal verification go mainstream — Martin Kleppmann, Dec 8, 2025</a></span><br>
+    <span id="s14">[14] <a href="https://leodemoura.github.io/blog/2026-2-28-when-ai-writes-the-worlds-software-who-verifies-it">When AI Writes the World's Software, Who Verifies It? — Leonardo de Moura, Feb 28, 2026</a></span><br>
+    <span id="s15">[15] <a href="https://lean-lang.org/use-cases/cedar/">Cedar use case — lean-lang.org</a></span><br>
+    <span id="s16">[16] <a href="https://harmonic.fun/news">Harmonic news index (C and Verilog, Oct 27, 2026; Rust, Nov 16, 2026)</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0005-mathematicians-show-up.html">← 5 Mathematicians show up</a>
+    <a href="0007-what-the-checkmark-doesnt-tell-you.html">7 What the checkmark doesn't tell you →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

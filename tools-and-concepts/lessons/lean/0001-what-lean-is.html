@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 1 | What Lean Is</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 1 OF 7</div>
+  <h1>What Lean is</h1>
+  <p class="subtitle">A working definition you can repeat to a colleague, and one eight-line example that shows the whole idea. No history, no theory yet.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p><strong>Lean is a programming language whose compiler can check mathematical proofs.</strong> You can use it like any functional language — define functions, run them, ship a binary. But in the same file, in the same language, you can also write down a precise claim ("this function always returns an even number", "there are infinitely many primes") together with a proof of it, and the compiler will refuse to build unless the proof is actually valid. Not "passes the tests" — valid, for every possible input, with no step skipped.</p>
+
+  <p>The general name for this kind of tool is a <span class="term">proof assistant</span> (also "interactive theorem prover"): software that doesn't find proofs for you, but checks the ones you write, step by step, and tells you exactly what remains to be shown. Lean is one of several proof assistants. It's the one people are talking about, and lessons 4–6 are about why.</p>
+
+  <h2>The whole idea in eight lines</h2>
+
+<pre class="code"><span class="c">-- 1. An ordinary function</span>
+<span class="k">def</span> double (n : Nat) : Nat := n + n
+
+<span class="c">-- 2. Run it</span>
+<span class="k">#eval</span> double 21        <span class="o">-- 42</span>
+
+<span class="c">-- 3. A claim about it, and a proof</span>
+<span class="k">theorem</span> double_eq (n : Nat) : double n = 2 * n := <span class="k">by</span>
+  unfold double
+  omega</pre>
+  <p class="caption">Valid Lean 4. <code>Nat</code> is the type of natural numbers: 0, 1, 2, …</p>
+
+  <p>Part 1 is a function definition that would look at home in Haskell, Scala, or Swift. Part 2 evaluates it.</p>
+
+  <p>Part 3 is the new thing. Read it as: "Theorem, named <code>double_eq</code>: for <em>any</em> natural number <code>n</code>, <code>double n</code> equals <code>2 * n</code>." Everything after <code>:= by</code> is the proof, written as two instructions: <code>unfold double</code> ("replace <code>double n</code> with its definition, <code>n + n</code>") and <code>omega</code> ("this is now simple integer arithmetic — finish it"). These instructions are called <span class="term">tactics</span>: commands that transform what's left to prove until nothing is left.</p>
+
+  <h2>Why that isn't just a unit test</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th></th><th>A test</th><th>A Lean theorem</th></tr>
+      <tr><td>What it says</td><td><code>double(21) == 42</code></td><td><code>double n = 2 * n</code>, for every <code>n</code></td></tr>
+      <tr><td>What it covers</td><td>The inputs you thought of</td><td>All inputs — infinitely many</td></tr>
+      <tr><td>When it's checked</td><td>When the test suite runs</td><td>At compile time, every build</td></tr>
+      <tr><td>If it's wrong</td><td>May pass anyway</td><td>The file does not compile</td></tr>
+    </table>
+  </div>
+
+  <p>Change the theorem to claim <code>double n = 3 * n</code> and Lean rejects the file: <code>omega</code> reports it cannot prove the goal, because the claim is false. There is no way to talk it into accepting. That property — a false statement cannot get through — is the entire value of the tool.</p>
+
+  <h2>"Interactive" is meant literally</h2>
+
+  <p>You don't write a proof blind and submit it. In the editor, as your cursor moves through a proof, a side panel shows the current <span class="term">goal</span> — what remains to be proved at that exact point. After <code>unfold double</code> the panel shows <code>n + n = 2 * n</code>; after <code>omega</code> it shows no goals left. Writing a proof feels less like writing an essay and more like stepping through a debugger until the stack is empty.</p>
+
+  <h2>The same tool does serious mathematics</h2>
+
+  <p>Nothing in that example is specific to programs. A theorem can just as well be about prime numbers, geometry, or infinite-dimensional spaces — the statement is written in the same language and the proof is checked by the same compiler. That's what makes Lean interesting to two audiences who normally share nothing: software people who want code proved correct, and mathematicians who want proofs checked by something more reliable than a tired referee.</p>
+
+  <h2>Basic facts</h2>
+
+  <p>Lean was created by Leonardo de Moura, who started it in 2013 while at Microsoft Research.<sup class="cite"><a href="#s1">[1]</a></sup> The current version, Lean 4, was officially released on September 8, 2023,<sup class="cite"><a href="#s2">[2]</a></sup> and is a ground-up rewrite — in Lean itself.<sup class="cite"><a href="#s3">[3]</a></sup> It is open source, and since July 2023 its development has been led by a dedicated non-profit, the Lean FRO.<sup class="cite"><a href="#s1">[1]</a></sup> (FRO stands for "Focused Research Organization" — more in lesson 4.)</p>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Without looking: what is Lean, in one or two sentences, to an engineer who's never heard of it?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>A programming language whose compiler can also check mathematical proofs. You write ordinary functional code, and alongside it precise claims plus proofs; the build fails unless every proof is valid — for all inputs, not only tested ones.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② What does a proof assistant like Lean do?</p>
+    <button class="quiz-opt" data-key="a">Automatically discovers proofs of any theorem you type in</button>
+    <button class="quiz-opt" data-key="b">Checks a proof you supply, step by step, and shows what's left to prove</button>
+    <button class="quiz-opt" data-key="c">Runs many random inputs to look for counterexamples</button>
+    <p class="quiz-why" hidden>The human (or, as lesson 6 will show, an AI) supplies the proof; Lean checks it. Some tactics, like <code>omega</code>, automate narrow classes of steps, but there's no general "prove this for me" button. And it isn't testing — nothing is sampled.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ In the example, what are <code>unfold double</code> and <code>omega</code>?</p>
+    <button class="quiz-opt" data-key="a">Function calls executed at runtime</button>
+    <button class="quiz-opt" data-key="b">Compiler flags</button>
+    <button class="quiz-opt" data-key="c">Tactics — instructions that transform the current goal until nothing is left to prove</button>
+    <p class="quiz-why" hidden>Tactics run at compile time and exist only to build the proof. <code>unfold</code> expands a definition; <code>omega</code> closes goals that are linear arithmetic over integers and naturals.</p>
+  </div>
+
+  <div class="box make">
+    <span class="label">try it — two minutes, nothing to install</span>
+    Open <a href="https://live.lean-lang.org/">live.lean-lang.org</a>, paste the eight lines, and put your cursor at the end of the <code>unfold double</code> line to see the goal in the right-hand panel. Then change <code>2 * n</code> to <code>3 * n</code> and watch it refuse.
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    The obvious next question is "how can a <em>compiler</em> possibly check a mathematical proof?" That's lesson 2, and the answer is a single, rather beautiful idea.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://lean-lang.org/fro/about/">About the Lean FRO (includes project timeline) — lean-lang.org</a></span><br>
+    <span id="s2">[2] <a href="https://lean-lang.org/doc/reference/latest/releases/v4.0.0/">Lean 4.0.0 release notes (2023-09-08) — Lean Language Reference</a></span><br>
+    <span id="s3">[3] <a href="https://lean-lang.org/papers/lean4.pdf">The Lean 4 Theorem Prover and Programming Language — de Moura &amp; Ullrich, CADE-28, 2021</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0002-propositions-are-types.html">2 Propositions are types →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

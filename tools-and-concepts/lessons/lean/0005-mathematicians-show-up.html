@@ -1,0 +1,120 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 5 | Mathematicians Show Up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 5 OF 7</div>
+  <h1>Mathematicians show up</h1>
+  <p class="subtitle">Proof assistants existed for fifty years without most mathematicians caring. Between 2020 and 2023, two projects changed that — one because of who asked, one because of how fast it went.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>Lesson 3 ended with proof assistants as a specialist craft: real results, but each one a multi-year effort on mathematics that was already decades old. Two Lean projects broke that pattern. In the first, a Fields Medalist asked the Lean community to check a brand-new proof he wasn't sure of himself — and they did. In the second, a just-published research result was fully machine-checked about three weeks after the project started. Along the way, people noticed a side effect that may matter more than the checking: when a machine verifies every contribution, <strong>large groups of strangers can do mathematics together</strong>.</p>
+
+  <h2>2020–2022: the Liquid Tensor Experiment</h2>
+
+  <p>On December 5, 2020, Peter Scholze — a Fields Medalist, the highest honor in mathematics — published a guest post on the blog of Kevin Buzzard, a number theorist at Imperial College London who had been evangelizing Lean to mathematicians. Scholze asked for help formalizing a theorem from his recent work with Dustin Clausen. He called it possibly "my most important theorem to date", admitted "I still have some small lingering doubts" about its proof, and wrote that "being 99.9% sure is not enough".<sup class="cite"><a href="#s1">[1]</a></sup></p>
+
+  <p>Read that again from an engineer's point of view: the author of a critical piece of work is saying that review by the best human experts isn't giving him enough confidence, and he wants it checked by a machine.</p>
+
+  <p>A group led by Johan Commelin took it on. By May 28, 2021 — under six months — they had verified the specific part Scholze was worried about.<sup class="cite"><a href="#s2">[2]</a></sup> The full theorem was finished on July 14, 2022.<sup class="cite"><a href="#s3">[3]</a></sup> Scholze reported that the process also taught him something about his own proof: working through it with the formalizers made clear what "the key thing happening" in the argument actually was.<sup class="cite"><a href="#s2">[2]</a></sup></p>
+
+  <p>Why this mattered: it was <em>current</em> research mathematics, of a notoriously abstract kind, requested by one of the most respected people in the field. "Proof assistants can only handle old textbook results" stopped being a usable objection.</p>
+
+  <h2>2023: PFR, in about three weeks</h2>
+
+  <p>On November 9, 2023, Timothy Gowers, Ben Green, Freddie Manners, and Terence Tao posted a paper proving a long-open conjecture in combinatorics, known as the polynomial Freiman–Ruzsa conjecture, or <span class="term">PFR</span>.<sup class="cite"><a href="#s4">[4]</a></sup> (What the conjecture says doesn't matter here — what matters is that it was a fresh, significant result.) Four days later Tao announced on his blog that he planned to formalize the paper in Lean 4.<sup class="cite"><a href="#s5">[5]</a></sup></p>
+
+  <p>On December 5, 2023 he posted to the project's chat: "As of a few minutes ago, Lean managed to prove <code>PFR_conjecture</code> without any <code>sorry</code>s."<sup class="cite"><a href="#s6">[6]</a></sup> A <span class="term">sorry</span> is Lean's placeholder for "proof goes here, trust me for now" — the file compiles with a warning, so a team can state everything up front and fill the holes in any order. A project is finished when no <code>sorry</code> is left. Another participant in that thread describes the effort as "the three weeks of this project".<sup class="cite"><a href="#s6">[6]</a></sup></p>
+
+  <p>Compare with lesson 3, where landmark formalizations were counted in years.</p>
+
+  <h2>The side effect: collaboration without trust</h2>
+
+  <p>The PFR project was organized with a tool called <span class="term">Blueprint</span>, written by Patrick Massot: a web page that breaks the paper proof into a dependency graph of small lemmas, each linked to its Lean statement and colored by whether it's been proved yet.<sup class="cite"><a href="#s7">[7]</a></sup> Anyone could pick an uncolored node and work on it. If you've used an issue board on an open-source project, it's that — except CI doesn't run tests, it checks proofs.</p>
+
+  <p>That last part is what changes the social structure. Mathematics collaborations have traditionally been tiny, because every co-author has to personally trust every line the others write. Tao's observation after PFR:</p>
+
+  <div class="box primary">
+    <span class="label">Terence Tao, June 2024</span>
+    "Now you can really collaborate with hundreds of people that you've never met before" — and you "don't need to trust them, because they upload code and the Lean compiler verifies it."<sup class="cite"><a href="#s8">[8]</a></sup>
+  </div>
+
+  <p>He then tested the idea at scale. The Equational Theories Project, launched September 25, 2024, set out to settle every "does this algebraic law imply that one?" question among 4,694 laws.<sup class="cite"><a href="#s9">[9]</a></sup> The final paper (December 2025, 34 authors) reports all 22,028,942 implications decided and validated in Lean.<sup class="cite"><a href="#s10">[10]</a></sup> No one could have refereed that by hand.</p>
+
+  <h2>What followed</h2>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="n-title">2024 — Fermat's Last Theorem project starts</div>
+      <div class="n-note">Kevin Buzzard gets a UK research grant — about £1M over five years, running to September 2029 — to formalize a modern proof of the most famous theorem there is.<sup class="cite"><a href="#s11">[11]</a></sup><sup class="cite"><a href="#s12">[12]</a></sup> Keep this one in mind; lesson 6 has a twist.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">July 2025 — Carleson's theorem</div>
+      <div class="n-note">A hard theorem of analysis from 1966, formalized in under 13 months by a team led by Floris van Doorn.<sup class="cite"><a href="#s13">[13]</a></sup></div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">February 2026 — Sphere packing</div>
+      <div class="n-note">The proof that won Maryna Viazovska her Fields Medal (the densest way to pack spheres in 8 dimensions). A human project begun in March 2024 — with Viazovska herself as a participant — was verified in February 2026, with the final stages done by an AI system.<sup class="cite"><a href="#s14">[14]</a></sup> That hand-off is the subject of lesson 6.</div>
+    </div>
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What made the Liquid Tensor Experiment different from the landmark formalizations in lesson 3 (Four Color, Kepler, and so on)?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>It was current research, not a decades-old result — and the request came from the author himself (Scholze, a Fields Medalist), who had real doubts about his own proof and wanted a machine check because human review wasn't enough. It showed proof assistants could be useful to working mathematicians at the frontier, not only for certifying history.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② In a Lean project, what does it mean that a theorem is proved "without any <code>sorry</code>s"?</p>
+    <button class="quiz-opt" data-key="a">The proof compiled without warnings about code style</button>
+    <button class="quiz-opt" data-key="b">No step in the proof, or in anything it depends on, is a "trust me for now" placeholder — it's complete</button>
+    <button class="quiz-opt" data-key="c">The authors have formally apologized for nothing</button>
+    <p class="quiz-why" hidden><code>sorry</code> is a placeholder that lets a file compile with a hole in it. It's what makes blueprint-style parallel work possible — state everything first, fill holes in any order — and "sorry-free" is the definition of done.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ According to Tao, what's the main thing machine checking changes about how mathematics gets done?</p>
+    <button class="quiz-opt" data-key="a">Proofs get shorter</button>
+    <button class="quiz-opt" data-key="b">Mathematicians no longer need to understand their proofs</button>
+    <button class="quiz-opt" data-key="c">You can accept contributions from people you've never met, because you don't have to trust them — the checker verifies their work</button>
+    <p class="quiz-why" hidden>Formal proofs are usually much <em>longer</em> than paper ones. The change is social: verification replaces personal trust, which is what lets a math project run like a large open-source project. Hold on to that idea — in lesson 6 the untrusted contributor stops being a stranger on the internet and becomes an AI.</p>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Curious what a blueprint actually looks like, or what PFR or the liquid tensor theorem say in plain terms? Ask — neither is needed for the next lesson, but both are fun.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://xenaproject.wordpress.com/2020/12/05/liquid-tensor-experiment/">Liquid tensor experiment — Peter Scholze, guest post on the Xena Project blog, Dec 5, 2020</a></span><br>
+    <span id="s2">[2] <a href="https://xenaproject.wordpress.com/2021/06/05/half-a-year-of-the-liquid-tensor-experiment-amazing-developments/">Half a year of the Liquid Tensor Experiment: Amazing developments — Peter Scholze, Jun 5, 2021</a></span><br>
+    <span id="s3">[3] <a href="https://leanprover-community.github.io/blog/posts/lte-final/">Completion of the Liquid Tensor Experiment — Lean community blog, Jul 15, 2022</a></span><br>
+    <span id="s4">[4] <a href="https://arxiv.org/abs/2311.05762">On a conjecture of Marton — Gowers, Green, Manners, Tao, arXiv, Nov 9, 2023</a></span><br>
+    <span id="s5">[5] <a href="https://terrytao.wordpress.com/2023/11/13/on-a-conjecture-of-marton/">On a conjecture of Marton — Terence Tao's blog, Nov 13, 2023</a></span><br>
+    <span id="s6">[6] <a href="https://leanprover-community.github.io/archive/stream/412902-Polynomial-Freiman-Ruzsa-conjecture/topic/Project.20completed!.20.20Thoughts.20and.20reflections.3F.html">"Project completed! Thoughts and reflections?" — PFR stream, Lean Zulip archive, Dec 5, 2023</a></span><br>
+    <span id="s7">[7] <a href="https://terrytao.wordpress.com/2023/11/18/formalizing-the-proof-of-pfr-in-lean4-using-blueprint-a-short-tour/">Formalizing the proof of PFR in Lean4 using Blueprint: a short tour — Terence Tao, Nov 18, 2023</a></span><br>
+    <span id="s8">[8] <a href="https://www.scientificamerican.com/article/ai-will-become-mathematicians-co-pilot/">AI Will Become Mathematicians' "Co-Pilot" — Scientific American interview with Terence Tao, Jun 8, 2024</a></span><br>
+    <span id="s9">[9] <a href="https://terrytao.wordpress.com/2024/09/25/a-pilot-project-in-universal-algebra-to-explore-new-ways-to-collaborate-and-use-machine-assistance/">A pilot project in universal algebra… — Terence Tao, Sep 25, 2024</a></span><br>
+    <span id="s10">[10] <a href="https://arxiv.org/abs/2512.07087">The Equational Theories Project — arXiv 2512.07087, Dec 8, 2025</a></span><br>
+    <span id="s11">[11] <a href="https://github.com/ImperialCollegeLondon/FLT">ImperialCollegeLondon/FLT — project repository</a></span><br>
+    <span id="s12">[12] <a href="https://xenaproject.wordpress.com/2026/09/04/flt-anthropic-has-beaten-me-to-it/">FLT: Anthropic has beaten me to it — Kevin Buzzard, Xena Project blog, Sep 4, 2026</a></span><br>
+    <span id="s13">[13] <a href="https://leanprover-community.github.io/archive/stream/442935-Carleson/topic/Project.20Finish.html">Carleson project finish — Lean Zulip archive, Jul 18, 2025</a></span><br>
+    <span id="s14">[14] <a href="https://arxiv.org/abs/2604.23468">Formalization of the sphere packing proof in dimension 8 — Hariharan, Birkbeck, Lee, Ma, Mehta, Poiroux, Viazovska, arXiv 2604.23468, Apr 25, 2026</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0004-what-lean-did-differently.html">← 4 What Lean did differently</a>
+    <a href="0006-the-ai-collision.html">6 The AI collision →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>

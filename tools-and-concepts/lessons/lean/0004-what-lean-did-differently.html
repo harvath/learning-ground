@@ -1,0 +1,129 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 4 | What Lean Did Differently</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 4 OF 7</div>
+  <h1>What Lean did differently</h1>
+  <p class="subtitle">If the logic is decades old, what's new? Four things, none of them a theorem: a proof assistant that is a real programming language, one library instead of many, modern tooling, and an organization built to maintain it.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>Lean's logic is close to Coq's; a logician would call them cousins. What Lean changed is everything <em>around</em> the logic — the things lesson 3 identified as missing. It was designed by a software-tools person as a programming language first. Its community put all its mathematics into a single, unified library. Its editor experience is what a modern developer expects. And in 2023 it got a funded, full-time engineering organization. Each of those is unglamorous. Together they produced the first proof assistant with an ecosystem.</p>
+
+  <h2>Where it came from</h2>
+
+  <p>Leonardo de Moura was not a type theorist by trade. Before Lean he was the main architect of Z3, Microsoft Research's <span class="term">SMT solver</span> — a tool that automatically decides whether a logical formula can be satisfied, used inside countless program-analysis and verification tools.<sup class="cite"><a href="#s1">[1]</a></sup><sup class="cite"><a href="#s2">[2]</a></sup> He came to proof assistants as someone who builds fast, widely-used automated reasoning software. His stated motive: "We built Lean because we care about software development."<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <div class="chain">
+    <div class="chain-node">
+      <div class="n-title">July 2013 — first commit</div>
+      <div class="n-note">At Microsoft Research.<sup class="cite"><a href="#s4">[4]</a></sup></div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">2017 — Lean 3, and mathlib begins</div>
+      <div class="n-note">Lean 3 is released in January; in July a community of mathematicians starts a shared math library on top of it.<sup class="cite"><a href="#s4">[4]</a></sup> This is the version the mathematicians first fell for.</div>
+    </div>
+    <div class="chain-node">
+      <div class="n-title">2018–2021 — Lean 4 is written</div>
+      <div class="n-note">A complete rewrite, started April 2018, first public milestone January 2021.<sup class="cite"><a href="#s4">[4]</a></sup><sup class="cite"><a href="#s5">[5]</a></sup></div>
+    </div>
+    <div class="chain-node main">
+      <div class="n-title">2023 — everything lands at once</div>
+      <div class="n-note">July: the Lean FRO is founded, and the community finishes moving all of mathlib from Lean 3 to Lean 4. September 8: Lean 4.0.0, the first official release. Also this year, de Moura moves from Microsoft to AWS.<sup class="cite"><a href="#s4">[4]</a></sup><sup class="cite"><a href="#s5">[5]</a></sup><sup class="cite"><a href="#s1">[1]</a></sup></div>
+    </div>
+  </div>
+
+  <h2>1. A proof assistant that is a real programming language</h2>
+
+  <p>The Lean 4 paper's first sentence: "Lean 4 is a reimplementation of the Lean interactive theorem prover (ITP) in Lean itself."<sup class="cite"><a href="#s6">[6]</a></sup> That's the key design decision, and it has two consequences.</p>
+
+  <p><strong>Users can extend the system in the language they already use.</strong> In Lean 3, large parts of the system could only be changed by editing its C++ source. In Lean 4, the paper says, "users can modify and extend the parser, elaborator, tactics, decision procedures, pretty printer, and code generator" — all in Lean.<sup class="cite"><a href="#s6">[6]</a></sup> (The <span class="term">elaborator</span> is the stage that turns the convenient code you write into the fully explicit form the kernel checks.) So a mathematician who needs a new tactic, or notation that matches how their field writes things on a blackboard, writes it as an ordinary library — no compiler hacking, no waiting for the core team. The proof automation people rely on is mostly community-written this way.</p>
+
+  <p><strong>It's fast enough to build real software in.</strong> Lean 4 compiles to C, and uses a memory-management scheme the authors call "functional but in-place": code is written in a pure functional style, but when a value has no other references the compiled program updates it in place rather than copying.<sup class="cite"><a href="#s6">[6]</a></sup> The proof that this is practical is Lean itself — its compiler, build tool, and editor server are written in Lean.<sup class="cite"><a href="#s7">[7]</a></sup></p>
+
+  <p>For the programs-you-want-verified use case, this closes a gap older systems had: the code you prove things about and the code you run are the same code, not a model of it in a separate language.</p>
+
+  <h2>2. One library: mathlib</h2>
+
+  <p><span class="term">mathlib</span> is "a community-driven effort to build a unified library of mathematics formalized in the Lean proof assistant."<sup class="cite"><a href="#s8">[8]</a></sup> The important word is <em>unified</em>. Where earlier ecosystems had many separate libraries (lesson 3), mathlib is one repository with one set of definitions, where — as one contributor put it — "all the pieces work with all the other pieces."<sup class="cite"><a href="#s3">[3]</a></sup> In software terms it's a monorepo with strict review and a single definition of every concept: if you prove something about groups, everyone else's theorems about groups apply to your object automatically.</p>
+
+  <p>The effect is compounding. Each new formalization starts from everything already there, and what it adds becomes available to the next. As of this writing mathlib holds 296,355 theorems and 142,131 definitions from 772 contributors.<sup class="cite"><a href="#s9">[9]</a></sup> <span class="asof">as of Nov 25, 2026</span> In October 2020 the figure was 38,315 theorems.<sup class="cite"><a href="#s3">[3]</a></sup></p>
+
+  <p>One measure of the community's capacity: when Lean 4 broke compatibility with Lean 3, volunteers ported the entire library — on the order of a million lines — in about ten months, finishing in July 2023.<sup class="cite"><a href="#s10">[10]</a></sup></p>
+
+  <h2>3. Tooling a developer would recognize</h2>
+
+  <p>Lean ships with a build system and package manager (<span class="term">Lake</span>), a VS Code extension whose side panel shows the live proof state as you type (the goal view from lesson 1), a zero-install browser playground, and search engines for the library — <a href="https://loogle.lean-lang.org/">Loogle</a> lets you search hundreds of thousands of theorems by the shape of their statement.<sup class="cite"><a href="#s11">[11]</a></sup> None of this is conceptually deep. All of it lowers the cost of getting started from "weeks" to "an afternoon", which decides who shows up.</p>
+
+  <h2>4. An organization</h2>
+
+  <p>The Lean FRO was founded in July 2023 by de Moura and Sebastian Ullrich (co-author of Lean 4) as a non-profit. A <span class="term">Focused Research Organization</span> is a startup-shaped non-profit: a full-time engineering team funded by philanthropy to build something too engineering-heavy for a university lab and not profitable enough for a company. Its backers include the Simons and Sloan foundations and, more recently, AI companies and Amazon.<sup class="cite"><a href="#s4">[4]</a></sup><sup class="cite"><a href="#s12">[12]</a></sup> In July 2025 one donor gave $10M, split between the FRO and mathlib.<sup class="cite"><a href="#s13">[13]</a></sup></p>
+
+  <p>The point: a proof assistant is infrastructure, and infrastructure maintained by a few academics in their spare time doesn't get release engineering, documentation, or performance work. Lean now has about twenty people whose job that is.<sup class="cite"><a href="#s14">[14]</a></sup></p>
+
+  <div class="box warn">
+    <span class="label">keep it honest</span>
+    Lean is not more "powerful" than its predecessors in any logical sense, and it did not win on a technical knockout. Rocq and Isabelle are mature, actively used, and behind most of the verified software in lesson 3. Lean's lead is specifically in mathematics and, lately, in AI — and it's a lead in ecosystem and momentum. In 2025 Lean received the ACM SIGPLAN Programming Languages Software Award, with a citation noting it "has become the de facto choice for AI-based systems of mathematical reasoning."<sup class="cite"><a href="#s15">[15]</a></sup> "De facto" is the right phrase: a network effect, not a proof of superiority.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① Someone says "Lean is a breakthrough in logic." Correct them: what is actually new about Lean?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>The logic is essentially the same family as Coq's, decades old. What's new is around it: (1) Lean 4 is a real, compiled programming language written in itself, so users extend the system in Lean; (2) mathlib, a single unified library where work compounds; (3) modern tooling; (4) a funded full-time organization, the Lean FRO. Engineering and community, not a new theory.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Why does it matter that Lean 4 is implemented in Lean?</p>
+    <button class="quiz-opt" data-key="a">It makes the logic stronger</button>
+    <button class="quiz-opt" data-key="b">Users can write new tactics, syntax, and automation as ordinary Lean libraries, without touching a C++ core</button>
+    <button class="quiz-opt" data-key="c">It means the kernel no longer needs to be trusted</button>
+    <p class="quiz-why" hidden>Self-hosting makes the system extensible by its own community and demonstrates the language is fast enough for real software. It changes nothing about the logic, and the kernel is still the trusted part.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">③ What's the main advantage of mathlib being one unified library rather than many separate ones?</p>
+    <button class="quiz-opt" data-key="a">Work compounds — every new result builds on, and is usable with, everything already there</button>
+    <button class="quiz-opt" data-key="b">It compiles faster</button>
+    <button class="quiz-opt" data-key="c">It avoids needing a kernel</button>
+    <p class="quiz-why" hidden>One definition of each concept means everyone's theorems interoperate. (It does <em>not</em> compile fast — a monolith that size is slow to build and painful when things change underneath it; that's the price.)</p>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    So by 2020 the pieces existed: a good tool, a growing library, a small enthusiastic community. What it didn't have yet was a reason for anyone outside that community to care. Lesson 5 is how it got one.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://leodemoura.github.io/about/">About — Leonardo de Moura</a></span><br>
+    <span id="s2">[2] <a href="https://www.microsoft.com/en-us/research/project/z3-3/">Z3 — Microsoft Research</a></span><br>
+    <span id="s3">[3] <a href="https://www.quantamagazine.org/building-the-mathematical-library-of-the-future-20201001/">Building the Mathematical Library of the Future — Quanta Magazine, Oct 1, 2020</a></span><br>
+    <span id="s4">[4] <a href="https://lean-lang.org/fro/about/">About the Lean FRO (includes project timeline) — lean-lang.org</a></span><br>
+    <span id="s5">[5] <a href="https://lean-lang.org/doc/reference/latest/releases/v4.0.0/">Lean 4.0.0 release notes — Lean Language Reference</a></span><br>
+    <span id="s6">[6] <a href="https://lean-lang.org/papers/lean4.pdf">The Lean 4 Theorem Prover and Programming Language — de Moura &amp; Ullrich, CADE-28, 2021</a></span><br>
+    <span id="s7">[7] <a href="https://lean-lang.org/doc/reference/latest/">The Lean Language Reference</a></span><br>
+    <span id="s8">[8] <a href="https://mathlib.org/">mathlib.org</a></span><br>
+    <span id="s9">[9] <a href="https://mathlib.org/mathlib_stats.html">Mathlib statistics (read Nov 25, 2026)</a></span><br>
+    <span id="s10">[10] <a href="https://arxiv.org/abs/2508.21593">Growing Mathlib — arXiv 2508.21593, 2025</a></span><br>
+    <span id="s11">[11] <a href="https://leanprover-community.github.io/blog/posts/searching-for-theorems-in-mathlib/">Searching for Theorems in Mathlib — Lean community blog, Jun 25, 2025</a></span><br>
+    <span id="s12">[12] <a href="https://lean-lang.org/fro/">Lean FRO — mission and supporters</a></span><br>
+    <span id="s13">[13] <a href="https://www.renaissancephilanthropy.org/insights/lean-fro-and-mathlib-receive-10m-from-xtx-markets-founder-alex-gerko-to-further-advance-the-use-of-ai-for-mathematical-research">Lean FRO and Mathlib receive $10M from Alex Gerko — Renaissance Philanthropy, Jul 24, 2025</a></span><br>
+    <span id="s14">[14] <a href="https://lean-lang.org/fro/team/">Lean FRO team</a></span><br>
+    <span id="s15">[15] <a href="https://www.sigplan.org/Awards/Software/">Programming Languages Software Award — ACM SIGPLAN</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0003-fifty-years-before-lean.html">← 3 Fifty years before Lean</a>
+    <a href="0005-mathematicians-show-up.html">5 Mathematicians show up →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
