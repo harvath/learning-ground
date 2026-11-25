@@ -6,7 +6,7 @@
 
 <div class="wrap">
 
-  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 1 OF 7</div>
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 1 OF 8</div>
   <h1>What Lean is</h1>
   <p class="subtitle">A working definition you can repeat to a colleague, and one eight-line example that shows the whole idea. No history, no theory yet.</p>
 
@@ -14,7 +14,7 @@
 
   <p><strong>Lean is a programming language whose compiler can check mathematical proofs.</strong> You can use it like any functional language — define functions, run them, ship a binary. But in the same file, in the same language, you can also write down a precise claim ("this function always returns an even number", "there are infinitely many primes") together with a proof of it, and the compiler will refuse to build unless the proof is actually valid. Not "passes the tests" — valid, for every possible input, with no step skipped.</p>
 
-  <p>The general name for this kind of tool is a <span class="term">proof assistant</span> (also "interactive theorem prover"): software that doesn't find proofs for you, but checks the ones you write, step by step, and tells you exactly what remains to be shown. Lean is one of several proof assistants. It's the one people are talking about, and lessons 4–6 are about why.</p>
+  <p>The general name for this kind of tool is a <span class="term">proof assistant</span> (also "interactive theorem prover"): software that doesn't find proofs for you, but checks the ones you write, step by step, and tells you exactly what remains to be shown. Lean is one of several proof assistants. It's the one people are talking about, and lessons 4–7 are about why.</p>
 
   <h2>The whole idea in eight lines</h2>
 
@@ -73,7 +73,7 @@
     <button class="quiz-opt" data-key="a">Automatically discovers proofs of any theorem you type in</button>
     <button class="quiz-opt" data-key="b">Checks a proof you supply, step by step, and shows what's left to prove</button>
     <button class="quiz-opt" data-key="c">Runs many random inputs to look for counterexamples</button>
-    <p class="quiz-why" hidden>The human (or, as lesson 6 will show, an AI) supplies the proof; Lean checks it. Some tactics, like <code>omega</code>, automate narrow classes of steps, but there's no general "prove this for me" button. And it isn't testing — nothing is sampled.</p>
+    <p class="quiz-why" hidden>The human (or, as lesson 7 will show, an AI) supplies the proof; Lean checks it. Some tactics, like <code>omega</code>, automate narrow classes of steps, but there's no general "prove this for me" button. And it isn't testing — nothing is sampled.</p>
   </div>
 
   <div class="quiz" data-answer="c">

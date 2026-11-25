@@ -37,6 +37,35 @@ Grouped by set. Every entry is "good as of the date it was checked". The AI-rela
 - [ACM SIGPLAN Programming Languages Software Award](https://www.sigplan.org/Awards/Software/) — 2025, Lean; "de facto choice for AI-based systems of mathematical reasoning".
 - [Lean FRO and Mathlib receive $10M — Renaissance Philanthropy, Jul 24, 2025](https://www.renaissancephilanthropy.org/insights/lean-fro-and-mathlib-receive-10m-from-xtx-markets-founder-alex-gerko-to-further-advance-the-use-of-ai-for-mathematical-research)
 
+## Neighbouring tools (lesson 5 — research pass 2026-11-25)
+
+Design modelling and model checking
+- [TLA+ home](https://lamport.azurewebsites.net/tla/tla.html) and [A High-Level View of TLA+](https://lamport.azurewebsites.net/tla/high-level-view.html) — Lamport's own pages. [Tools](https://lamport.azurewebsites.net/tla/tools.html): TLC (explicit-state model checker), [Apalache](https://apalache-mc.org/) (symbolic, uses Z3), [TLAPS](https://proofs.tlapl.us/doc/web/content/Home.html) (proof checker), PlusCal. [Industrial use](https://lamport.azurewebsites.net/tla/industrial-use.html): Intel, Xbox 360, Cosmos DB, Elastic, Kafka.
+- [Use of Formal Methods at Amazon Web Services — Newcombe et al., 2014](https://lamport.azurewebsites.net/tla/formal-methods-amazon.pdf) — the table of S3/DynamoDB/EBS bugs. CACM version (Apr 2015) not fetched directly; [Lamport's excerpt](https://lamport.azurewebsites.net/tla/amazon-excerpt.html) has the 35-step trace line.
+- [TLA+ Foundation launch — Linux Foundation, Apr 21, 2023](https://www.linuxfoundation.org/press/linux-foundation-launches-tlafoundation); [GenAI-accelerated TLA+ challenge](https://foundation.tlapl.us/challenge/index.html) (2025; winner Specula). [SysMoBench — arXiv 2509.23130](https://arxiv.org/abs/2509.23130): LLM-written TLA+ on real systems.
+- [Conformance checking at MongoDB — Jun 2, 2025](https://www.mongodb.com/company/blog/engineering/conformance-checking-at-mongodb-testing-our-code-matches-our-tla-specs) — an honest account of how hard it is to tie a TLA+ spec to real code.
+- [P](https://p-org.github.io/P/) and its [case studies](https://p-org.github.io/P/casestudies/) (S3 strong consistency); [Alloy](https://alloytools.org/).
+- Hillel Wayne: [Why Don't People Use Formal Methods? (2019)](https://www.hillelwayne.com/post/why-dont-people-use-formal-methods/) and [The Business Case for Formal Methods (2020)](https://www.hillelwayne.com/post/business-case-formal-methods/) — the best practitioner writing on design-level vs code-level verification. [Marc Brooker — Formal Methods: Just Good Engineering Practice?](http://brooker.co.za/blog/2024/04/17/formal/) groups spec languages / deterministic simulation / verification-aware languages.
+- ["Lean vs TLA+" thread, tlaplus list, Mar 2020](https://groups.google.com/g/tlaplus/c/R8FAk9tjRoc)
+
+Solvers and Lean's automation
+- [Z3](https://www.microsoft.com/en-us/research/project/z3-3/), [cvc5](https://cvc5.github.io/).
+- [The grind tactic](https://lean-lang.org/doc/reference/latest/The--grind--tactic/) and the [tactic reference](https://lean-lang.org/doc/reference/latest/Tactic-Proofs/Tactic-Reference/) (`bv_decide`, `lia`, `decide`). Bridges to external provers: [lean-smt](https://github.com/ufmg-smite/lean-smt), [Lean-auto](https://github.com/leanprover-community/lean-auto), [LeanHammer](https://github.com/JOSHCLUNE/LeanHammer).
+
+Code verifiers
+- [Dafny](https://dafny.org/); [Formally verified cloud-scale authorization (AWS, ICSE 2025)](https://www.amazon.science/publications/formally-verified-cloud-scale-authorization); [How we built Cedar (Dafny era, May 2023)](https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing).
+- Rust: [Verus](https://github.com/verus-lang/verus), [Kani](https://github.com/model-checking/kani), [Prusti](https://github.com/viperproject/prusti-dev), [Creusot](https://github.com/creusot-rs/creusot); [verify-rust-std](https://github.com/model-checking/verify-rust-std) and the [Rust Foundation announcement, Nov 20, 2024](http://rustfoundation.org/news/rust-foundation-collaborates-with-aws-initiative-to-verify-rust-standard-libraries). Into Lean: [Aeneas](https://github.com/AeneasVerif/aeneas), [hax](https://github.com/cryspen/hax).
+- [F*](https://fstar-lang.org/) and [HACL*](https://hacl-star.github.io/); [Liquid Haskell](https://ucsd-progsys.github.io/liquidhaskell/); [Why3](https://www.why3.org/); [Frama-C](https://frama-c.com/); SPARK/Ada.
+
+Other provers and languages
+- [Agda](https://en.wikipedia.org/wiki/Agda_(programming_language)), [Idris](https://www.idris-lang.org/); Mizar, [Metamath](https://us.metamath.org/).
+
+AI across these tools
+- [A benchmark for vericoding — arXiv 2509.22908, Sep 26, 2025](https://arxiv.org/abs/2509.22908) — Dafny 82% / Verus 44% / Lean 27% for off-the-shelf LLMs. Will date fast. Also [DafnyBench](https://arxiv.org/abs/2406.08467), [AutoVerus](https://arxiv.org/abs/2409.13082), [Verina](https://arxiv.org/abs/2505.23135), [CLEVER](https://arxiv.org/abs/2505.13938).
+
+Lightweight end
+- [QuickCheck](https://www.cse.chalmers.se/~rjmh/QuickCheck/), [OSS-Fuzz](https://google.github.io/oss-fuzz/), deterministic simulation: [FoundationDB](https://apple.github.io/foundationdb/testing.html), [Antithesis](https://antithesis.com/docs/resources/deterministic_simulation_testing/), [TigerBeetle](https://docs.tigerbeetle.com/concepts/safety/).
+
 ## Mathematics milestones
 - Liquid Tensor Experiment: [Scholze's challenge, Dec 5, 2020](https://xenaproject.wordpress.com/2020/12/05/liquid-tensor-experiment/); [half-year report, Jun 5, 2021](https://xenaproject.wordpress.com/2021/06/05/half-a-year-of-the-liquid-tensor-experiment-amazing-developments/); [completion, Jul 15, 2022](https://leanprover-community.github.io/blog/posts/lte-final/).
 - PFR: [paper, Nov 9, 2023](https://arxiv.org/abs/2311.05762); [Tao's Blueprint tour](https://terrytao.wordpress.com/2023/11/18/formalizing-the-proof-of-pfr-in-lean4-using-blueprint-a-short-tour/); [completion thread, Dec 5, 2023](https://leanprover-community.github.io/archive/stream/412902-Polynomial-Freiman-Ruzsa-conjecture/topic/Project.20completed!.20.20Thoughts.20and.20reflections.3F.html).

@@ -6,7 +6,7 @@
 
 <div class="wrap">
 
-  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 2 OF 7</div>
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 2 OF 8</div>
   <h1>The idea underneath: propositions are types</h1>
   <p class="subtitle">How a compiler can check a proof — and why you only have to trust a very small part of it. This is the one concept lesson in the set; everything else is story.</p>
 
@@ -81,7 +81,7 @@
 
   <p>If you know cryptography or complexity theory, you've seen this shape: finding a solution is hard and can be done by anyone, however unreliable; <em>verifying</em> a solution is easy and is done by a small trusted checker. Verifying a signature doesn't require trusting whoever handed it to you.</p>
 
-  <p>The principle is older than Lean. It's called the <span class="term">de Bruijn criterion</span>, after N.G. de Bruijn, whose Automath project (begun 1967) first made a point of it: a proof assistant should produce a proof object checkable by a program simple enough that "a skeptic user could easily write him/herself."<sup class="cite"><a href="#s4">[4]</a></sup> People have done exactly that for Lean — there are independent re-implementations of its kernel, in Rust and in Lean itself, so one checker's bug is unlikely to be shared by the others.<sup class="cite"><a href="#s3">[3]</a></sup> (Lesson 7 looks at what happened when that assumption was tested.)</p>
+  <p>The principle is older than Lean. It's called the <span class="term">de Bruijn criterion</span>, after N.G. de Bruijn, whose Automath project (begun 1967) first made a point of it: a proof assistant should produce a proof object checkable by a program simple enough that "a skeptic user could easily write him/herself."<sup class="cite"><a href="#s4">[4]</a></sup> People have done exactly that for Lean — there are independent re-implementations of its kernel, in Rust and in Lean itself, so one checker's bug is unlikely to be shared by the others.<sup class="cite"><a href="#s3">[3]</a></sup> (Lesson 8 looks at what happened when that assumption was tested.)</p>
 
   <h2>Check it sticks</h2>
 
@@ -110,7 +110,7 @@
   <div class="recall">
     <p class="recall-q">④ In your own words: what is the de Bruijn criterion, and why does it matter if an AI is writing the proofs?</p>
     <button class="recall-show">Reveal answer</button>
-    <div class="recall-a" hidden>A proof assistant should output proofs that a small, simple, independent program can check — so trust rests on that small checker, not on the big system. It matters for AI because the proof's author no longer needs to be trusted at all: however the proof was generated, it either passes the kernel or it doesn't. (This is the heart of lesson 6.)</div>
+    <div class="recall-a" hidden>A proof assistant should output proofs that a small, simple, independent program can check — so trust rests on that small checker, not on the big system. It matters for AI because the proof's author no longer needs to be trusted at all: however the proof was generated, it either passes the kernel or it doesn't. (This is the heart of lesson 7.)</div>
   </div>
 
   <div class="box primary">

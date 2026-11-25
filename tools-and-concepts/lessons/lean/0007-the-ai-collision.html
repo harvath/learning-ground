@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="../../assets/lesson.css">
-<title>Lean 6 | The AI Collision</title>
+<title>Lean 7 | The AI Collision</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../../assets/quiz.js"></script>
 <script src="../../assets/recall.js"></script>
 
 <div class="wrap">
 
-  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 6 OF 7</div>
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 7 OF 8</div>
   <h1>The AI collision</h1>
   <p class="subtitle">This is the lesson that answers "why is everyone suddenly talking about Lean?" Short version: language models are good at producing proofs and bad at being trusted. Lean is the opposite.</p>
 
@@ -14,7 +14,7 @@
 
   <p>A large language model can write a plausible-looking proof — or plausible-looking code — in seconds. The problem is "plausible-looking": the model can <span class="term">hallucinate</span>, meaning produce confident output that is simply wrong, and a subtly wrong proof is worthless. Checking it by hand is slow, expert work. Lean removes that bottleneck. If the model writes its proof <em>in Lean</em>, the kernel (lesson 2) either accepts it or rejects it, and nobody has to read it to know which. An untrusted, tireless generator paired with a cheap, strict checker turns out to be an extremely productive combination — and from 2024 on, a lot of money and attention followed.</p>
 
-  <p>It's the same idea as the end of lesson 5 — you don't have to trust the contributor, because the checker verifies the work — with the contributor swapped for a machine.</p>
+  <p>It's the same idea as the end of lesson 6 — you don't have to trust the contributor, because the checker verifies the work — with the contributor swapped for a machine.</p>
 
   <h2>Why the pairing works</h2>
 
@@ -44,7 +44,7 @@
     </div>
     <div class="chain-node">
       <div class="n-title">Feb–Mar 2026 — an AI finishes sphere packing</div>
-      <div class="n-note">The human project from lesson 5 had been running for two years. Math, Inc.'s system "Gauss" proved the remaining results for the 8-dimensional case in five days, then formalized the 24-dimensional case in two weeks.<sup class="cite"><a href="#s7">[7]</a></sup><sup class="cite"><a href="#s8">[8]</a></sup></div>
+      <div class="n-note">The human project from lesson 6 had been running for two years. Math, Inc.'s system "Gauss" proved the remaining results for the 8-dimensional case in five days, then formalized the 24-dimensional case in two weeks.<sup class="cite"><a href="#s7">[7]</a></sup><sup class="cite"><a href="#s8">[8]</a></sup></div>
     </div>
     <div class="chain-node">
       <div class="n-title">May 2026 — open problems start to fall</div>
@@ -52,13 +52,13 @@
     </div>
     <div class="chain-node main">
       <div class="n-title">September 4, 2026 — Fermat's Last Theorem, in 11 days</div>
-      <div class="n-note">Anthropic announces what it calls "the first end-to-end, computer-checked proof" of Fermat's Last Theorem: 13 million lines of Lean, produced by a group of AI agents "in 11 days, working largely autonomously".<sup class="cite"><a href="#s10">[10]</a></sup> This is the theorem Kevin Buzzard's five-year human project (lesson 5) was funded to formalize. Buzzard's post the same day is titled "FLT: Anthropic has beaten me to it". He downloaded it and checked it himself — "it checks out" — and added, dryly: "I was given £1M to run my project over 5 years; Anthropic took only 11 days but I do wonder if they spent more money…"<sup class="cite"><a href="#s11">[11]</a></sup></div>
+      <div class="n-note">Anthropic announces what it calls "the first end-to-end, computer-checked proof" of Fermat's Last Theorem: 13 million lines of Lean, produced by a group of AI agents "in 11 days, working largely autonomously".<sup class="cite"><a href="#s10">[10]</a></sup> This is the theorem Kevin Buzzard's five-year human project (lesson 6) was funded to formalize. Buzzard's post the same day is titled "FLT: Anthropic has beaten me to it". He downloaded it and checked it himself — "it checks out" — and added, dryly: "I was given £1M to run my project over 5 years; Anthropic took only 11 days but I do wonder if they spent more money…"<sup class="cite"><a href="#s11">[11]</a></sup></div>
     </div>
   </div>
 
   <div class="box warn">
     <span class="label">read this result correctly</span>
-    The FLT formalization contains no new mathematics, and both sides say so. Anthropic: "what's novel here is the <em>verification</em>".<sup class="cite"><a href="#s10">[10]</a></sup> Buzzard: mathematically it "tells us essentially nothing" — it follows a proof humans wrote in the 1990s.<sup class="cite"><a href="#s11">[11]</a></sup> What it shows is how cheap <em>formalizing known mathematics</em> has become. Lesson 7 is entirely about reading results like this without over- or under-reacting.
+    The FLT formalization contains no new mathematics, and both sides say so. Anthropic: "what's novel here is the <em>verification</em>".<sup class="cite"><a href="#s10">[10]</a></sup> Buzzard: mathematically it "tells us essentially nothing" — it follows a proof humans wrote in the 1990s.<sup class="cite"><a href="#s11">[11]</a></sup> What it shows is how cheap <em>formalizing known mathematics</em> has become. Lesson 8 is entirely about reading results like this without over- or under-reacting.
   </div>
 
   <h2>The money</h2>
@@ -123,8 +123,8 @@
   </p>
 
   <div class="nav">
-    <a href="0005-mathematicians-show-up.html">← 5 Mathematicians show up</a>
-    <a href="0007-what-the-checkmark-doesnt-tell-you.html">7 What the checkmark doesn't tell you →</a>
+    <a href="0006-mathematicians-show-up.html">← 6 Mathematicians show up</a>
+    <a href="0008-what-the-checkmark-doesnt-tell-you.html">8 What the checkmark doesn't tell you →</a>
     <a href="../../index.html">Course index</a>
   </div>
 

@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="../../assets/lesson.css">
+<title>Lean 5 | Where Lean Sits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/quiz.js"></script>
+<script src="../../assets/recall.js"></script>
+
+<div class="wrap">
+
+  <div class="kicker">TOOLS &amp; CONCEPTS · LEAN — LESSON 5 OF 8</div>
+  <h1>Where Lean sits: TLA+, Dafny, and the other neighbours</h1>
+  <p class="subtitle">Conversations about Lean keep naming other tools — TLA+, Z3, Dafny, Verus, Kani, F*, Agda. This lesson is the map: what each one is, and the two questions that tell you which neighbourhood it lives in.</p>
+
+  <h2>The 30-second version</h2>
+
+  <p>Lean belongs to a wider family usually called <span class="term">formal methods</span>: tools that use mathematics, rather than running examples, to show software does what it should. They differ on two questions.</p>
+
+  <p><strong>What is being checked</strong> — a simplified <em>model</em> of the design, or the <em>actual code</em>? And <strong>who does the proving</strong> — a tool, automatically, within limits; or a person (or AI) guiding a proof step by step, without limits?</p>
+
+  <p>Lean's answer is the most demanding on both: it can check anything you can state, including the real code, with a guided proof and a tiny trusted kernel. Its neighbours each give up part of that in exchange for being much cheaper to use. That trade is why they exist, and why most industrial verification so far has been done with them rather than with a proof assistant.</p>
+
+  <h2>The map</h2>
+
+  <div class="tablewrap">
+    <table class="cmp">
+      <tr><th>Neighbourhood</th><th>Names you'll hear</th><th>Checks</th><th>Who proves</th><th>You get</th></tr>
+      <tr><td>Design model checkers</td><td>TLA+, P, Alloy</td><td>A model of the design</td><td>Tool, automatically</td><td>Design bugs found, with a step-by-step trace; says nothing about your code</td></tr>
+      <tr><td>Solvers</td><td>Z3, cvc5</td><td>A logical formula</td><td>Tool, automatically</td><td>The engine inside most of the other tools</td></tr>
+      <tr><td>Verification-aware languages and code verifiers</td><td>Dafny, Verus, Kani, F*</td><td>Real code</td><td>Mostly automatic; you add annotations</td><td>Code proved against its spec, as long as the solver can manage it</td></tr>
+      <tr><td>Proof assistants</td><td>Lean, Rocq, Isabelle (and Agda, Idris)</td><td>Anything statable</td><td>You, step by step</td><td>The strongest guarantee, for the most effort</td></tr>
+    </table>
+  </div>
+
+  <h2>1. TLA+ and model checking: check the design, not the code</h2>
+
+  <p><span class="term">TLA+</span> is a language created by Leslie Lamport for "writing precise high-level models of what code does and how it does it."<sup class="cite"><a href="#s1">[1]</a></sup> You don't write your system in it. You write a short description of the <em>design</em> — the possible states and the allowed steps between them, essentially a state machine — plus the properties that must always hold ("two nodes never both believe they're the leader").</p>
+
+  <p>Then a <span class="term">model checker</span> takes over. Model checking means checking a finite-state model against a specification by exploring its states exhaustively.<sup class="cite"><a href="#s2">[2]</a></sup> As one practitioner puts it: "Instead of writing a proof that a design is correct, we just brute force the state space."<sup class="cite"><a href="#s3">[3]</a></sup> TLA+'s standard checker, TLC, tries every interleaving of every step for a small configuration (say, three nodes and two messages), and if a property can be violated it hands you the exact sequence of events that does it.</p>
+
+  <p>That last part is why engineers like it. The best-known evidence is from Amazon: by 2014, AWS teams had used TLA+ on core systems including S3, DynamoDB, and EBS, and it found bugs in each. One DynamoDB bug could lose data and needed a trace of 35 steps to trigger — far beyond what testing or design review would find.<sup class="cite"><a href="#s4">[4]</a></sup><sup class="cite"><a href="#s5">[5]</a></sup> Its siblings: <span class="term">P</span>, used at AWS on the protocols behind S3's strong consistency,<sup class="cite"><a href="#s6">[6]</a></sup> and <span class="term">Alloy</span> from MIT.<sup class="cite"><a href="#s7">[7]</a></sup></p>
+
+  <div class="box primary">
+    <span class="label">TLA+ versus Lean in one breath</span>
+    TLA+ with a model checker: push-button, finds real design bugs in days, but checks a model at small sizes — it doesn't prove the design correct for <em>every</em> size, and it says nothing about whether your code matches the model. Lean: can prove a property for all sizes, about the real code — and you have to write the proof. Different jobs. Asking "TLA+ or Lean?" is usually a sign the problem hasn't been stated yet.
+  </div>
+
+  <h2>2. SMT solvers: the engine under the hood</h2>
+
+  <p>An <span class="term">SMT solver</span> (lesson 4 mentioned them) is a program that takes a logical formula involving things like integers, arrays, and bit-vectors and decides, automatically, whether it can be satisfied.<sup class="cite"><a href="#s8">[8]</a></sup> "SMT" stands for satisfiability modulo theories. You rarely use one directly. They sit underneath other tools: you'll hear <span class="term">Z3</span> (Microsoft Research)<sup class="cite"><a href="#s9">[9]</a></sup> and <span class="term">cvc5</span>.<sup class="cite"><a href="#s10">[10]</a></sup></p>
+
+  <p>The connection to Lean is personal: Z3's main architect was Leonardo de Moura, before he built Lean. He made the best-known tool of the fully-automatic school, then went and built one from the other school.</p>
+
+  <p>The strength of a solver is that there's nothing to write. The weaknesses: it only handles certain kinds of formula; when it fails it mostly just fails or times out, with little to tell you why; and you are trusting a large, complex program — the opposite of lesson 2's small kernel.</p>
+
+  <h2>3. Dafny, Verus, Kani: real code, mostly automatic</h2>
+
+  <p>The next neighbourhood applies solvers to actual programs. <span class="term">Dafny</span>, created by Rustan Leino at Microsoft Research in 2009,<sup class="cite"><a href="#s11">[11]</a></sup> calls itself "a verification-aware programming language".<sup class="cite"><a href="#s12">[12]</a></sup> You write ordinary-looking imperative code and annotate it — <em>this function requires x &gt; 0; it ensures the result is sorted; this loop keeps this invariant</em> — and the tool turns code plus annotations into formulas for Z3. If the solver is satisfied, the code meets its spec. No proof script. Dafny then compiles to C#, Java, JavaScript, Go, or Python.<sup class="cite"><a href="#s12">[12]</a></sup></p>
+
+  <p>It runs in production at scale: AWS rewrote its authorization engine — the code that decides whether each API call is allowed, invoked a billion times per second — in Dafny, and deployed it in 2024.<sup class="cite"><a href="#s13">[13]</a></sup></p>
+
+  <p>The same approach for Rust: <span class="term">Verus</span> verifies Rust code using Z3,<sup class="cite"><a href="#s14">[14]</a></sup> and <span class="term">Kani</span> is a model checker for Rust that examines the code itself rather than a design.<sup class="cite"><a href="#s15">[15]</a></sup> There's an ongoing AWS-initiated effort to verify the Rust standard library this way.<sup class="cite"><a href="#s16">[16]</a></sup> And <span class="term">F*</span>, also from Microsoft Research, is the language behind HACL*, the verified cryptography library shipped in Firefox and the Linux kernel.<sup class="cite"><a href="#s17">[17]</a></sup></p>
+
+  <p>The trade against Lean is the solver's trade: far less work per line of code when it goes through, and little recourse when it doesn't. A proof that passed yesterday can time out today after an unrelated change. In Lean a proof is longer to write, but it's an explicit artifact that either checks or doesn't, the same way every time.</p>
+
+  <h2>4. The other proof assistants, and two cousins</h2>
+
+  <p>Rocq (formerly Coq) and Isabelle, from lesson 3, are Lean's direct peers and remain in active use. Two more names come up from the programming-language side: <span class="term">Agda</span> and <span class="term">Idris</span>. Both are dependently typed languages built on the same propositions-as-types idea as Lean (lesson 2). Their emphasis is on programming and type-theory research — Agda has no separate tactic language at all, proofs are written directly as programs<sup class="cite"><a href="#s18">[18]</a></sup> — and neither has anything like mathlib. If someone says "Lean is like Agda or Idris", they mean the type system; if they say "Lean is like Coq", they mean the whole proof-assistant package.</p>
+
+  <h2>The borders are blurring</h2>
+
+  <p>Three developments make this map less tidy than the table suggests, and they're where much of today's Lean-for-software discussion happens.</p>
+
+  <p><strong>Solver-style automation is moving inside Lean.</strong> Lean's <code>grind</code> tactic "uses techniques inspired by modern SMT solvers to automatically construct proofs" — but, unlike a solver, it "produces ordinary Lean proof terms", so the kernel still checks the result.<sup class="cite"><a href="#s19">[19]</a></sup> That's the <code>omega</code> pattern from lesson 1, generalized: automation you don't have to trust.</p>
+
+  <p><strong>Real code is being translated into Lean.</strong> <span class="term">Aeneas</span> converts Rust programs into Lean so they can be reasoned about there.<sup class="cite"><a href="#s20">[20]</a></sup> This is how one proves things about code that wasn't written in Lean.</p>
+
+  <p><strong>Projects move between neighbourhoods.</strong> Amazon's Cedar policy language was first modelled in Dafny (2023);<sup class="cite"><a href="#s21">[21]</a></sup> its models and proofs are now in Lean.<sup class="cite"><a href="#s22">[22]</a></sup></p>
+
+  <h2>And AI changes the trade</h2>
+
+  <p>The whole map is drawn around one cost: <em>human proof effort</em>. Tools gave up assurance to save it. If AI can write the proofs, that cost drops, and the question becomes which target is best for a machine.</p>
+
+  <p>It isn't settled. A September 2025 benchmark gave the same kind of task — write code and prove it meets a spec — to off-the-shelf language models in three languages. Success rates: Dafny 82%, Verus 44%, Lean 27%.<sup class="cite"><a href="#s23">[23]</a></sup> <span class="asof">Sept 2025 — will have moved</span> The push-button tools were the easier target. Yet for mathematics, AI work converged on Lean almost entirely. De Moura's explanation (he's an interested party) is the small kernel, the size of mathlib, and the fact that an interactive prover gives a model feedback after every step, where a solver only says pass or fail.<sup class="cite"><a href="#s24">[24]</a></sup> There's AI work on TLA+ too — a 2025 challenge was won by a tool that derives TLA+ specs from source code.<sup class="cite"><a href="#s25">[25]</a></sup></p>
+
+  <div class="box make">
+    <span class="label">rule of thumb</span>
+    <strong>Designing a concurrent or distributed protocol?</strong> Model it in TLA+ or P first — cheapest, and it finds the bugs that matter most.<br>
+    <strong>Want a specific module proved correct with the least effort?</strong> A verification-aware language or code verifier: Dafny, Verus, Kani.<br>
+    <strong>Need a property no solver will prove on its own, real mathematics, or the smallest possible thing to trust?</strong> A proof assistant — and today, most likely Lean.<br>
+    <strong>Not there yet?</strong> Property-based testing, fuzzing, and deterministic simulation are the same instinct at a fraction of the cost, and where most teams should start.
+  </div>
+
+  <h2>Check it sticks</h2>
+
+  <div class="recall">
+    <p class="recall-q">① What are the two questions that place any formal-methods tool on the map?</p>
+    <button class="recall-show">Reveal answer</button>
+    <div class="recall-a" hidden>(1) What is being checked — a model of the design, or the actual code? (2) Who does the proving — a tool automatically, within limits, or a person or AI guiding the proof step by step? TLA+ is model + automatic; Dafny/Verus are code + mostly automatic; Lean is anything + guided.</div>
+  </div>
+
+  <div class="quiz" data-answer="b">
+    <p class="quiz-q">② Your team's TLA+ spec of a replication protocol passes the model checker. What do you know?</p>
+    <button class="quiz-opt" data-key="a">The implementation is free of replication bugs</button>
+    <button class="quiz-opt" data-key="b">The design, as modelled and at the sizes explored, doesn't violate the stated properties</button>
+    <button class="quiz-opt" data-key="c">The protocol is proved correct for any number of nodes</button>
+    <p class="quiz-why" hidden>Model checking explores a model at bounded sizes. That's valuable — it's how AWS found a 35-step data-loss bug — but it isn't a statement about the code, and it isn't a proof for all sizes. Both of those need other tools.</p>
+  </div>
+
+  <div class="quiz" data-answer="c">
+    <p class="quiz-q">③ What is the main thing Dafny gives up compared with Lean, in exchange for being much less work?</p>
+    <button class="quiz-opt" data-key="a">It can only check design models, not code</button>
+    <button class="quiz-opt" data-key="b">It can't compile to runnable code</button>
+    <button class="quiz-opt" data-key="c">It relies on a large automatic solver: when the solver can't prove something you have little recourse, and the solver itself must be trusted</button>
+    <p class="quiz-why" hidden>Dafny checks real code and compiles to several mainstream languages. Its limits are the solver's limits: narrower reach, opaque failures and timeouts, and a big trusted component instead of a small kernel.</p>
+  </div>
+
+  <div class="quiz" data-answer="a">
+    <p class="quiz-q">④ How is Lean's <code>grind</code> tactic different from calling an SMT solver directly?</p>
+    <button class="quiz-opt" data-key="a">It searches automatically like a solver, but outputs a proof the kernel checks — so the automation doesn't need to be trusted</button>
+    <button class="quiz-opt" data-key="b">It's slower but otherwise identical</button>
+    <button class="quiz-opt" data-key="c">It replaces the kernel</button>
+    <p class="quiz-why" hidden>Same trust model as every other tactic (lesson 2): anything may generate the proof, the kernel decides. That's how Lean gets some of the neighbours' convenience without their larger trusted base.</p>
+  </div>
+
+  <div class="box ask">
+    <span class="label">ask the teacher</span>
+    Each neighbourhood here could be its own set in this course — TLA+ especially is very learnable in a few lessons and immediately useful for distributed-systems work. Say so if you want one. Next, back to the story: lesson 6 is how Lean got mathematicians' attention.
+  </div>
+
+  <p class="sources">
+    Sources:<br>
+    <span id="s1">[1] <a href="https://lamport.azurewebsites.net/tla/high-level-view.html">A High-Level View of TLA+ — Leslie Lamport</a></span><br>
+    <span id="s2">[2] <a href="https://en.wikipedia.org/wiki/Model_checking">Model checking — Wikipedia</a></span><br>
+    <span id="s3">[3] <a href="https://www.hillelwayne.com/post/why-dont-people-use-formal-methods/">Why Don't People Use Formal Methods? — Hillel Wayne, Jan 21, 2019</a></span><br>
+    <span id="s4">[4] <a href="https://lamport.azurewebsites.net/tla/formal-methods-amazon.pdf">Use of Formal Methods at Amazon Web Services — Newcombe et al., Sep 29, 2014 (later in Communications of the ACM, Apr 2015)</a></span><br>
+    <span id="s5">[5] <a href="https://lamport.azurewebsites.net/tla/amazon-excerpt.html">Excerpt from "How Amazon Web Services Uses Formal Methods" — Lamport's TLA+ site</a></span><br>
+    <span id="s6">[6] <a href="https://p-org.github.io/P/casestudies/">P case studies — p-org.github.io</a></span><br>
+    <span id="s7">[7] <a href="https://alloytools.org/">Alloy — alloytools.org</a></span><br>
+    <span id="s8">[8] <a href="https://en.wikipedia.org/wiki/Satisfiability_modulo_theories">Satisfiability modulo theories — Wikipedia</a></span><br>
+    <span id="s9">[9] <a href="https://www.microsoft.com/en-us/research/project/z3-3/">Z3 — Microsoft Research</a></span><br>
+    <span id="s10">[10] <a href="https://cvc5.github.io/">cvc5</a></span><br>
+    <span id="s11">[11] <a href="https://en.wikipedia.org/wiki/Dafny">Dafny — Wikipedia (origin and architecture)</a></span><br>
+    <span id="s12">[12] <a href="https://dafny.org/">dafny.org</a></span><br>
+    <span id="s13">[13] <a href="https://www.amazon.science/publications/formally-verified-cloud-scale-authorization">Formally verified cloud-scale authorization — Amazon Science, ICSE 2025</a></span><br>
+    <span id="s14">[14] <a href="https://github.com/verus-lang/verus">Verus — verus-lang/verus</a></span><br>
+    <span id="s15">[15] <a href="https://github.com/model-checking/kani">Kani Rust Verifier — model-checking/kani</a></span><br>
+    <span id="s16">[16] <a href="http://rustfoundation.org/news/rust-foundation-collaborates-with-aws-initiative-to-verify-rust-standard-libraries">Rust Foundation collaborates with AWS initiative to verify Rust standard libraries — Nov 20, 2024</a></span><br>
+    <span id="s17">[17] <a href="https://hacl-star.github.io/">HACL* — a formally verified cryptographic library</a></span><br>
+    <span id="s18">[18] <a href="https://en.wikipedia.org/wiki/Agda_(programming_language)">Agda — Wikipedia</a></span><br>
+    <span id="s19">[19] <a href="https://lean-lang.org/doc/reference/latest/The--grind--tactic/">The grind tactic — The Lean Language Reference</a></span><br>
+    <span id="s20">[20] <a href="https://github.com/AeneasVerif/aeneas">Aeneas — a verification toolchain for Rust programs</a></span><br>
+    <span id="s21">[21] <a href="https://www.amazon.science/blog/how-we-built-cedar-with-automated-reasoning-and-differential-testing">How we built Cedar with automated reasoning and differential testing — Amazon Science, May 10, 2023</a></span><br>
+    <span id="s22">[22] <a href="https://lean-lang.org/use-cases/cedar/">Cedar use case — lean-lang.org</a></span><br>
+    <span id="s23">[23] <a href="https://arxiv.org/abs/2509.22908">A benchmark for vericoding — Bursuc et al., arXiv 2509.22908, Sep 26, 2025</a></span><br>
+    <span id="s24">[24] <a href="https://leodemoura.github.io/blog/2026-2-28-when-ai-writes-the-worlds-software-who-verifies-it/">When AI Writes the World's Software, Who Verifies It? — Leonardo de Moura, Feb 28, 2026</a></span><br>
+    <span id="s25">[25] <a href="https://foundation.tlapl.us/challenge/index.html">GenAI-accelerated TLA+ challenge — TLA+ Foundation, 2025</a></span>
+  </p>
+
+  <div class="nav">
+    <a href="0004-what-lean-did-differently.html">← 4 What Lean did differently</a>
+    <a href="0006-mathematicians-show-up.html">6 Mathematicians show up →</a>
+    <a href="../../index.html">Course index</a>
+  </div>
+
+  <p class="teacher">Anything unclear — ask your teacher (me), any time.</p>
+
+</div>
